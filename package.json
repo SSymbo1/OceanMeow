@@ -1,0 +1,86 @@
+{
+  "name": "application",
+  "private": true,
+  "version": "0.0.0",
+  "main": "dist-electron/main.js",
+  "type": "commonjs",
+  "scripts": {
+    "dev": "vite",
+    "build": "pnpm run type && vue-tsc && vite build && electron-builder",
+    "preview": "vite preview",
+    "pack": "electron-builder --dir",
+    "type": "tsc -p tsconfig.types.json && tsc-alias -p tsconfig.json"
+  },
+  "build": {
+    "appId": "com.github.SSymbo1.application",
+    "productName": "application",
+    "directories": {
+      "output": "release/${version}"
+    },
+    "files": [
+      "dist-electron",
+      "dist",
+      "node_modules"
+    ],
+    "extraResources": [
+      {
+        "from": "public",
+        "to": ".",
+        "filter": [
+          "**/*"
+        ]
+      }
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ]
+    },
+    "electronLanguages": [
+      "en-US",
+      "zh-CN"
+    ],
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    }
+  },
+  "dependencies": {
+    "@ant-design/icons-vue": "^7.0.1",
+    "@node-steam/vdf": "^2.2.0",
+    "@tailwindcss/vite": "^4.1.11",
+    "@types/winreg": "^1.2.36",
+    "ant-design-vue": "~4.2.6",
+    "better-sqlite3": "^12.2.0",
+    "electron-log": "^5.4.1",
+    "pinia": "^3.0.3",
+    "pinia-plugin-persistedstate": "^4.4.1",
+    "reflect-metadata": "^0.2.2",
+    "typeorm": "^0.3.25",
+    "valve-key-values-binary": "^1.0.1",
+    "vue": "^3.5.17",
+    "vue-router": "^4.5.1",
+    "winreg": "^1.2.5"
+  },
+  "devDependencies": {
+    "@electron/rebuild": "^4.0.1",
+    "@types/node": "^24.0.15",
+    "@vitejs/plugin-vue": "^6.0.0",
+    "@vue/tsconfig": "^0.7.0",
+    "electron": "^37.2.3",
+    "electron-builder": "^26.0.12",
+    "electron-squirrel-startup": "^1.0.1",
+    "tailwindcss": "^4.1.11",
+    "tsc-alias": "^1.8.16",
+    "typescript": "~5.8.3",
+    "vite": "^7.0.4",
+    "vite-plugin-electron": "^0.29.0",
+    "vite-plugin-native": "^2.2.2",
+    "vue-tsc": "^2.2.12"
+  }
+}

@@ -1,0 +1,13 @@
+{
+    "steam": {
+        "installPath": "",
+        "account": ""
+    },
+    "logger": {
+        "fileLevel": "info",
+        "consoleLevel": "debug",
+        "format": "[{y}-{m}-{d} {h}:{i}:{s}.{ms}] [{level}] {scope} >>> {text}",
+        "logName": "/logs/application_${date}.log",
+        "maxSize": 1002430
+    }
+}

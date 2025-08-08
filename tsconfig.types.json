@@ -1,0 +1,20 @@
+{
+    "extends": "./tsconfig.json",
+    "compilerOptions": {
+        "outDir": "src/type/electron/entity",
+        "emitDeclarationOnly": true,
+        "declaration": true,
+        "rootDir": "electron/entity",
+        "baseUrl": ".",
+        "paths": {
+            "*": ["*"]
+        }
+    },
+    "include": [
+        "electron/entity/**/*.ts"
+    ],
+    "exclude": [
+        "node_modules",
+        "electron/entity/**/*.d.ts"
+    ]
+}
