@@ -3,6 +3,7 @@ export declare class LibraryDetail {
     shortId: string;
     loginName: string;
     userName: string;
+    screenCount: number;
     appId: string;
     appName: string;
     appLocalized: string;

@@ -1,5 +1,0 @@
-@config "../../../tailwind.config.mjs";
-@import "tailwindcss";
-@import "ant-design-vue/dist/reset.css" layer(antd);
-
-@layer antd, base, components, utilities;

@@ -1,0 +1,32 @@
+{
+  "menu": [
+    {
+      "key": "0",
+      "name": "首页",
+      "label": "首页",
+      "icon": "HomeOutlined",
+      "route": "/"
+    },
+    {
+      "key": "1",
+      "name": "库",
+      "label": "库",
+      "icon": "InboxOutlined",
+      "route": "/library"
+    },
+    {
+      "key": "2",
+      "name": "设置",
+      "label": "设置",
+      "icon": "SettingOutlined",
+      "route": "/setting"
+    },
+    {
+      "key": "3",
+      "name": "关于",
+      "label": "关于",
+      "icon": "LinkOutlined",
+      "route": "/about"
+    }
+  ]
+}

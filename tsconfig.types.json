@@ -4,17 +4,21 @@
         "outDir": "src/type/electron/entity",
         "emitDeclarationOnly": true,
         "declaration": true,
-        "rootDir": "electron/entity",
+        "rootDir": "src/main/entity",
+        "incremental": false,
+        "composite": false,
         "baseUrl": ".",
         "paths": {
-            "*": ["*"]
+            "*": [
+                "*"
+            ]
         }
     },
     "include": [
-        "electron/entity/**/*.ts"
+        "src/main/entity/**/*.ts"
     ],
     "exclude": [
         "node_modules",
-        "electron/entity/**/*.d.ts"
+        "src/main/entity/**/*.d.ts"
     ]
 }
