@@ -1,32 +1,52 @@
-import 'reflect-metadata';
 import { SystemDB } from '@/main/util/SystemDB';
 import { logger } from '@/main/util/Logger';
-import { System } from '@/type/enum/system';
-import { ipcRegisterHandler } from '@/main/handler/ipc';
-import { protocolRegister } from '@/main/handler/protocol';
-import { exceptionHandler } from '@/main/exception';
-import { app, BrowserWindow, Menu, ipcMain } from 'electron';
+import { CommonMessage } from '@/type/enum/Message';
+import { Firewall } from '@/main/util/Firewall';
+import { protocolRegister, ipcRegisterHandler, globalExceptionListener } from '@/main/handler';
+import { app, BrowserWindow, Menu, ipcMain, nativeImage, Tray } from 'electron';
+import { stop } from '@/main/server/app';
+import { ApplicationGlobalConfig } from '@/main/service/system/config/impl/ApplicationGlobalConfig';
 import path from 'path';
 
-if (process.platform === 'win32') {
-  try {
-    if (app.isPackaged) {
-      const squirrelPath = path.join(
-        process.resourcesPath,
-        'node_modules',
-        'electron-squirrel-startup'
-      );
-      if (require(squirrelPath)) app.quit();
-    } else {
-      if (require('electron-squirrel-startup')) app.quit();
+let mainWindow: BrowserWindow | null = null;
+let trayMenuPopup: BrowserWindow | null = null;
+
+globalExceptionListener();
+// 设置应用为单例应用
+const appSingleLock = app.requestSingleInstanceLock();
+if (!appSingleLock) {
+  app.quit();
+} else {
+  app.on('second-instance', () => {
+    if (mainWindow && mainWindow.isMinimized()) {
+      mainWindow.restore();
+      mainWindow.focus();
     }
-  } catch (e) {
-    logger.error('Squirrel startup error:', e);
-  }
+  });
 }
 
+// 设置应用托盘
+const setTray = () => {
+  const tray = new Tray(
+    nativeImage.createFromPath(
+      app.isPackaged
+        ? path.join(process.resourcesPath, 'icon.ico')
+        : path.join(__dirname, '../public/icon.ico')
+    )
+  );
+  tray.setToolTip('Application');
+  tray.on('right-click', (e, bounds) => createTrayPopup(bounds));
+  tray.on('click', () => {
+    if (mainWindow) {
+      mainWindow.show();
+      mainWindow.focus();
+    }
+  });
+};
+
+// 设置主窗口
 const createWindow = () => {
-  const mainWindow = new BrowserWindow({
+  mainWindow = new BrowserWindow({
     width: 800,
     height: 530,
     minWidth: 800,
@@ -49,27 +69,87 @@ const createWindow = () => {
   });
   Menu.setApplicationMenu(null);
   if (app.isPackaged) {
-    mainWindow.loadFile(path.join(__dirname, '../dist/index.html'));
-    // mainWindow.webContents.openDevTools();
+    mainWindow.loadFile(path.join(__dirname, '../dist/src/renderer/index.html'));
   } else {
-    mainWindow.loadURL('http://localhost:5173');
+    mainWindow.loadURL('http://localhost:5173/src/renderer/index.html');
     mainWindow.webContents.openDevTools({ mode: 'detach' });
   }
   ipcMain.on('window-min', () => mainWindow?.minimize());
-  ipcMain.on('window-close', () => mainWindow?.close());
+  ipcMain.on('window-quit', () => app.quit());
+  ipcMain.on('window-close', async () => {
+    const appConfig = new ApplicationGlobalConfig();
+    const quitMode = await appConfig.read('closeApplication');
+    if (quitMode === '0') {
+      app.quit();
+    } else {
+      mainWindow?.webContents.send('before-hide');
+      setTimeout(() => {
+        mainWindow?.hide();
+      }, 200);
+    }
+  });
+  mainWindow.on('close', async () => {});
 };
 
-exceptionHandler();
+// 设置托盘菜单
+const createTrayPopup = (bounds: Electron.Rectangle) => {
+  const width = 150;
+  const height = 230;
+  if (trayMenuPopup) {
+    trayMenuPopup.close();
+    trayMenuPopup = null;
+  }
+  trayMenuPopup = new BrowserWindow({
+    width: width,
+    height: height,
+    frame: false,
+    alwaysOnTop: true,
+    skipTaskbar: true,
+    resizable: false,
+    movable: false,
+    webPreferences: {
+      preload: path.join(__dirname, 'preload.js'),
+      nodeIntegration: false,
+      contextIsolation: true,
+    },
+  });
+  const x = Math.round(bounds.x + bounds.width / 2 - width / 2);
+  const y = Math.round(bounds.y - height);
+  trayMenuPopup.setBounds({ x, y, width, height });
+  if (app.isPackaged) {
+    trayMenuPopup.loadFile(path.join(__dirname, '../dist/src/renderer/popup.html'));
+  } else {
+    trayMenuPopup.loadURL('http://localhost:5173/src/renderer/popup.html');
+  }
+  trayMenuPopup.once('blur', () => trayMenuPopup?.close());
+  trayMenuPopup.once('closed', () => (trayMenuPopup = null));
+};
 
+// 启动应用相关hook
+if (Firewall.handleCommandLineArgs()) {
+  logger.info(CommonMessage.HANDLE_FIREWALL);
+}
 app.whenReady().then(async () => {
   await SystemDB.getInstance().initDB();
+  await Firewall.ensureRule();
   protocolRegister();
   ipcRegisterHandler();
   createWindow();
-  logger.info(System.APP_RUN);
+  setTray();
+  logger.info(CommonMessage.APPLICATION_START.replace('{pid}', process.pid.toString()));
 });
 
+app.on('before-quit', async () => {
+  mainWindow?.destroy();
+  mainWindow = null;
+  trayMenuPopup?.destroy();
+  trayMenuPopup = null;
+});
+
+// 关闭应用相关hook
 app.on('window-all-closed', async () => {
+  await stop();
   await SystemDB.getInstance().closeDB();
-  app.quit();
+  logger.info(CommonMessage.APPLICATION_CLOSE);
+  app.exit();
 });

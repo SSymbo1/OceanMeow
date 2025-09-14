@@ -26,6 +26,12 @@ declare interface Window {
     gameScreenConfig:(appID: string, steamID: string)=>Promise<SteamDumpConfig>;
     readApplicationConfig: (key?: string) => Promise<ApplicationConfig>;
     writeApplicationConfig: (config: ApplicationConfig) => Promise<void>;
+    shareSteamScreenshot: (screenshot: ScreenshotShare) => Promise<string>;
+    closeAppModalListener: (callback: () => void) => void;
+    removeCloseAppModalListener: (callback: () => void) => void;
+    startServer(): () => Promise<void>;
+    stopServer(): () => Promise<void>;
+    quit(): () => void;
     minimize: () => void;
     close: () => void;
     info: (message: string) => void;

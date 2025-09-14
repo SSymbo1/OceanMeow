@@ -1,4 +1,4 @@
-import { SteamDumpConfig } from '@/type/electron/entity/SteamDumpConfig';
+import { SteamDumpConfig } from '@/type/electron/entity';
 
 export interface DataBackup<T> {
   dump(steamPath: string, dumpConfig: SteamDumpConfig, files: string[]): Promise<T>;

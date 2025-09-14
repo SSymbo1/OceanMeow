@@ -25,4 +25,10 @@ dist-ssr
 *.sln
 *.sw?
 
-/src/type/tsconfig.types.tsbuildinfo
+# 副产物
+coverage
+/src/type/*
+!/src/type/enum
+!/src/type/vite-env.d.ts
+/public/*
+!/public/icon.ico

@@ -4,7 +4,8 @@
     "module": "ESNext",
     "moduleResolution": "Node",
     "strict": true,
-    "jsx": "preserve",
+    "jsx": "react-jsx",
+    "jsxImportSource": "hono/jsx",
     "sourceMap": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
@@ -21,7 +22,8 @@
     },
     "types": [
       "vite/client",
-      "node"
+      "node",
+      "jest"
     ],
     "lib": [
       "ESNext",
@@ -33,9 +35,12 @@
   },
   "include": [
     "src/**/*.ts",
+    "src/**/*.tsx",
     "src/**/*.d.ts",
     "src/**/*.vue",
     "src/**/*.json",
+    "test/**/*.ts",
+    "test/**/*.json"
   ],
   "exclude": [
     "node_modules"

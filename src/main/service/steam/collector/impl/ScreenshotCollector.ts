@@ -1,9 +1,10 @@
 import { SteamDataCollector } from '@/main/service/steam/collector/SteamDataCollector';
 import { Screenshots, SteamAccount } from '@/main/entity';
-import { Steam } from '@/type/enum/steam';
+import { SteamResource } from '@/type/enum/Resource';
 import { SystemDB } from '@/main/util/SystemDB';
 import { SystemIO } from '@/main/util/SystemIO';
 import { join } from 'path';
+import pLimit from 'p-limit';
 
 interface VdfData {
   [key: string]: any;
@@ -11,6 +12,7 @@ interface VdfData {
 
 export class ScreenshotCollector implements SteamDataCollector<Screenshots> {
   async collect(steamInstallPath: string): Promise<Screenshots[]> {
+    const limit = pLimit(10);
     const account = await SystemDB.getInstance()
       .typeROM.getRepository(SteamAccount)
       .find({
@@ -18,7 +20,9 @@ export class ScreenshotCollector implements SteamDataCollector<Screenshots> {
       });
     const screenShotRepo = SystemDB.getInstance().typeROM.getRepository(Screenshots);
     const allAccountScreenshot = await Promise.all(
-      account.map((id) => this.readAccoountScreenshots(id.steamId, steamInstallPath))
+      account.map((id) =>
+        limit(async () => this.readAccountScreenshots(id.steamId, steamInstallPath))
+      )
     );
     const screenShots: Screenshots[] = allAccountScreenshot.flat();
     for (let i = 0; i < screenShots.length; i += 500) {
@@ -43,14 +47,13 @@ export class ScreenshotCollector implements SteamDataCollector<Screenshots> {
    *
    * @private
    */
-  private async readAccoountScreenshots(
+  private async readAccountScreenshots(
     accountID: string,
     steamInstallPath: string
   ): Promise<Screenshots[]> {
     const screenShotRepo = SystemDB.getInstance().typeROM.getRepository(Screenshots);
-
     const vdfResult: VdfData = await SystemIO.readSteamVDF(
-      join(steamInstallPath, Steam.SCREENSHOT_VDF.replace('{user_id}', accountID)),
+      join(steamInstallPath, SteamResource.SCREENSHOT_VDF.replace('{user_id}', accountID)),
       'screenshots'
     );
     return Object.entries(vdfResult)
@@ -67,11 +70,17 @@ export class ScreenshotCollector implements SteamDataCollector<Screenshots> {
               fileName:
                 screenshot?.filename === null
                   ? ''
-                  : join(Steam.SCREENSHOT.replace('{user_id}', accountID), screenshot.filename),
+                  : join(
+                      SteamResource.SCREENSHOT.replace('{user_id}', accountID),
+                      screenshot.filename
+                    ),
               thumbNail:
                 screenshot?.thumbnail === null
                   ? ''
-                  : join(Steam.SCREENSHOT.replace('{user_id}', accountID), screenshot.thumbnail),
+                  : join(
+                      SteamResource.SCREENSHOT.replace('{user_id}', accountID),
+                      screenshot.thumbnail
+                    ),
               imported: screenshot?.imported,
               width: screenshot?.width,
               height: screenshot?.height,

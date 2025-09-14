@@ -9,8 +9,8 @@
   } from '@ant-design/icons-vue';
   import { useRouter } from 'vue-router';
   import { useAccountStore } from '@/renderer/pinia/store/account';
-  import SelectInstallPathModal from '@/renderer/components/component/SelectInstallPathModal.vue';
-  import SelectAccountModal from '@/renderer/components/component/SelectAccountModal.vue';
+  import SelectInstallPathModal from '@/renderer/components/component/modal/SelectInstallPathModal.vue';
+  import SelectAccountModal from '@/renderer/components/component/modal/SelectAccountModal.vue';
   import { useSteamStore } from '@/renderer/pinia/store/steam';
   import { SteamAccount } from '@/type/electron/entity';
   import { ItemType } from 'ant-design-vue';
@@ -36,7 +36,7 @@
   const installPathModel: Ref<any> = ref(null);
   const accountModel: Ref<any> = ref(null);
   const accountName = ref('Guest');
-  const accountAvator = ref('');
+  const accountAvatar = ref('');
 
   const handleMenuClick = (key: any) => {
     router.push(menu[Number(key.key)].route);
@@ -47,12 +47,12 @@
       steam_id: account.steamId,
       login_name: account.accountName,
       account_name: account.personaName,
-      avatar: account.avator,
+      avatar: account.avatar,
     });
     updateAccountInfo();
   };
 
-  const steamInstalPathLocatedSuccess = async () => {
+  const steamInstallPathLocatedSuccess = async () => {
     await appBaseDataInit();
   };
 
@@ -70,7 +70,7 @@
   };
 
   const updateAccountInfo = () => {
-    accountAvator.value = useAccountStore().account.avatar;
+    accountAvatar.value = useAccountStore().account.avatar;
     accountName.value = useAccountStore().account.account_name;
   };
 
@@ -92,7 +92,7 @@
     }
   );
   onMounted(() => {
-    let routerName = '';
+    let routerName: string;
     selectedKeys.value[0] = useConfigStore().config.defaultHome;
     if (useConfigStore().config.defaultHome === '0') {
       routerName = 'Welcome';
@@ -113,7 +113,7 @@
       <div class="flex items-center p-4 transition-all mt-2.5">
         <div class="relative w-12 rounded-full overflow-hidden border-2 flex-shrink-0">
           <a-avatar
-            :src="`load://${useSteamStore().steam.installPath.replace(/\\/g, '/')}${accountAvator}`"
+            :src="`load://${useSteamStore().steam.installPath.replace(/\\/g, '/')}${accountAvatar}`"
             :size="43"
           />
         </div>
@@ -146,7 +146,7 @@
       </a-layout-content>
     </a-layout>
   </a-layout>
-  <SelectInstallPathModal ref="installPathModel" @success="steamInstalPathLocatedSuccess" />
+  <SelectInstallPathModal ref="installPathModel" @success="steamInstallPathLocatedSuccess" />
   <SelectAccountModal ref="accountModel" @account="libraryAccountSelected" />
 </template>
 

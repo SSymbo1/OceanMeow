@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import Home from '@/renderer/components/home/HomeView.vue';
-  import ApplicationInitHolder from '@/renderer/components/component/ApplicationInitHolder.vue';
-  import WindowTitleBar from '@/renderer/components/component/WindowTitleBar.vue';
+  import ApplicationInitHolder from '@/renderer/components/component/application/ApplicationInitHolder.vue';
+  import WindowTitleBar from '@/renderer/components/component/application/WindowTitleBar.vue';
   import { ref } from 'vue';
 
   const ready = ref(false);

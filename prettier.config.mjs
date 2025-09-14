@@ -11,7 +11,6 @@ export default {
   bracketSameLine: false,
   arrowParens: 'always',
   quoteProps: 'as-needed',
-  proseWrap: 'always',
   htmlWhitespaceSensitivity: 'css',
   embeddedLanguageFormatting: 'auto',
 };

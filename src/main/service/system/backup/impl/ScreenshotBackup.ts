@@ -1,13 +1,14 @@
 import { ScreenDetail } from '@/main/entity';
 import { DataBackup } from '@/main/service/system/backup/DataBackup';
 import { SystemDB } from '@/main/util/SystemDB';
-import { SteamDumpConfig } from '@/main/entity/SteamDumpConfig';
-import { FolderType, CreateFolder, OrderByDate } from '@/type/enum/dump';
+import { SteamDumpConfig } from '@/main/entity/po/SteamDumpConfig';
+import { DumpFolderType, CreateFolder, OrderByDate } from '@/type/enum/Option';
 import { logger } from '@/main/util/Logger';
 import { Brackets } from 'typeorm';
+import { SystemIO } from '@/main/util/SystemIO';
+import { ExceptionMessage } from '@/type/enum/Message';
 import fs from 'fs';
 import path from 'path';
-import { SystemIO } from '@/main/util/SystemIO';
 
 type ScreenDumpResult = {
   app_id: string;
@@ -62,8 +63,8 @@ export class ScreenshotBackup implements DataBackup<ScreenDumpResult> {
         createFolder: defaultDumpConfig.defaultScreenCreateFolder
           ? CreateFolder.ENABLE
           : CreateFolder.DISABLE,
-        forderType: defaultDumpConfig.defaultScreenForderType,
-        forderName: '',
+        folderType: defaultDumpConfig.defaultScreenfolderType,
+        folderName: '',
         orderByDate: defaultDumpConfig.defaultScreenDateOrdered
           ? OrderByDate.ENABLE
           : OrderByDate.DISABLE,
@@ -92,21 +93,21 @@ export class ScreenshotBackup implements DataBackup<ScreenDumpResult> {
       );
       return true;
     } catch (error) {
-      logger.error('Failed to dump screenshot:', error);
+      logger.error(ExceptionMessage.DUMP_EXCEPTION, error);
       return false;
     }
   }
 
   private buildDumpTargetPath(config: SteamDumpConfig): string {
-    let folderName = '';
-    if (config.forderType === FolderType.FOLDER_TYPE_DEFAULT) {
+    let folderName: string;
+    if (config.folderType === DumpFolderType.FOLDER_TYPE_DEFAULT) {
       folderName = config.appID;
-    } else if (config.forderType === FolderType.FOLDER_TYPE_APP_NAME) {
+    } else if (config.folderType === DumpFolderType.FOLDER_TYPE_APP_NAME) {
       folderName = config.appName;
-    } else if (config.forderType === FolderType.FOLDER_TYPE_APP_LOCALIZED) {
+    } else if (config.folderType === DumpFolderType.FOLDER_TYPE_APP_LOCALIZED) {
       folderName = config.appLocation;
     } else {
-      folderName = config.forderName;
+      folderName = config.folderName;
     }
     folderName = folderName
       .replace(/[<>:"|?*]/g, ' ')

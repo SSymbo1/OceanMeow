@@ -1,0 +1,719 @@
+{
+  "account": {
+    "normal": {
+      "56561198858239441": {
+        "AccountName": "test_account1",
+        "PersonaName": "test1",
+        "RememberPassword": "1",
+        "WantsOfflineMode": "0",
+        "SkipOfflineModeWarning": "1",
+        "AllowAutoLogin": "1",
+        "MostRecent": "1",
+        "Timestamp": "1756376372"
+      },
+      "56561198858239442": {
+        "AccountName": "test_account2",
+        "PersonaName": "test2",
+        "RememberPassword": "1",
+        "WantsOfflineMode": "0",
+        "SkipOfflineModeWarning": "1",
+        "AllowAutoLogin": "1",
+        "MostRecent": "1",
+        "Timestamp": "1756376372"
+      },
+      "56561198858239443": {
+        "AccountName": "test_account3",
+        "PersonaName": "test3",
+        "RememberPassword": "1",
+        "WantsOfflineMode": "0",
+        "SkipOfflineModeWarning": "1",
+        "AllowAutoLogin": "1",
+        "MostRecent": "1",
+        "Timestamp": "1756376372"
+      },
+      "56561198858239444": {
+        "AccountName": "test_account4",
+        "PersonaName": "test4",
+        "RememberPassword": "1",
+        "WantsOfflineMode": "0",
+        "SkipOfflineModeWarning": "1",
+        "AllowAutoLogin": "1",
+        "MostRecent": "1",
+        "Timestamp": "1756376372"
+      },
+      "56561198858239445": {
+        "AccountName": "test_account5",
+        "PersonaName": "test5",
+        "RememberPassword": "1",
+        "WantsOfflineMode": "0",
+        "SkipOfflineModeWarning": "1",
+        "AllowAutoLogin": "1",
+        "MostRecent": "1",
+        "Timestamp": "1756376380"
+      },
+      "56561198858239446": {
+        "AccountName": "test_account6",
+        "PersonaName": "test6",
+        "RememberPassword": "1",
+        "WantsOfflineMode": "0",
+        "SkipOfflineModeWarning": "1",
+        "AllowAutoLogin": "1",
+        "MostRecent": "1",
+        "Timestamp": "1756376379"
+      },
+      "56561198858239447": {
+        "AccountName": "test_account7",
+        "PersonaName": "test7",
+        "RememberPassword": "1",
+        "WantsOfflineMode": "0",
+        "SkipOfflineModeWarning": "1",
+        "AllowAutoLogin": "1",
+        "MostRecent": "1",
+        "Timestamp": "1756376372"
+      },
+      "56561198858239448": {
+        "AccountName": "test_account8",
+        "PersonaName": "test8",
+        "RememberPassword": "1",
+        "WantsOfflineMode": "1",
+        "SkipOfflineModeWarning": "1",
+        "AllowAutoLogin": "1",
+        "MostRecent": "1",
+        "Timestamp": "1756376375"
+      },
+      "56561198858239449": {
+        "AccountName": "test_account9",
+        "PersonaName": "test9",
+        "RememberPassword": "1",
+        "WantsOfflineMode": "0",
+        "SkipOfflineModeWarning": "1",
+        "AllowAutoLogin": "1",
+        "MostRecent": "1",
+        "Timestamp": "1756376378"
+      },
+      "56561198858239450": {
+        "AccountName": "test_account10",
+        "PersonaName": "test10",
+        "RememberPassword": "1",
+        "WantsOfflineMode": "1",
+        "SkipOfflineModeWarning": "1",
+        "AllowAutoLogin": "1",
+        "MostRecent": "1",
+        "Timestamp": "1756376380"
+      }
+    }
+  },
+  "library": {
+    "localConfig": {
+      "normal": {}
+    },
+    "appinfo": {
+      "normal": {}
+    }
+  },
+  "screenshot": {
+    "account": [{ "steamId": "76561198000000001" }, { "steamId": "76561198000000002" }],
+    "normal": {
+      "test1": {
+        "1145360": {
+        "0": {
+          "type": "1",
+          "filename": "1145360/screenshots/20210830154634_1.jpg",
+          "thumbnail": "1145360/screenshots/thumbnails/20210830154634_1.jpg",
+          "imported": "1",
+          "width": "1920",
+          "height": "1080",
+          "gameid": "1145360",
+          "creation": "1630309594",
+          "Permissions": "2",
+          "hscreenshot": "18446744073709551615"
+        },
+        "1": {
+          "type": "1",
+          "filename": "1145360/screenshots/20210830154634_1.jpg",
+          "thumbnail": "1145360/screenshots/thumbnails/20210830154634_1.jpg",
+          "imported": "1",
+          "width": "1920",
+          "height": "1080",
+          "gameid": "1145360",
+          "creation": "1630309594",
+          "Permissions": "2",
+          "hscreenshot": "18446744073709551615"
+        },
+        "2": {
+          "type": "1",
+          "filename": "1145360/screenshots/20210830154634_1.jpg",
+          "thumbnail": "1145360/screenshots/thumbnails/20210830154634_1.jpg",
+          "imported": "1",
+          "width": "1920",
+          "height": "1080",
+          "gameid": "1145360",
+          "creation": "1630309594",
+          "Permissions": "2",
+          "hscreenshot": "18446744073709551615"
+        },
+        "3": {
+          "type": "1",
+          "filename": "1145360/screenshots/20210830154634_1.jpg",
+          "thumbnail": "1145360/screenshots/thumbnails/20210830154634_1.jpg",
+          "imported": "1",
+          "width": "1920",
+          "height": "1080",
+          "gameid": "1145360",
+          "creation": "1630309594",
+          "Permissions": "2",
+          "hscreenshot": "18446744073709551615"
+        },
+        "4": {
+          "type": "1",
+          "filename": "1145360/screenshots/20210830154634_1.jpg",
+          "thumbnail": "1145360/screenshots/thumbnails/20210830154634_1.jpg",
+          "imported": "1",
+          "width": "1920",
+          "height": "1080",
+          "gameid": "1145360",
+          "creation": "1630309594",
+          "Permissions": "2",
+          "hscreenshot": "18446744073709551615"
+        }
+      },
+      "970560": {
+        "0": {
+          "type": "1",
+          "filename": "1145360/screenshots/20210830154634_1.jpg",
+          "thumbnail": "1145360/screenshots/thumbnails/20210830154634_1.jpg",
+          "imported": "1",
+          "width": "1920",
+          "height": "1080",
+          "gameid": "1145360",
+          "creation": "1630309594",
+          "Permissions": "2",
+          "hscreenshot": "18446744073709551615"
+        },
+        "1": {
+          "type": "1",
+          "filename": "1145360/screenshots/20210830154634_1.jpg",
+          "thumbnail": "1145360/screenshots/thumbnails/20210830154634_1.jpg",
+          "imported": "1",
+          "width": "1920",
+          "height": "1080",
+          "gameid": "1145360",
+          "creation": "1630309594",
+          "Permissions": "2",
+          "hscreenshot": "18446744073709551615"
+        },
+        "2": {
+          "type": "1",
+          "filename": "1145360/screenshots/20210830154634_1.jpg",
+          "thumbnail": "1145360/screenshots/thumbnails/20210830154634_1.jpg",
+          "imported": "1",
+          "width": "1920",
+          "height": "1080",
+          "gameid": "1145360",
+          "creation": "1630309594",
+          "Permissions": "2",
+          "hscreenshot": "18446744073709551615"
+        },
+        "3": {
+          "type": "1",
+          "filename": "1145360/screenshots/20210830154634_1.jpg",
+          "thumbnail": "1145360/screenshots/thumbnails/20210830154634_1.jpg",
+          "imported": "1",
+          "width": "1920",
+          "height": "1080",
+          "gameid": "1145360",
+          "creation": "1630309594",
+          "Permissions": "2",
+          "hscreenshot": "18446744073709551615"
+        },
+        "4": {
+          "type": "1",
+          "filename": "1145360/screenshots/20210830154634_1.jpg",
+          "thumbnail": "1145360/screenshots/thumbnails/20210830154634_1.jpg",
+          "imported": "1",
+          "width": "1920",
+          "height": "1080",
+          "gameid": "1145360",
+          "creation": "1630309594",
+          "Permissions": "2",
+          "hscreenshot": "18446744073709551615"
+        }
+      },
+      "970562": {
+        "0": {
+          "type": "1",
+          "filename": "1145360/screenshots/20210830154634_1.jpg",
+          "thumbnail": "1145360/screenshots/thumbnails/20210830154634_1.jpg",
+          "imported": "1",
+          "width": "1920",
+          "height": "1080",
+          "gameid": "1145360",
+          "creation": "1630309594",
+          "Permissions": "2",
+          "hscreenshot": "18446744073709551615"
+        },
+        "1": {
+          "type": "1",
+          "filename": "1145360/screenshots/20210830154634_1.jpg",
+          "thumbnail": "1145360/screenshots/thumbnails/20210830154634_1.jpg",
+          "imported": "1",
+          "width": "1920",
+          "height": "1080",
+          "gameid": "1145360",
+          "creation": "1630309594",
+          "Permissions": "2",
+          "hscreenshot": "18446744073709551615"
+        },
+        "2": {
+          "type": "1",
+          "filename": "1145360/screenshots/20210830154634_1.jpg",
+          "thumbnail": "1145360/screenshots/thumbnails/20210830154634_1.jpg",
+          "imported": "1",
+          "width": "1920",
+          "height": "1080",
+          "gameid": "1145360",
+          "creation": "1630309594",
+          "Permissions": "2",
+          "hscreenshot": "18446744073709551615"
+        },
+        "3": {
+          "type": "1",
+          "filename": "1145360/screenshots/20210830154634_1.jpg",
+          "thumbnail": "1145360/screenshots/thumbnails/20210830154634_1.jpg",
+          "imported": "1",
+          "width": "1920",
+          "height": "1080",
+          "gameid": "1145360",
+          "creation": "1630309594",
+          "Permissions": "2",
+          "hscreenshot": "18446744073709551615"
+        },
+        "4": {
+          "type": "1",
+          "filename": "1145360/screenshots/20210830154634_1.jpg",
+          "thumbnail": "1145360/screenshots/thumbnails/20210830154634_1.jpg",
+          "imported": "1",
+          "width": "1920",
+          "height": "1080",
+          "gameid": "1145360",
+          "creation": "1630309594",
+          "Permissions": "2",
+          "hscreenshot": "18446744073709551615"
+        }
+      },
+      "970568": {
+        "0": {
+          "type": "1",
+          "filename": "1145360/screenshots/20210830154634_1.jpg",
+          "thumbnail": "1145360/screenshots/thumbnails/20210830154634_1.jpg",
+          "imported": "1",
+          "width": "1920",
+          "height": "1080",
+          "gameid": "1145360",
+          "creation": "1630309594",
+          "Permissions": "2",
+          "hscreenshot": "18446744073709551615"
+        },
+        "1": {
+          "type": "1",
+          "filename": "1145360/screenshots/20210830154634_1.jpg",
+          "thumbnail": "1145360/screenshots/thumbnails/20210830154634_1.jpg",
+          "imported": "1",
+          "width": "1920",
+          "height": "1080",
+          "gameid": "1145360",
+          "creation": "1630309594",
+          "Permissions": "2",
+          "hscreenshot": "18446744073709551615"
+        },
+        "2": {
+          "type": "1",
+          "filename": "1145360/screenshots/20210830154634_1.jpg",
+          "thumbnail": "1145360/screenshots/thumbnails/20210830154634_1.jpg",
+          "imported": "1",
+          "width": "1920",
+          "height": "1080",
+          "gameid": "1145360",
+          "creation": "1630309594",
+          "Permissions": "2",
+          "hscreenshot": "18446744073709551615"
+        },
+        "3": {
+          "type": "1",
+          "filename": "1145360/screenshots/20210830154634_1.jpg",
+          "thumbnail": "1145360/screenshots/thumbnails/20210830154634_1.jpg",
+          "imported": "1",
+          "width": "1920",
+          "height": "1080",
+          "gameid": "1145360",
+          "creation": "1630309594",
+          "Permissions": "2",
+          "hscreenshot": "18446744073709551615"
+        },
+        "4": {
+          "type": "1",
+          "filename": "1145360/screenshots/20210830154634_1.jpg",
+          "thumbnail": "1145360/screenshots/thumbnails/20210830154634_1.jpg",
+          "imported": "1",
+          "width": "1920",
+          "height": "1080",
+          "gameid": "1145360",
+          "creation": "1630309594",
+          "Permissions": "2",
+          "hscreenshot": "18446744073709551615"
+        }
+      },
+      "970567": {
+        "0": {
+          "type": "1",
+          "filename": "1145360/screenshots/20210830154634_1.jpg",
+          "thumbnail": "1145360/screenshots/thumbnails/20210830154634_1.jpg",
+          "imported": "1",
+          "width": "1920",
+          "height": "1080",
+          "gameid": "1145360",
+          "creation": "1630309594",
+          "Permissions": "2",
+          "hscreenshot": "18446744073709551615"
+        },
+        "1": {
+          "type": "1",
+          "filename": "1145360/screenshots/20210830154634_1.jpg",
+          "thumbnail": "1145360/screenshots/thumbnails/20210830154634_1.jpg",
+          "imported": "1",
+          "width": "1920",
+          "height": "1080",
+          "gameid": "1145360",
+          "creation": "1630309594",
+          "Permissions": "2",
+          "hscreenshot": "18446744073709551615"
+        },
+        "2": {
+          "type": "1",
+          "filename": "1145360/screenshots/20210830154634_1.jpg",
+          "thumbnail": "1145360/screenshots/thumbnails/20210830154634_1.jpg",
+          "imported": "1",
+          "width": "1920",
+          "height": "1080",
+          "gameid": "1145360",
+          "creation": "1630309594",
+          "Permissions": "2",
+          "hscreenshot": "18446744073709551615"
+        },
+        "3": {
+          "type": "1",
+          "filename": "1145360/screenshots/20210830154634_1.jpg",
+          "thumbnail": "1145360/screenshots/thumbnails/20210830154634_1.jpg",
+          "imported": "1",
+          "width": "1920",
+          "height": "1080",
+          "gameid": "1145360",
+          "creation": "1630309594",
+          "Permissions": "2",
+          "hscreenshot": "18446744073709551615"
+        },
+        "4": {
+          "type": "1",
+          "filename": "1145360/screenshots/20210830154634_1.jpg",
+          "thumbnail": "1145360/screenshots/thumbnails/20210830154634_1.jpg",
+          "imported": "1",
+          "width": "1920",
+          "height": "1080",
+          "gameid": "1145360",
+          "creation": "1630309594",
+          "Permissions": "2",
+          "hscreenshot": "18446744073709551615"
+        }
+      }
+      },
+      "test2": {
+        "1145360": {
+        "0": {
+          "type": "1",
+          "filename": "1145360/screenshots/20210830154634_1.jpg",
+          "thumbnail": "1145360/screenshots/thumbnails/20210830154634_1.jpg",
+          "imported": "1",
+          "width": "1920",
+          "height": "1080",
+          "gameid": "1145360",
+          "creation": "1630309594",
+          "Permissions": "2",
+          "hscreenshot": "18446744073709551615"
+        },
+        "1": {
+          "type": "1",
+          "filename": "1145360/screenshots/20210830154634_1.jpg",
+          "thumbnail": "1145360/screenshots/thumbnails/20210830154634_1.jpg",
+          "imported": "1",
+          "width": "1920",
+          "height": "1080",
+          "gameid": "1145360",
+          "creation": "1630309594",
+          "Permissions": "2",
+          "hscreenshot": "18446744073709551615"
+        },
+        "2": {
+          "type": "1",
+          "filename": "1145360/screenshots/20210830154634_1.jpg",
+          "thumbnail": "1145360/screenshots/thumbnails/20210830154634_1.jpg",
+          "imported": "1",
+          "width": "1920",
+          "height": "1080",
+          "gameid": "1145360",
+          "creation": "1630309594",
+          "Permissions": "2",
+          "hscreenshot": "18446744073709551615"
+        },
+        "3": {
+          "type": "1",
+          "filename": "1145360/screenshots/20210830154634_1.jpg",
+          "thumbnail": "1145360/screenshots/thumbnails/20210830154634_1.jpg",
+          "imported": "1",
+          "width": "1920",
+          "height": "1080",
+          "gameid": "1145360",
+          "creation": "1630309594",
+          "Permissions": "2",
+          "hscreenshot": "18446744073709551615"
+        },
+        "4": {
+          "type": "1",
+          "filename": "1145360/screenshots/20210830154634_1.jpg",
+          "thumbnail": "1145360/screenshots/thumbnails/20210830154634_1.jpg",
+          "imported": "1",
+          "width": "1920",
+          "height": "1080",
+          "gameid": "1145360",
+          "creation": "1630309594",
+          "Permissions": "2",
+          "hscreenshot": "18446744073709551615"
+        }
+      },
+      "970560": {
+        "0": {
+          "type": "1",
+          "filename": "1145360/screenshots/20210830154634_1.jpg",
+          "thumbnail": "1145360/screenshots/thumbnails/20210830154634_1.jpg",
+          "imported": "1",
+          "width": "1920",
+          "height": "1080",
+          "gameid": "1145360",
+          "creation": "1630309594",
+          "Permissions": "2",
+          "hscreenshot": "18446744073709551615"
+        },
+        "1": {
+          "type": "1",
+          "filename": "1145360/screenshots/20210830154634_1.jpg",
+          "thumbnail": "1145360/screenshots/thumbnails/20210830154634_1.jpg",
+          "imported": "1",
+          "width": "1920",
+          "height": "1080",
+          "gameid": "1145360",
+          "creation": "1630309594",
+          "Permissions": "2",
+          "hscreenshot": "18446744073709551615"
+        },
+        "2": {
+          "type": "1",
+          "filename": "1145360/screenshots/20210830154634_1.jpg",
+          "thumbnail": "1145360/screenshots/thumbnails/20210830154634_1.jpg",
+          "imported": "1",
+          "width": "1920",
+          "height": "1080",
+          "gameid": "1145360",
+          "creation": "1630309594",
+          "Permissions": "2",
+          "hscreenshot": "18446744073709551615"
+        },
+        "3": {
+          "type": "1",
+          "filename": "1145360/screenshots/20210830154634_1.jpg",
+          "thumbnail": "1145360/screenshots/thumbnails/20210830154634_1.jpg",
+          "imported": "1",
+          "width": "1920",
+          "height": "1080",
+          "gameid": "1145360",
+          "creation": "1630309594",
+          "Permissions": "2",
+          "hscreenshot": "18446744073709551615"
+        },
+        "4": {
+          "type": "1",
+          "filename": "1145360/screenshots/20210830154634_1.jpg",
+          "thumbnail": "1145360/screenshots/thumbnails/20210830154634_1.jpg",
+          "imported": "1",
+          "width": "1920",
+          "height": "1080",
+          "gameid": "1145360",
+          "creation": "1630309594",
+          "Permissions": "2",
+          "hscreenshot": "18446744073709551615"
+        }
+      },
+      "970562": {
+        "0": {
+          "type": "1",
+          "filename": "1145360/screenshots/20210830154634_1.jpg",
+          "thumbnail": "1145360/screenshots/thumbnails/20210830154634_1.jpg",
+          "imported": "1",
+          "width": "1920",
+          "height": "1080",
+          "gameid": "1145360",
+          "creation": "1630309594",
+          "Permissions": "2",
+          "hscreenshot": "18446744073709551615"
+        },
+        "1": {
+          "type": "1",
+          "filename": "1145360/screenshots/20210830154634_1.jpg",
+          "thumbnail": "1145360/screenshots/thumbnails/20210830154634_1.jpg",
+          "imported": "1",
+          "width": "1920",
+          "height": "1080",
+          "gameid": "1145360",
+          "creation": "1630309594",
+          "Permissions": "2",
+          "hscreenshot": "18446744073709551615"
+        },
+        "2": {
+          "type": "1",
+          "filename": "1145360/screenshots/20210830154634_1.jpg",
+          "thumbnail": "1145360/screenshots/thumbnails/20210830154634_1.jpg",
+          "imported": "1",
+          "width": "1920",
+          "height": "1080",
+          "gameid": "1145360",
+          "creation": "1630309594",
+          "Permissions": "2",
+          "hscreenshot": "18446744073709551615"
+        },
+        "3": {
+          "type": "1",
+          "filename": "1145360/screenshots/20210830154634_1.jpg",
+          "thumbnail": "1145360/screenshots/thumbnails/20210830154634_1.jpg",
+          "imported": "1",
+          "width": "1920",
+          "height": "1080",
+          "gameid": "1145360",
+          "creation": "1630309594",
+          "Permissions": "2",
+          "hscreenshot": "18446744073709551615"
+        },
+        "4": {
+          "type": "1",
+          "filename": "1145360/screenshots/20210830154634_1.jpg",
+          "thumbnail": "1145360/screenshots/thumbnails/20210830154634_1.jpg",
+          "imported": "1",
+          "width": "1920",
+          "height": "1080",
+          "gameid": "1145360",
+          "creation": "1630309594",
+          "Permissions": "2",
+          "hscreenshot": "18446744073709551615"
+        }
+      },
+      "970568": {
+        "0": {
+          "type": "1",
+          "filename": "1145360/screenshots/20210830154634_1.jpg",
+          "thumbnail": "1145360/screenshots/thumbnails/20210830154634_1.jpg",
+          "imported": "1",
+          "width": "1920",
+          "height": "1080",
+          "gameid": "1145360",
+          "creation": "1630309594",
+          "Permissions": "2",
+          "hscreenshot": "18446744073709551615"
+        },
+        "1": {
+          "type": "1",
+          "filename": "1145360/screenshots/20210830154634_1.jpg",
+          "thumbnail": "1145360/screenshots/thumbnails/20210830154634_1.jpg",
+          "imported": "1",
+          "width": "1920",
+          "height": "1080",
+          "gameid": "1145360",
+          "creation": "1630309594",
+          "Permissions": "2",
+          "hscreenshot": "18446744073709551615"
+        },
+        "2": {
+          "type": "1",
+          "filename": "1145360/screenshots/20210830154634_1.jpg",
+          "thumbnail": "1145360/screenshots/thumbnails/20210830154634_1.jpg",
+          "imported": "1",
+          "width": "1920",
+          "height": "1080",
+          "gameid": "1145360",
+          "creation": "1630309594",
+          "Permissions": "2",
+          "hscreenshot": "18446744073709551615"
+        },
+        "3": {
+          "type": "1",
+          "filename": "1145360/screenshots/20210830154634_1.jpg",
+          "thumbnail": "1145360/screenshots/thumbnails/20210830154634_1.jpg",
+          "imported": "1",
+          "width": "1920",
+          "height": "1080",
+          "gameid": "1145360",
+          "creation": "1630309594",
+          "Permissions": "2",
+          "hscreenshot": "18446744073709551615"
+        }
+      },
+      "970567": {
+        "0": {
+          "type": "1",
+          "filename": "1145360/screenshots/20210830154634_1.jpg",
+          "thumbnail": "1145360/screenshots/thumbnails/20210830154634_1.jpg",
+          "imported": "1",
+          "width": "1920",
+          "height": "1080",
+          "gameid": "1145360",
+          "creation": "1630309594",
+          "Permissions": "2",
+          "hscreenshot": "18446744073709551615"
+        },
+        "1": {
+          "type": "1",
+          "filename": "1145360/screenshots/20210830154634_1.jpg",
+          "thumbnail": "1145360/screenshots/thumbnails/20210830154634_1.jpg",
+          "imported": "1",
+          "width": "1920",
+          "height": "1080",
+          "gameid": "1145360",
+          "creation": "1630309594",
+          "Permissions": "2",
+          "hscreenshot": "18446744073709551615"
+        },
+        "2": {
+          "type": "1",
+          "filename": "1145360/screenshots/20210830154634_1.jpg",
+          "thumbnail": "1145360/screenshots/thumbnails/20210830154634_1.jpg",
+          "imported": "1",
+          "width": "1920",
+          "height": "1080",
+          "gameid": "1145360",
+          "creation": "1630309594",
+          "Permissions": "2",
+          "hscreenshot": "18446744073709551615"
+        },
+        "3": {
+          "type": "1",
+          "filename": "1145360/screenshots/20210830154634_1.jpg",
+          "thumbnail": "1145360/screenshots/thumbnails/20210830154634_1.jpg",
+          "imported": "1",
+          "width": "1920",
+          "height": "1080",
+          "gameid": "1145360",
+          "creation": "1630309594",
+          "Permissions": "2",
+          "hscreenshot": "18446744073709551615"
+        }
+      }
+      }
+    }
+  }
+}

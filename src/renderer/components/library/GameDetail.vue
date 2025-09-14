@@ -4,13 +4,13 @@
   import { ScreenDetail } from '@/type/electron/entity';
   import { onActivated, onDeactivated, ref, Ref } from 'vue';
   import { useRoute } from 'vue-router';
-  import back from '@/renderer/assets/icon/back.svg';
   import { useAccountStore } from '@/renderer/pinia/store/account';
-  import router from '@/renderer/router/main';
-  import ScreenshotReviewer from '@/renderer/components/component/ScreenshotReviewer.vue';
-  import ScreenshotDetail from '@/renderer/components/component/ScreenshotDetail.vue';
   import { MenuInfo } from 'ant-design-vue/es/menu/src/interface';
-  import ScreenBackupOptionModal from '../component/ScreenBackupOptionModal.vue';
+  import back from '@/renderer/assets/icon/back.svg';
+  import router from '@/renderer/router/main';
+  import ScreenBackupOptionModal from '../component/modal/ScreenBackupOptionModal.vue';
+  import ScreenshotDetailModal from '../component/modal/ScreenshotDetailModal.vue';
+  import QrCodeShareModal from '../component/modal/QrCodeShareModal.vue';
 
   interface Cover {
     hero: string;
@@ -20,6 +20,7 @@
   }
   let defaultWheelDistance = 0;
   const wheelEventTrigger = 120;
+  const { message } = App.useApp();
   const cover: Ref<Cover> = ref({ hero: '', logo: '', name: '', time: '' });
   const appID = ref('');
   const keyword: Ref<string> = ref('');
@@ -30,11 +31,12 @@
   const selectedKeys = ref<string[]>(['0']);
   const screenCheckList: Ref<number[]> = ref([]);
   const scrollArea = ref<HTMLElement | null>(null);
-  const reviewer: Ref<any> = ref(null);
   const detail: Ref<any> = ref(null);
   const option: Ref<any> = ref(null);
+  const share: Ref<any> = ref(null);
   const topButtonShow = ref(false);
-  const { message } = App.useApp();
+  const reviewerVisiable = ref(false);
+  const reviwerImage = ref('');
   const route = useRoute();
 
   const appDetailSearch = async (model: string, keywords?: string) => {
@@ -57,8 +59,13 @@
     }
   };
 
-  const reviewScreenshot = (screen: ScreenDetail) => {
-    reviewer?.value.reviewer(screen);
+  const reviewScreenshot = () => {
+    reviewerVisiable.value = !reviewerVisiable.value;
+  };
+
+  const showImageReviewer = (image: string) => {
+    reviwerImage.value = image;
+    reviewScreenshot();
   };
 
   const goBack = () => {
@@ -96,6 +103,8 @@
         screenshots.value[0].appLocalized,
         [clickDetail.screen.screenIndex]
       );
+    } else if (clickDetail.action === 'share') {
+      share.value.shareShow(appID.value, [clickDetail.screen.screenIndex]);
     }
   };
 
@@ -124,7 +133,7 @@
     if (screenCheckList.value.length === 0) {
       message.warning('导出截图前请先选择要导出的截图!');
     } else {
-      option.value.showDumpOption(
+      await option.value.showDumpOption(
         appID.value,
         useAccountStore().account.steam_id,
         screenshots.value[0].appName,
@@ -134,8 +143,21 @@
     }
   };
 
+  const shareScreenshotToPhone = async () => {
+    if (screenCheckList.value.length === 0) {
+      message.warning('分享截图前请先选择要分享的截图!');
+    } else {
+      await share.value.shareShow(appID.value, screenCheckList.value);
+    }
+  };
+
   const backupSuccess = () => {
     message.success(`导出成功!`);
+    screenCheckList.value = [];
+  };
+
+  const shareCancle = () => {
+    message.info(`分享已取消!`);
     screenCheckList.value = [];
   };
 
@@ -234,7 +256,7 @@
                       class="w-full aspect-video object-cover rounded-lg shadow-sm"
                       :src="`load://${useSteamStore().steam.installPath.replace(/\\/g, '/')}${screen.screenThumb.replace(/\\/g, '/')}`"
                       :alt="`游戏截图 ${index + 1}`"
-                      @click="reviewScreenshot(screen)"
+                      @click="showImageReviewer(screen.screenFull)"
                     />
                     <a-checkbox :value="screen.screenIndex" class="!absolute top-2 left-2" />
                   </div>
@@ -252,7 +274,13 @@
                       <a-menu-item :key="JSON.stringify({ action: 'backup', screen })">
                         <span class="inline-flex items-center">
                           <UploadOutlined />
-                          <span class="ml-2">导出</span>
+                          <span class="ml-2">导出此截图</span>
+                        </span>
+                      </a-menu-item>
+                      <a-menu-item :key="JSON.stringify({ action: 'share', screen })">
+                        <span class="inline-flex items-center">
+                          <ShareAltOutlined />
+                          <span class="ml-2">分享此截图</span>
                         </span>
                       </a-menu-item>
                       <a-menu-item :key="JSON.stringify({ action: 'detail', screen })">
@@ -284,6 +312,13 @@
                 </span>
               </template>
             </a-float-button>
+            <a-float-button @click="shareScreenshotToPhone">
+              <template #icon>
+                <span class="flex items-center justify-center w-full h-full">
+                  <ShareAltOutlined />
+                </span>
+              </template>
+            </a-float-button>
             <a-back-top v-if="topButtonShow" :visibility-height="0" @click="backToTop" />
           </a-float-button-group>
         </div>
@@ -294,9 +329,16 @@
         </div>
       </div>
     </div>
-
-    <ScreenshotReviewer ref="reviewer" />
-    <ScreenshotDetail ref="detail" />
+    <a-image
+      :style="{ display: 'none' }"
+      :preview="{
+        visible: reviewerVisiable,
+        onVisibleChange: reviewScreenshot,
+      }"
+      :src="`load://${useSteamStore().steam.installPath.replace(/\\/g, '/')}${reviwerImage.replace(/\\/g, '/')}`"
+    />
+    <ScreenshotDetailModal ref="detail" />
+    <QrCodeShareModal ref="share" @cancle="shareCancle" />
     <ScreenBackupOptionModal ref="option" @success="backupSuccess" />
   </a-layout-content>
 </template>

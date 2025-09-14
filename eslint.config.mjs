@@ -35,10 +35,16 @@ export default tseslint.config(
   },
   {
     name: 'main_process',
-    files: ['src/main/**/*.ts'],
+    files: ['src/main/**/*.{ts,tsx}'],
     languageOptions: {
       parser: tseslint.parser,
-      sourceType: 'script',
+      parserOptions: {
+        ecmaVersion: 'latest',
+        sourceType: 'module',
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
       globals: { ...globals.node },
     },
     plugins: { prettier },

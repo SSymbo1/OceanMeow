@@ -2,13 +2,13 @@ import { ipcMain } from 'electron';
 import { logger } from '@/main/util/Logger';
 
 export function loggerIPC() {
-  ipcMain.handle('log:info', (event, message) => {
+  ipcMain.handle('log:info', (_, message) => {
     logger.info(message);
   });
-  ipcMain.handle('log:error', (event, message) => {
+  ipcMain.handle('log:error', (_, message) => {
     logger.error(message);
   });
-  ipcMain.handle('log:warn', (event, message) => {
+  ipcMain.handle('log:warn', (_, message) => {
     logger.warn(message);
   });
 }

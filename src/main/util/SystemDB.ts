@@ -3,8 +3,8 @@ import { app } from 'electron';
 import { join } from 'path';
 import { DataSource } from 'typeorm';
 import { logger } from '@/main/util/Logger';
-import { System } from '@/type/enum/system';
-import { Resource } from '@/type/enum/resource';
+import { AlertMessage, ExceptionMessage } from '@/type/enum/Message';
+import { ApplicationResource } from '@/type/enum/Resource';
 import { TypeOrmElectronLogger } from '@/main/util/TypeORMLogger';
 import * as entity from '@/main/entity';
 
@@ -23,13 +23,13 @@ export class SystemDB {
 
   private getEnvDB(): string {
     return app.isPackaged
-      ? join(process.resourcesPath, Resource.DB_DEV)
-      : join(process.cwd(), Resource.ROOT_DEV, Resource.DB_DEV);
+      ? join(process.resourcesPath, ApplicationResource.DB_FILE)
+      : join(process.cwd(), ApplicationResource.FILE_ROOT, ApplicationResource.DB_FILE);
   }
 
   public async initDB() {
     if (this._typeROM) {
-      logger.warn(System.SEQUELIZE_EXIST);
+      logger.warn(AlertMessage.DB_CONNECTION_EXIST_ALERT);
       return;
     }
     this._typeROM = new DataSource({
@@ -46,19 +46,20 @@ export class SystemDB {
         entity.LibraryDetail,
         entity.ScreenDetail,
         entity.SteamDumpConfig,
+        entity.VdfTracker,
       ],
     });
     try {
       await this._typeROM.initialize();
     } catch (error) {
-      logger.error(System.SEQUELIZE_CONNECT_ERROR, error);
+      logger.error(ExceptionMessage.DB_EXCEPTION, error);
       throw error;
     }
   }
 
   public get typeROM(): DataSource {
     if (!this._typeROM) {
-      throw new Error(System.SEQUELIZE_NOT_EXIST);
+      throw new Error(AlertMessage.DB_CONNECTION_NOT_EXIST_ALERT);
     }
     return this._typeROM;
   }

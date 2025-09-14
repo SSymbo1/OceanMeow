@@ -5,6 +5,7 @@ import { execSync } from 'child_process';
 import path from 'path';
 import fs from 'fs';
 
+// 这个也只支持windows平台后续需要扩展跨平台
 export class LocalContext implements SteamContext {
   private readonly steamRegeditPath = {
     hive: HKLM,

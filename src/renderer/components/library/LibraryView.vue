@@ -11,11 +11,12 @@
     KeyOutlined,
     SettingOutlined,
     DeleteOutlined,
+    PictureOutlined,
   } from '@ant-design/icons-vue';
+  import { MenuClickEventHandler } from 'ant-design-vue/es/menu/src/interface';
+  import { useRoute } from 'vue-router';
   import emptyIcon from '@/renderer/assets/icon/empty.svg';
   import router from '@/renderer/router/main';
-  import { useRoute } from 'vue-router';
-  import { MenuClickEventHandler } from 'ant-design-vue/es/menu/src/interface';
 
   const localRadio = ref('grid');
   const prevView = ref(localRadio.value);
@@ -85,12 +86,20 @@
       librarySortOrder: useConfigStore().config.librarySortOrder,
     }),
     async () => {
+      await nextTick();
       await searchAccountLibrary();
     },
     { deep: true }
   );
 
   onMounted(async () => {
+    let defaultShowLocalRadio: string;
+    if (useConfigStore().config.libraryShow === '0') {
+      defaultShowLocalRadio = 'grid';
+    } else {
+      defaultShowLocalRadio = 'list';
+    }
+    localRadio.value = defaultShowLocalRadio;
     await searchAccountLibrary();
   });
   onActivated(async () => {
@@ -99,7 +108,7 @@
     if (appId) {
       const el = document.querySelector(`[data-app-id="${appId}"]`);
       el?.scrollIntoView({ block: 'center' });
-      router.replace({ query: { ...route.query, scrollTo: undefined } });
+      await router.replace({ query: { ...route.query, scrollTo: undefined } });
     }
   });
 </script>
@@ -264,6 +273,10 @@
                               {{ item.type }}
                             </span>
                             <span class="flex items-center">
+                              <component :is="PictureOutlined" class="mr-1" />
+                              {{ item.screenCount }}
+                            </span>
+                            <span class="flex items-center">
                               <component :is="FieldTimeOutlined" class="mr-1" />
                               {{ `${item.timeHour}h` }}
                             </span>
@@ -304,7 +317,16 @@
           </div>
         </transition>
       </div>
-      <a-back-top :target="() => scrollArea" />
+      <a-float-button-group shape="circle">
+        <a-float-button>
+          <template #icon>
+            <span class="flex items-center justify-center w-full h-full">
+              <PlusOutlined />
+            </span>
+          </template>
+        </a-float-button>
+        <a-back-top :target="() => scrollArea" />
+      </a-float-button-group>
     </a-layout-content>
   </a-layout>
 </template>

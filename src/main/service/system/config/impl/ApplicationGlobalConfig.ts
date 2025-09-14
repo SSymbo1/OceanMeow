@@ -1,9 +1,16 @@
 import { ConfigContext } from '@/main/service/system/config/ConfigContext';
 import { SystemIO } from '@/main/util/SystemIO';
-import { ApplicationConfig } from '@/main/entity/ApplicationConfig';
+import { ApplicationConfig } from '@/main/entity/dto/ApplicationConfig';
 
 const CONFIG_MAP = {
-  common: ['theme', 'defaultHome', 'defaultLanguage'],
+  common: [
+    'theme',
+    'defaultHome',
+    'defaultLanguage',
+    'homeBackground',
+    'closeApplication',
+    'closeAskIgnored',
+  ],
   library: [
     'libraryShow',
     'librarySort',
@@ -13,7 +20,7 @@ const CONFIG_MAP = {
     'defaultScreenDumpPath',
     'defaultScreenCreateFolder',
     'defaultScreenDateOrdered',
-    'defaultScreenForderType',
+    'defaultScreenFolderType',
   ],
 };
 
@@ -32,13 +39,12 @@ export class ApplicationGlobalConfig implements ConfigContext<ApplicationConfig>
     return key ? this.applicationConfig[key] : this.applicationConfig;
   }
 
-  async write(object: ApplicationConfig): Promise<void> {
-    const writes = Object.entries(CONFIG_MAP).map(([configFiled, configKeys]) => {
-      const config = Object.fromEntries(
-        configKeys.map((configItem) => [configItem, object[configItem as keyof ApplicationConfig]])
+  write(object: ApplicationConfig): void {
+    for (const [configFiled, configKeys] of Object.entries(CONFIG_MAP)) {
+      const cfg = Object.fromEntries(
+        configKeys.map((k) => [k, object[k as keyof ApplicationConfig]])
       );
-      return SystemIO.writeApplicationConfig(configFiled, config);
-    });
-    await Promise.all(writes);
+      SystemIO.writeApplicationConfigSync(configFiled, cfg);
+    }
   }
 }

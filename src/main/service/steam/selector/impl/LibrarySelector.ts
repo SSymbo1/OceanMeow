@@ -1,4 +1,4 @@
-import { LibraryDetail } from '@/main/entity/LibraryDetail';
+import { LibraryDetail } from '@/main/entity/po/LibraryDetail';
 import { SteamDataSelector } from '@/main/service/steam/selector/SteamDataSelector';
 import { SystemDB } from '@/main/util/SystemDB';
 import { Brackets } from 'typeorm';
@@ -6,7 +6,7 @@ import { SystemIO } from '@/main/util/SystemIO';
 
 export class LibrarySelector implements SteamDataSelector<LibraryDetail> {
   async search(account: string, keyword?: string): Promise<LibraryDetail[]> {
-    let sort = '';
+    let sort: string;
     const libraryDetailRepo = SystemDB.getInstance().typeROM.getRepository(LibraryDetail);
     const libraryConfig = await SystemIO.readApplicationConfig('library');
     if (libraryConfig.librarySort === '0') {

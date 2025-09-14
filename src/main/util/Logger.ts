@@ -1,8 +1,8 @@
-import log from 'electron-log';
 import { app } from 'electron';
+import { ApplicationResource } from '@/type/enum/Resource';
+import log from 'electron-log';
 import path from 'path';
 import fs from 'fs';
-import { Resource } from '@/type/enum/resource';
 
 interface LogConfig {
   fileLevel: 'silly' | 'debug' | 'verbose' | 'info' | 'warn' | 'error' | false;
@@ -10,6 +10,9 @@ interface LogConfig {
   maxSize: number;
   format: string;
   logName: string;
+  logFolder: string;
+  maxFile: number;
+  maxDate: number;
 }
 
 export class Logger {
@@ -33,13 +36,16 @@ export class Logger {
       fileLevel: 'info',
       consoleLevel: 'debug',
       maxSize: 10 * 1024 * 1024,
-      logName: '/logs/application_${date}.log',
+      logName: 'application_${date}.log',
       format: '[{y}-{m}-{d} {h}:{i}:{s}.{ms}] [{level}] {scope} >>> {text}',
+      logFolder: 'logs',
+      maxFile: 10,
+      maxDate: 7,
     };
     try {
       const applicationConfig = app.isPackaged
-        ? path.join(process.resourcesPath, Resource.APPLICATION_CONFIG)
-        : path.join(process.cwd(), Resource.ROOT_DEV, Resource.APPLICATION_CONFIG);
+        ? path.join(process.resourcesPath, ApplicationResource.CONFIG_FILE)
+        : path.join(process.cwd(), ApplicationResource.FILE_ROOT, ApplicationResource.CONFIG_FILE);
       if (fs.existsSync(applicationConfig)) {
         const configContent = fs.readFileSync(applicationConfig, 'utf-8');
         const config = JSON.parse(configContent);
@@ -55,44 +61,43 @@ export class Logger {
   }
 
   private initialize() {
-    log.transports.file.level = this.config.fileLevel;
     log.transports.console.level = this.config.consoleLevel;
-    log.transports.file.fileName = this.config.logName;
-    log.transports.file.maxSize = this.config.maxSize;
-    log.transports.file.format = this.config.format;
     log.transports.console.format = this.config.format;
+    if (app.isPackaged) {
+      const date = new Date()
+        .toLocaleDateString('zh-CN', { year: 'numeric', month: '2-digit', day: '2-digit' })
+        .replace(/[-/]/g, '');
+      fs.mkdirSync(path.join(process.resourcesPath, this.config.logFolder), { recursive: true });
+      log.transports.file.level = this.config.fileLevel;
+      const dateLog = this.config.logName.replace('${date}', date);
+      log.transports.file.resolvePathFn = () =>
+        path.join(process.resourcesPath, this.config.logFolder, dateLog);
+      log.transports.file.maxSize = this.config.maxSize;
+    }
   }
 
-  error(message: string, ...meta: any[]): void {
+  public error(message: string, ...meta: any[]): void {
     log.error(message, ...meta);
   }
 
-  warn(message: string, ...meta: any[]): void {
+  public warn(message: string, ...meta: any[]): void {
     log.warn(message, ...meta);
   }
 
-  info(message: string, ...meta: any[]): void {
+  public info(message: string, ...meta: any[]): void {
     log.info(message, ...meta);
   }
 
-  verbose(message: string, ...meta: any[]): void {
+  public verbose(message: string, ...meta: any[]): void {
     log.verbose(message, ...meta);
   }
 
-  debug(message: string, ...meta: any[]): void {
+  public debug(message: string, ...meta: any[]): void {
     log.debug(message, ...meta);
   }
 
-  silly(message: string, ...meta: any[]): void {
+  public silly(message: string, ...meta: any[]): void {
     log.silly(message, ...meta);
-  }
-
-  getLogPath(): string {
-    return log.transports.file.getFile().path;
-  }
-
-  getConfig(): LogConfig {
-    return { ...this.config };
   }
 }
 

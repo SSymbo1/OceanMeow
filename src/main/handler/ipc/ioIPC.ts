@@ -6,7 +6,7 @@ const localContext = new LocalContext();
 const fileLocator = new WinFileLocator();
 
 export function ioIPC() {
-  ipcMain.handle('file:locate', (event, filePath: string) => {
+  ipcMain.handle('file:locate', (_, filePath: string) => {
     fileLocator.locateFile(filePath);
   });
   ipcMain.handle('reg:steam', async () => {

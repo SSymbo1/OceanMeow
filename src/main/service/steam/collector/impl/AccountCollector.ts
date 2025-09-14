@@ -1,6 +1,6 @@
 import { SteamDataCollector } from '@/main/service/steam/collector/SteamDataCollector';
 import { SteamAccount } from '@/main/entity';
-import { Steam } from '@/type/enum/steam';
+import { SteamResource } from '@/type/enum/Resource';
 import { SystemDB } from '@/main/util/SystemDB';
 import { SystemIO } from '@/main/util/SystemIO';
 import { join } from 'path';
@@ -8,11 +8,6 @@ import { join } from 'path';
 interface LoginUsers {
   AccountName: string;
   PersonaName: string;
-  RememberPassword: string;
-  WantsOfflineMode: string;
-  SkipOfflineModeWarning: string;
-  AllowAutoLogin: string;
-  MostRecent: string;
   Timestamp: string;
 }
 
@@ -23,7 +18,7 @@ export class AccountCollector implements SteamDataCollector<SteamAccount> {
   async collect(steamInstallPath: string): Promise<SteamAccount[]> {
     const steamAccountRepo = SystemDB.getInstance().typeROM.getRepository(SteamAccount);
     const vdfResult: LoginUsersResult = await SystemIO.readSteamVDF(
-      join(steamInstallPath, Steam.LOGIN_USER_VDF),
+      join(steamInstallPath, SteamResource.LOGIN_USER_VDF),
       'users'
     );
     const steamAccounts: SteamAccount[] = [];
@@ -31,16 +26,14 @@ export class AccountCollector implements SteamDataCollector<SteamAccount> {
       steamAccounts.push(
         steamAccountRepo.create({
           accountId: key,
-          steamId: String(BigInt(key) - BigInt(Steam.ID_CONVERT)),
+          steamId: String(BigInt(key) - BigInt(SteamResource.ID_CONVERT)),
           accountName: value.AccountName,
           personaName: value.PersonaName,
-          avator: `${Steam.AVATOR_CACHE}/${key}.png`,
+          avatar: `${SteamResource.AVATAR_CACHE}/${key}.png`,
           lastLogin: value.Timestamp,
         })
       );
     }
-    const result = await steamAccountRepo.save(steamAccounts);
-    // const result = await steamAccountRepo.find()
-    return result;
+    return steamAccounts.length !== 0 ? await steamAccountRepo.save(steamAccounts) : [];
   }
 }

@@ -3,10 +3,10 @@
   import { onActivated, ref, Ref, computed, watch, onDeactivated } from 'vue';
   import { useAccountStore } from '@/renderer/pinia/store/account';
   import { useSteamStore } from '@/renderer/pinia/store/steam';
-  import { ApplicationConfig } from '@/type/electron/entity/ApplicationConfig';
+  import { ApplicationConfig } from '@/type/electron/entity';
   import { SteamAccount } from '@/type/electron/entity';
-  import SelectAccountModal from '@/renderer/components/component/SelectAccountModal.vue';
-  import SelectInstallPathModal from '@/renderer/components/component/SelectInstallPathModal.vue';
+  import SelectAccountModal from '@/renderer/components/component/modal/SelectAccountModal.vue';
+  import SelectInstallPathModal from '@/renderer/components/component/modal/SelectInstallPathModal.vue';
   import { useConfigStore } from '@/renderer/pinia/store/config';
 
   const accountModel: Ref<any> = ref(null);
@@ -26,12 +26,12 @@
       steam_id: account.steamId,
       login_name: account.accountName,
       account_name: account.personaName,
-      avatar: account.avator,
+      avatar: account.avatar,
     });
   };
 
-  const steamInstalPathLocatedSuccess = async () => {
-    openSelectAccountModal();
+  const steamInstallPathLocatedSuccess = async () => {
+    await openSelectAccountModal();
   };
 
   const openSelectAccountModal = async () => {
@@ -49,19 +49,23 @@
     }
   };
 
-  watch(selectedKeys, (newVal, oldVal) => {
-    if (oldVal[0] === '0' && newVal[0] === '1') {
-      transitionDirection.value = 'left';
-    } else if (oldVal[0] === '1' && newVal[0] === '0') {
-      transitionDirection.value = 'right';
+  watch(
+    () => Number(selectedKeys.value[0]),
+    (newIdx, oldIdx) => {
+      if ((oldIdx + 1) % 4 === newIdx) {
+        transitionDirection.value = 'left';
+      } else {
+        transitionDirection.value = 'right';
+      }
+      prevView.value = String(oldIdx);
     }
-    prevView.value = oldVal[0];
-  });
+  );
 
   watch(
     () => ({
       theme: config.value.theme,
       defaultHome: config.value.defaultHome,
+      defaultClose: config.value.closeApplication,
       defaultLanguage: config.value.defaultLanguage,
       libraryShow: config.value.libraryShow,
       librarySort: config.value.librarySort,
@@ -70,7 +74,9 @@
     }),
     (newVals) => {
       useConfigStore().setConfig({
+        ...useConfigStore().config,
         theme: newVals.theme,
+        defaultClose: newVals.defaultClose,
         defaultHome: newVals.defaultHome,
         defaultLanguage: newVals.defaultLanguage,
         libraryShow: newVals.libraryShow,
@@ -84,6 +90,7 @@
   watch(
     config,
     async () => {
+      console.log('config change', config.value.closeApplication);
       await window.electronAPI.writeApplicationConfig({ ...config.value });
     },
     { deep: true }
@@ -115,6 +122,12 @@
               <span class="ml-2">库</span>
             </span>
           </a-menu-item>
+          <a-menu-item key="2">
+            <span class="inline-flex items-center">
+              <PictureOutlined />
+              <span class="ml-2">截取</span>
+            </span>
+          </a-menu-item>
         </a-menu>
       </div>
       <transition :name="transitionDirection ? 'slide-' + transitionDirection : ''" mode="out-in">
@@ -122,7 +135,7 @@
           <div v-if="selectedKeys[0] === '0'" class="flex-1 px-3 py-1 overflow-y-aut">
             <div class="flex flex-col">
               <a-divider orientation="left">Steam账户与安装位置</a-divider>
-              <div class="flex flex-row px-4 justify-between h-30">
+              <div class="flex flex-row justify-start gap-15 ml-10 h-30">
                 <div class="flex flex-row items-center gap-4">
                   <img
                     class="w-20"
@@ -175,6 +188,12 @@
                     <a-select-option value="2">跟随系统</a-select-option>
                   </a-select>
                 </a-form-item>
+                <a-form-item label="首页背景" name="dumpPath">
+                  <a-space>
+                    <a-input v-model:value="config.homeBackground" readonly class="flex-1" />
+                    <a-button type="primary" ghost>选择图片</a-button>
+                  </a-space>
+                </a-form-item>
               </a-form>
               <a-divider orientation="left">应用</a-divider>
               <a-form
@@ -196,6 +215,12 @@
                     <a-select-option value="1">English</a-select-option>
                     <a-select-option value="2">跟随系统</a-select-option>
                   </a-select>
+                </a-form-item>
+                <a-form-item label="点击关闭按钮">
+                  <a-radio-group v-model:value="config.closeApplication">
+                    <a-radio-button value="0">退出应用</a-radio-button>
+                    <a-radio-button value="1">最小化至托盘</a-radio-button>
+                  </a-radio-group>
                 </a-form-item>
               </a-form>
             </div>
@@ -229,18 +254,16 @@
                   </a-select>
                 </a-form-item>
                 <a-form-item label="库排序规则">
-                  <a-switch
-                    v-model:checked="config.librarySortOrder"
-                    checked-children="正序"
-                    un-checked-children="降序"
-                  />
+                  <a-radio-group v-model:value="config.librarySortOrder">
+                    <a-radio-button :value="true">正序</a-radio-button>
+                    <a-radio-button :value="false">降序</a-radio-button>
+                  </a-radio-group>
                 </a-form-item>
                 <a-form-item label="截图排序规则">
-                  <a-switch
-                    v-model:checked="config.screenSortOrder"
-                    checked-children="正序"
-                    un-checked-children="降序"
-                  />
+                  <a-radio-group v-model:value="config.screenSortOrder">
+                    <a-radio-button :value="true">正序</a-radio-button>
+                    <a-radio-button :value="false">降序</a-radio-button>
+                  </a-radio-group>
                 </a-form-item>
               </a-form>
               <a-divider orientation="left">截图导出</a-divider>
@@ -270,7 +293,7 @@
                     un-checked-children="禁用"
                 /></a-form-item>
                 <a-form-item label="文件夹命名">
-                  <a-select v-model:value="config.defaultScreenForderType">
+                  <a-select v-model:value="config.defaultScreenFolderType">
                     <a-select-option
                       value="0"
                       title="文件夹名为游戏的appID，例如命运2的的appID为1085660，则导出文件夹名为1085660"
@@ -295,10 +318,15 @@
               <a-divider orientation="left">存档导出</a-divider>
             </div>
           </div>
+          <div v-if="selectedKeys[0] === '2'" class="flex-1 px-3 py-1">
+            <div class="flex flex-col">
+              <a-divider orientation="left">屏幕截图</a-divider>
+            </div>
+          </div>
         </div>
       </transition>
     </a-layout-content>
-    <SelectInstallPathModal ref="installPathModel" @success="steamInstalPathLocatedSuccess" />
+    <SelectInstallPathModal ref="installPathModel" @success="steamInstallPathLocatedSuccess" />
     <SelectAccountModal ref="accountModel" @account="libraryAccountSelected" />
   </a-layout>
 </template>
