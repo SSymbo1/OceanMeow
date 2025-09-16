@@ -5,10 +5,10 @@ import { SteamDumpConfig } from '@/main/entity/po/SteamDumpConfig';
 import { DumpFolderType, CreateFolder, OrderByDate } from '@/type/enum/Option';
 import { logger } from '@/main/util/Logger';
 import { Brackets } from 'typeorm';
-import { SystemIO } from '@/main/util/SystemIO';
 import { ExceptionMessage } from '@/type/enum/Message';
 import fs from 'fs';
 import path from 'path';
+import { ApplicationConfigHolder } from '@/main/service/system/config/impl/ApplicationConfigHolder';
 
 type ScreenDumpResult = {
   app_id: string;
@@ -55,7 +55,8 @@ export class ScreenshotBackup implements DataBackup<ScreenDumpResult> {
       )
       .getOne();
     if (!config) {
-      const defaultDumpConfig = await SystemIO.readApplicationConfig('library');
+      const applicationConfigHolder = new ApplicationConfigHolder();
+      const defaultDumpConfig = await applicationConfigHolder.read('library');
       return {
         appID: appID,
         steamID: steamID,
@@ -63,7 +64,7 @@ export class ScreenshotBackup implements DataBackup<ScreenDumpResult> {
         createFolder: defaultDumpConfig.defaultScreenCreateFolder
           ? CreateFolder.ENABLE
           : CreateFolder.DISABLE,
-        folderType: defaultDumpConfig.defaultScreenfolderType,
+        folderType: defaultDumpConfig.defaultScreenFolderType,
         folderName: '',
         orderByDate: defaultDumpConfig.defaultScreenDateOrdered
           ? OrderByDate.ENABLE

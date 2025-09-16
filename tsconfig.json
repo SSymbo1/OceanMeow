@@ -16,19 +16,10 @@
     "emitDecoratorMetadata": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": [
-        "src/*"
-      ],
+      "@/*": ["src/*"]
     },
-    "types": [
-      "vite/client",
-      "node",
-      "jest"
-    ],
-    "lib": [
-      "ESNext",
-      "DOM"
-    ],
+    "types": ["vite/client", "node", "jest"],
+    "lib": ["ESNext", "DOM"],
     "outDir": "dist",
     "composite": true,
     "allowSyntheticDefaultImports": true
@@ -42,7 +33,5 @@
     "test/**/*.ts",
     "test/**/*.json"
   ],
-  "exclude": [
-    "node_modules"
-  ]
+  "exclude": ["node_modules"]
 }

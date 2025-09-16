@@ -4,7 +4,7 @@ export default {
   tabWidth: 2,
   trailingComma: 'es5',
   printWidth: 100,
-  endOfLine: 'crlf',
+  endOfLine: 'lf',
   vueIndentScriptAndStyle: true,
   useTabs: false,
   bracketSpacing: true,

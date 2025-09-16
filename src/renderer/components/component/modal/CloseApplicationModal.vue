@@ -18,10 +18,12 @@
       defaultClose: closeApp.value,
       closeAskIgnored: closeAppIgnore.value,
     });
-    await window.electronAPI.writeApplicationConfig({
-      ...(await window.electronAPI.readApplicationConfig()),
-      closeApplication: closeApp.value,
-      closeAskIgnored: closeAppIgnore.value,
+    await window.electronAPI.writeApplicationConfigCustom({
+      common: {
+        ...window.electronAPI.readApplicationConfig('common'),
+        closeAskIgnored: closeAppIgnore.value,
+        closeApplication: closeApp.value,
+      },
     });
     window.electronAPI.close();
   };

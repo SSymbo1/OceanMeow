@@ -1,18 +1,39 @@
 export class ApplicationConfig {
-  theme: string = '';
-  defaultHome: string = '';
-  defaultLanguage: string = '';
-  homeBackground: string = '';
-  closeApplication: string = '';
-  closeAskIgnored: boolean = false;
-  libraryShow: string = '';
-  librarySort: string = '';
-  librarySortOrder: boolean = true;
-  screenSortOrder: boolean = true;
-  libraryCoverInfo: string = '';
-  defaultScreenDumpPath: string = '';
-  defaultScreenCreateFolder: boolean = true;
-  defaultScreenDateOrdered: boolean = true;
-  defaultScreenFolderType: string = '';
-  defaultScreenFolderCustom: string = '';
+  common = {
+    theme: '2',
+    defaultHome: '0',
+    defaultLanguage: '2',
+    homeBackground: '',
+    closeApplication: '1',
+    closeAskIgnored: false,
+  };
+  library = {
+    libraryShow: '0',
+    librarySort: '2',
+    librarySortOrder: false,
+    screenSortOrder: false,
+    libraryCoverInfo: '1',
+    defaultScreenDumpPath: '',
+    defaultScreenCreateFolder: true,
+    defaultScreenDateOrdered: false,
+    defaultScreenFolderType: '0',
+  };
+  capture = {
+    hotkey: 'F12',
+    saveLocation: '',
+    createFolder: false,
+  };
+  share = {
+    port: 56292,
+  };
+  logger = {
+    fileLevel: 'info',
+    consoleLevel: 'info',
+    format: '[{y}-{m}-{d} {h}:{i}:{s}.{ms}] [{level}] {scope} >>> {text}',
+    logFolder: 'logs',
+    logName: 'application_${date}.log',
+    maxFile: 10,
+    maxDate: 7,
+    maxSize: 10485760,
+  };
 }

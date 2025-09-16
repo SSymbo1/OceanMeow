@@ -26,8 +26,8 @@ contextBridge.exposeInMainWorld('electronAPI', {
   gameScreenConfig: (appID: string, steamID: string) =>
     ipcRenderer.invoke('config:screenshot-single', appID, steamID),
   readApplicationConfig: (key?: string) => ipcRenderer.invoke('config:read-application', key),
-  writeApplicationConfig: (config: ApplicationConfig) =>
-    ipcRenderer.invoke('config:write-application', config),
+  writeApplicationConfigCustom: (config: Partial<ApplicationConfig>) =>
+    ipcRenderer.invoke('config:write-application-custom', config),
   minimize: () => ipcRenderer.send('window-min'),
   close: () => ipcRenderer.send('window-close'),
   quit: () => ipcRenderer.send('window-quit'),

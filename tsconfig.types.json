@@ -1,24 +1,17 @@
 {
-    "extends": "./tsconfig.json",
-    "compilerOptions": {
-        "outDir": "src/type/electron/entity",
-        "emitDeclarationOnly": true,
-        "declaration": true,
-        "rootDir": "src/main/entity",
-        "incremental": false,
-        "composite": false,
-        "baseUrl": ".",
-        "paths": {
-            "*": [
-                "*"
-            ]
-        }
-    },
-    "include": [
-        "src/main/entity/**/*.ts"
-    ],
-    "exclude": [
-        "node_modules",
-        "src/main/entity/**/*.d.ts"
-    ]
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "src/type/electron/entity",
+    "emitDeclarationOnly": true,
+    "declaration": true,
+    "rootDir": "src/main/entity",
+    "incremental": false,
+    "composite": false,
+    "baseUrl": ".",
+    "paths": {
+      "*": ["*"]
+    }
+  },
+  "include": ["src/main/entity/**/*.ts"],
+  "exclude": ["node_modules", "src/main/entity/**/*.d.ts"]
 }

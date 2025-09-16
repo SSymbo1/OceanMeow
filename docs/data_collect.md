@@ -10,27 +10,27 @@
 
 ### 2.1 文件匹配
 
-文件名 | 文件作用 | 备注
-|---|---|---|
-|userdata/<用户短id>/760/screenshots.vdf|截图与游戏匹配文件|---|
-|steamapps/appmanifest_<游戏id>.acf|已安装游戏的游戏配置信息文件|---|
-|userdata/<用户短id>/config/localconfig.vdf|用户详细配置文件|---|
-|appcache/librarycache/<游戏id>/|游戏封面，图标缓存|---|
-|appcache/appinfo.vdf|游戏信息缓存文件|---|
+| 文件名                                     | 文件作用                     | 备注 |
+| ------------------------------------------ | ---------------------------- | ---- |
+| userdata/<用户短id>/760/screenshots.vdf    | 截图与游戏匹配文件           | ---  |
+| steamapps/appmanifest\_<游戏id>.acf        | 已安装游戏的游戏配置信息文件 | ---  |
+| userdata/<用户短id>/config/localconfig.vdf | 用户详细配置文件             | ---  |
+| appcache/librarycache/<游戏id>/            | 游戏封面，图标缓存           | ---  |
+| appcache/appinfo.vdf                       | 游戏信息缓存文件             | ---  |
 
 ### 2.2 screenshots.vdf
 
-``` vdf
+```vdf
     "screenshots"
     {
 	    "1145360" 游戏id
 	    {
 		    "0"
 		    {
-			    "type" 
+			    "type"
 			    "filename" 截图位置
 			    "thumbnail" 缩略图位置
-			    "imported" 
+			    "imported"
 			    "width" 图片宽度
 			    "height" 图片高度
 			    "gameid" 游戏id
@@ -44,13 +44,13 @@
     }
 ```
 
-### 2.3 appmanifest_<游戏id>.acf (截取)
+### 2.3 appmanifest\_<游戏id>.acf (截取)
 
-``` acf
+```acf
     "AppState"
     {
 	    "appid" 游戏id
-	    "Universe" 
+	    "Universe"
 	    "LauncherPath" 启动器位置
 	    "name" 游戏名称
         "StateFlags"
@@ -64,13 +64,13 @@
 
 ### 2.4 localconfig.vdf (截取)
 
-``` vdf
+```vdf
     "UserLocalConfigStore"
     {
         "friends"
 	    {
 		    "PersonaName" 用户名称
-		    "communitypreferences" 
+		    "communitypreferences"
 		    "textfilterbannedwords"
 		    "textfiltercleanwords"
 		    "textfilterwordsrevision"
@@ -79,7 +79,7 @@
 			    "name" 用户名称
 			    "NameHistory" 用户历史名称
 			    {
-				    "0"	
+				    "0"
 			    }
 			    "avatar" 用户头像token
 		    }
@@ -103,9 +103,9 @@
 
 ### 2.5 appinfo.vdf (截取)
 
-``` vdf
+```vdf
 	"appId" 游戏id
-	"appinfo" 
+	"appinfo"
 	{
 		"appid" 游戏id
 		"common"
@@ -150,7 +150,7 @@
 				{
 					"path" 存档路径
 					"pattern" 存档文件后缀
-					"root" 
+					"root"
 				}
 			}
 		}

@@ -25,7 +25,7 @@ declare interface Window {
     dumpGameScreen:(steamPath:string, dumpConfig:SteamDumpConfig, files:string[])=>Promise<ScreenDumpResult>;
     gameScreenConfig:(appID: string, steamID: string)=>Promise<SteamDumpConfig>;
     readApplicationConfig: (key?: string) => Promise<ApplicationConfig>;
-    writeApplicationConfig: (config: ApplicationConfig) => Promise<void>;
+    writeApplicationConfigCustom: (config: Partial<ApplicationConfig>)=> Promise<void>;
     shareSteamScreenshot: (screenshot: ScreenshotShare) => Promise<string>;
     closeAppModalListener: (callback: () => void) => void;
     removeCloseAppModalListener: (callback: () => void) => void;

@@ -10,7 +10,6 @@ import { logger } from '@/main/util/Logger';
 type ShortcutsRoot = {
   shortcuts: Shortcut[];
 };
-
 type Shortcut = {
   appid: number;
   AppName: string;
@@ -25,7 +24,6 @@ export class SystemIO {
       return '';
     }
   }
-
   public static async readApplicationConfig(objectKey: string): Promise<any> {
     const configPath = app.isPackaged
       ? path.join(process.resourcesPath, ApplicationResource.CONFIG_FILE)
@@ -38,19 +36,13 @@ export class SystemIO {
       return;
     }
   }
-
-  public static writeApplicationConfigSync(objectKey: string, objectValue: object): void {
+  public static writeApplicationConfig(configObj: object) {
     const configPath = app.isPackaged
       ? path.join(process.resourcesPath, ApplicationResource.CONFIG_FILE)
       : path.join(process.cwd(), ApplicationResource.FILE_ROOT, ApplicationResource.CONFIG_FILE);
-
-    const configRaw = fs.readFileSync(configPath, 'utf8');
-    const configObj = JSON.parse(configRaw);
-    configObj[objectKey] = objectValue;
     fs.writeFileSync(configPath, JSON.stringify(configObj, null, 2));
     fs.fsyncSync(fs.openSync(configPath, 'r+'));
   }
-
   public static async readSteamVDF(vdfPath: string, objectKey?: string) {
     const vdfFile = await this.readFile(vdfPath);
     if (vdfFile !== null) {
@@ -65,7 +57,6 @@ export class SystemIO {
       return null;
     }
   }
-
   public static async readSteamAppinfoVDF(vdfPath: string): Promise<object | null> {
     const bufferFile = fs.readFileSync(vdfPath);
     if (bufferFile !== null) {
@@ -80,7 +71,6 @@ export class SystemIO {
       return null;
     }
   }
-
   public static async getFilePath(
     rootDir: string,
     targetFileName: string,
@@ -115,3 +105,4 @@ export class SystemIO {
     return null;
   }
 }
+

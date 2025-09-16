@@ -1,11 +1,11 @@
 import { ipcMain, dialog, shell } from 'electron';
 import { logger } from '@/main/util/Logger';
 import { ScreenshotBackup } from '@/main/service/system/backup/impl/ScreenshotBackup';
-import { ApplicationGlobalConfig } from '@/main/service/system/config/impl/ApplicationGlobalConfig';
+import { ApplicationConfigHolder } from '@/main/service/system/config/impl/ApplicationConfigHolder';
 import { ExchangeMessage, ExceptionMessage } from '@/type/enum/Message';
 
 const screenshotBackup = new ScreenshotBackup();
-const applicationGlobalConfig = new ApplicationGlobalConfig();
+const applicationConfigHolder = new ApplicationConfigHolder();
 
 export function systemIPC() {
   ipcMain.handle('selector:folder', async () => {
@@ -39,9 +39,9 @@ export function systemIPC() {
     return await screenshotBackup.config(appID, steamID);
   });
   ipcMain.handle('config:read-application', async (_, key) => {
-    return await applicationGlobalConfig.read(key);
+    return await applicationConfigHolder.read(key);
   });
-  ipcMain.handle('config:write-application', (_, config) => {
-    applicationGlobalConfig.write(config);
+  ipcMain.handle('config:write-application-custom', (_, config) => {
+    applicationConfigHolder.write(config);
   });
 }

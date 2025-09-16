@@ -4,8 +4,8 @@ import { CommonMessage } from '@/type/enum/Message';
 import { Firewall } from '@/main/util/Firewall';
 import { protocolRegister, ipcRegisterHandler, globalExceptionListener } from '@/main/handler';
 import { app, BrowserWindow, Menu, ipcMain, nativeImage, Tray } from 'electron';
+import { ApplicationConfigHolder } from '@/main/service/system/config/impl/ApplicationConfigHolder';
 import { stop } from '@/main/server/app';
-import { ApplicationGlobalConfig } from '@/main/service/system/config/impl/ApplicationGlobalConfig';
 import path from 'path';
 
 let mainWindow: BrowserWindow | null = null;
@@ -77,9 +77,9 @@ const createWindow = () => {
   ipcMain.on('window-min', () => mainWindow?.minimize());
   ipcMain.on('window-quit', () => app.quit());
   ipcMain.on('window-close', async () => {
-    const appConfig = new ApplicationGlobalConfig();
-    const quitMode = await appConfig.read('closeApplication');
-    if (quitMode === '0') {
+    const appConfig = new ApplicationConfigHolder();
+    const { closeApplication } = await appConfig.read('common');
+    if (closeApplication === '0') {
       app.quit();
     } else {
       mainWindow?.webContents.send('before-hide');

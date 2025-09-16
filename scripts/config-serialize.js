@@ -2,7 +2,7 @@
 /* global console */
 import { fileURLToPath } from 'url';
 import { mkdirSync, writeFileSync } from 'fs';
-import { ApplicationConfig } from '../src/main/entity/dto/Application.ts';
+import { ApplicationConfig } from '../src/main/entity/dto/ApplicationConfig.ts';
 import stringify from 'json-stable-stringify';
 import path from 'path';
 
@@ -20,7 +20,7 @@ function configSerialize(dir, data) {
 
 if (!args.includes(target)) {
   console.error(`
-    avaliable args is:
+    available args is:
 
     --dev: serialize config which is used in development
     --prod: serialize config which is used in production

@@ -7,6 +7,7 @@
 
   const applicationLoading = async () => {
     let steamInstallPath: string | null;
+    // todo：这里代码逻辑有问题
     if (useSteamStore().steam.installPath === '') {
       steamInstallPath = await window.electronAPI.steamRegInstallPath();
       if (!steamInstallPath) {
@@ -26,15 +27,15 @@
     ]);
     const config = await window.electronAPI.readApplicationConfig();
     useConfigStore().setConfig({
-      theme: config.theme,
-      defaultClose: config.closeApplication,
-      defaultHome: config.defaultHome,
-      defaultLanguage: config.defaultLanguage,
-      libraryShow: config.libraryShow,
-      librarySort: config.librarySort,
-      librarySortOrder: config.librarySortOrder,
-      libraryCoverInfo: config.libraryCoverInfo,
-      closeAskIgnored: config.closeAskIgnored,
+      theme: config.common.theme,
+      defaultClose: config.common.closeApplication,
+      defaultHome: config.common.defaultHome,
+      defaultLanguage: config.common.defaultLanguage,
+      libraryShow: config.library.libraryShow,
+      librarySort: config.library.librarySort,
+      librarySortOrder: config.library.librarySortOrder,
+      libraryCoverInfo: config.library.libraryCoverInfo,
+      closeAskIgnored: config.common.closeAskIgnored,
     });
     setTimeout(() => {
       emit('ready');

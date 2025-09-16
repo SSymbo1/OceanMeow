@@ -5,9 +5,9 @@
   import { useSteamStore } from '@/renderer/pinia/store/steam';
   import { ApplicationConfig } from '@/type/electron/entity';
   import { SteamAccount } from '@/type/electron/entity';
+  import { useConfigStore } from '@/renderer/pinia/store/config';
   import SelectAccountModal from '@/renderer/components/component/modal/SelectAccountModal.vue';
   import SelectInstallPathModal from '@/renderer/components/component/modal/SelectInstallPathModal.vue';
-  import { useConfigStore } from '@/renderer/pinia/store/config';
 
   const accountModel: Ref<any> = ref(null);
   const installPathModel: Ref<any> = ref(null);
@@ -15,7 +15,7 @@
   const selectedKeys = ref<string[]>(['0']);
   const prevView = ref(selectedKeys.value[0]);
   const steamPath: Ref<string> = ref('');
-  const config: Ref<ApplicationConfig> = ref({} as ApplicationConfig);
+  const config: Ref<ApplicationConfig | null> = ref(null);
   const route = useRoute();
   const viewKey = computed(() => {
     return selectedKeys.value[0];
@@ -44,8 +44,8 @@
 
   const selectDumpScreenPath = async () => {
     const userSelectPath = (await window.electronAPI.folderSelector()) ?? '';
-    if (userSelectPath) {
-      config.value.defaultScreenDumpPath = userSelectPath;
+    if (userSelectPath && config.value) {
+      config.value.library.defaultScreenDumpPath = userSelectPath;
     }
   };
 
@@ -63,26 +63,26 @@
 
   watch(
     () => ({
-      theme: config.value.theme,
-      defaultHome: config.value.defaultHome,
-      defaultClose: config.value.closeApplication,
-      defaultLanguage: config.value.defaultLanguage,
-      libraryShow: config.value.libraryShow,
-      librarySort: config.value.librarySort,
-      librarySortOrder: config.value.librarySortOrder,
-      libraryCoverInfo: config.value.libraryCoverInfo,
+      theme: config.value?.common.theme,
+      defaultHome: config.value?.common.defaultHome,
+      defaultClose: config.value?.common.closeApplication,
+      defaultLanguage: config.value?.common.defaultLanguage,
+      libraryShow: config.value?.library.libraryShow,
+      librarySort: config.value?.library.librarySort,
+      librarySortOrder: config.value?.library.librarySortOrder,
+      libraryCoverInfo: config.value?.library.libraryCoverInfo,
     }),
     (newVals) => {
       useConfigStore().setConfig({
         ...useConfigStore().config,
-        theme: newVals.theme,
-        defaultClose: newVals.defaultClose,
-        defaultHome: newVals.defaultHome,
-        defaultLanguage: newVals.defaultLanguage,
-        libraryShow: newVals.libraryShow,
-        librarySort: newVals.librarySort,
-        librarySortOrder: newVals.librarySortOrder,
-        libraryCoverInfo: newVals.libraryCoverInfo,
+        theme: newVals.theme ?? '',
+        defaultClose: newVals.defaultClose ?? '',
+        defaultHome: newVals.defaultHome ?? '',
+        defaultLanguage: newVals.defaultLanguage ?? '',
+        libraryShow: newVals.libraryShow ?? '',
+        librarySort: newVals.librarySort ?? '',
+        librarySortOrder: newVals.librarySortOrder ?? true,
+        libraryCoverInfo: newVals.libraryCoverInfo ?? '',
       });
     }
   );
@@ -90,12 +90,13 @@
   watch(
     config,
     async () => {
-      console.log('config change', config.value.closeApplication);
-      await window.electronAPI.writeApplicationConfig({ ...config.value });
+      await window.electronAPI.writeApplicationConfigCustom({
+        common: { ...config.value?.common },
+        library: { ...config.value?.library },
+      });
     },
     { deep: true }
   );
-
   onActivated(async () => {
     config.value = await window.electronAPI.readApplicationConfig();
     steamPath.value = useSteamStore().steam.installPath;
@@ -182,7 +183,7 @@
                 label-align="right"
               >
                 <a-form-item label="应用主题">
-                  <a-select v-model:value="config.theme">
+                  <a-select v-if="config" v-model:value="config.common.theme">
                     <a-select-option value="0">亮色</a-select-option>
                     <a-select-option value="1">暗色</a-select-option>
                     <a-select-option value="2">跟随系统</a-select-option>
@@ -190,7 +191,12 @@
                 </a-form-item>
                 <a-form-item label="首页背景" name="dumpPath">
                   <a-space>
-                    <a-input v-model:value="config.homeBackground" readonly class="flex-1" />
+                    <a-input
+                      v-if="config"
+                      v-model:value="config.common.homeBackground"
+                      readonly
+                      class="flex-1"
+                    />
                     <a-button type="primary" ghost>选择图片</a-button>
                   </a-space>
                 </a-form-item>
@@ -202,7 +208,7 @@
                 label-align="right"
               >
                 <a-form-item label="启动后界面">
-                  <a-select v-model:value="config.defaultHome">
+                  <a-select v-if="config" v-model:value="config.common.defaultHome">
                     <a-select-option value="0">首页</a-select-option>
                     <a-select-option value="1">库</a-select-option>
                     <a-select-option value="2">设置</a-select-option>
@@ -210,14 +216,14 @@
                   </a-select>
                 </a-form-item>
                 <a-form-item label="语言">
-                  <a-select v-model:value="config.defaultLanguage">
+                  <a-select v-if="config" v-model:value="config.common.defaultLanguage">
                     <a-select-option value="0">简体中文</a-select-option>
                     <a-select-option value="1">English</a-select-option>
                     <a-select-option value="2">跟随系统</a-select-option>
                   </a-select>
                 </a-form-item>
                 <a-form-item label="点击关闭按钮">
-                  <a-radio-group v-model:value="config.closeApplication">
+                  <a-radio-group v-if="config" v-model:value="config.common.closeApplication">
                     <a-radio-button value="0">退出应用</a-radio-button>
                     <a-radio-button value="1">最小化至托盘</a-radio-button>
                   </a-radio-group>
@@ -234,33 +240,33 @@
                 label-align="right"
               >
                 <a-form-item label="库展示方式">
-                  <a-select v-model:value="config.libraryShow">
+                  <a-select v-if="config" v-model:value="config.library.libraryShow">
                     <a-select-option value="0">宫格式</a-select-option>
                     <a-select-option value="1">列表式</a-select-option>
                   </a-select>
                 </a-form-item>
                 <a-form-item label="库封面信息">
-                  <a-select v-model:value="config.libraryCoverInfo">
+                  <a-select v-if="config" v-model:value="config.library.libraryCoverInfo">
                     <a-select-option value="0">截图数量</a-select-option>
                     <a-select-option value="1">游戏时间</a-select-option>
                     <a-select-option value="2">最近游玩时间</a-select-option>
                   </a-select>
                 </a-form-item>
                 <a-form-item label="库排序方式">
-                  <a-select v-model:value="config.librarySort">
+                  <a-select v-if="config" v-model:value="config.library.librarySort">
                     <a-select-option value="0">截图数量</a-select-option>
                     <a-select-option value="1">游戏时间</a-select-option>
                     <a-select-option value="2">最近游玩时间</a-select-option>
                   </a-select>
                 </a-form-item>
                 <a-form-item label="库排序规则">
-                  <a-radio-group v-model:value="config.librarySortOrder">
+                  <a-radio-group v-if="config" v-model:value="config.library.librarySortOrder">
                     <a-radio-button :value="true">正序</a-radio-button>
                     <a-radio-button :value="false">降序</a-radio-button>
                   </a-radio-group>
                 </a-form-item>
                 <a-form-item label="截图排序规则">
-                  <a-radio-group v-model:value="config.screenSortOrder">
+                  <a-radio-group v-if="config" v-model:value="config.library.screenSortOrder">
                     <a-radio-button :value="true">正序</a-radio-button>
                     <a-radio-button :value="false">降序</a-radio-button>
                   </a-radio-group>
@@ -275,25 +281,32 @@
               >
                 <a-form-item label="导出路径" name="dumpPath">
                   <a-space>
-                    <a-input v-model:value="config.defaultScreenDumpPath" readonly class="flex-1" />
+                    <a-input
+                      v-if="config"
+                      v-model:value="config.library.defaultScreenDumpPath"
+                      readonly
+                      class="flex-1"
+                    />
                     <a-button type="primary" ghost @click="selectDumpScreenPath">选择位置</a-button>
                   </a-space>
                 </a-form-item>
                 <a-form-item label="独立文件夹">
                   <a-switch
-                    v-model:checked="config.defaultScreenCreateFolder"
+                    v-if="config"
+                    v-model:checked="config.library.defaultScreenCreateFolder"
                     checked-children="启用"
                     un-checked-children="禁用"
                   />
                 </a-form-item>
                 <a-form-item label="按时间分类">
                   <a-switch
-                    v-model:checked="config.defaultScreenDateOrdered"
+                    v-if="config"
+                    v-model:checked="config.library.defaultScreenDateOrdered"
                     checked-children="启用"
                     un-checked-children="禁用"
                 /></a-form-item>
                 <a-form-item label="文件夹命名">
-                  <a-select v-model:value="config.defaultScreenFolderType">
+                  <a-select v-if="config" v-model:value="config.library.defaultScreenFolderType">
                     <a-select-option
                       value="0"
                       title="文件夹名为游戏的appID，例如命运2的的appID为1085660，则导出文件夹名为1085660"
@@ -338,22 +351,18 @@
   .slide-right-leave-active {
     transition: all 0.2s cubic-bezier(0.55, 0, 0.1, 1);
   }
-
   .slide-left-enter-from {
     opacity: 0;
     transform: translateX(50px);
   }
-
   .slide-left-leave-to {
     opacity: 0;
     transform: translateX(-50px);
   }
-
   .slide-right-enter-from {
     opacity: 0;
     transform: translateX(-50px);
   }
-
   .slide-right-leave-to {
     opacity: 0;
     transform: translateX(50px);

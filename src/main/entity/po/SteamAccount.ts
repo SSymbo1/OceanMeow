@@ -10,7 +10,7 @@ export class SteamAccount {
   accountName: string = '';
   @Column({ name: 'persona_name', nullable: false, type: 'varchar' })
   personaName: string = '';
-  @Column({ name: 'avator', type: 'varchar' })
+  @Column({ name: 'avatar', type: 'varchar' })
   avatar: string = '';
   @Column({ name: 'last_login', type: 'varchar' })
   lastLogin: string = '';

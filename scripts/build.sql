@@ -73,7 +73,7 @@ CREATE TABLE steam_account(
 	`steam_id` varchar(20) not null,
 	`account_name` varchar(25),
 	`persona_name` varchar(80) not null,
-	`avator` varchar(200),
+	`avatar` varchar(200),
 	`last_login` varchar(200)
 );
 

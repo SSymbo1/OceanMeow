@@ -1,5 +1,5 @@
 import { ConfigContext } from '../ConfigContext';
-import { ApplicationConfig } from '@/main/entity/dto/Application';
+import { ApplicationConfig } from '@/main/entity/dto/ApplicationConfig';
 import { SystemIO } from '@/main/util/SystemIO';
 
 export class ApplicationConfigHolder implements ConfigContext<ApplicationConfig> {
@@ -8,30 +8,43 @@ export class ApplicationConfigHolder implements ConfigContext<ApplicationConfig>
   async read<K extends keyof ApplicationConfig>(
     key?: K
   ): Promise<ApplicationConfig | ApplicationConfig[K]> {
-    const applicationConfig = new ApplicationConfig();
-    if (key !== undefined) {
-      const configValue = await SystemIO.readApplicationConfig(key);
-      return configValue ?? applicationConfig[key];
+    const defaultConfig = new ApplicationConfig();
+    if (key) {
+      const config = await SystemIO.readApplicationConfig(key);
+      return this.mergeConfig(defaultConfig[key], config) as ApplicationConfig[K];
     }
-    const configKeys = (Object.keys(applicationConfig) as Array<keyof ApplicationConfig>).filter(
-      (k) => typeof (applicationConfig as any)[k] !== 'function'
-    );
-    const values = await Promise.all(
-      configKeys.map(async (k) => await SystemIO.readApplicationConfig(k))
-    );
-    return configKeys.reduce<ApplicationConfig>((acc, k, i) => {
-      if (values[i] !== undefined) (acc as any)[k] = values[i];
-      return acc;
-    }, applicationConfig);
+    const fullConfig: any = {};
+    for (const k of Object.keys(defaultConfig) as Array<keyof ApplicationConfig>) {
+      const config = await SystemIO.readApplicationConfig(k);
+      fullConfig[k] = this.mergeConfig(defaultConfig[k], config);
+    }
+    return fullConfig as ApplicationConfig;
   }
-  write(object: ApplicationConfig): void {
-    const applicationConfig = new ApplicationConfig();
-    const entries = Object.entries(applicationConfig) as Array<[keyof ApplicationConfig, any]>;
-    for (const [configField, defaultSection] of entries) {
-      const configValue = Object.fromEntries(
-        Object.keys(defaultSection).map((k) => [k, (object as any)[configField][k]])
-      );
-      SystemIO.writeApplicationConfigSync(configField, configValue);
+  write(object: ApplicationConfig): void;
+  write(object: Partial<ApplicationConfig>): void;
+  async write(object: ApplicationConfig | Partial<ApplicationConfig>): Promise<void> {
+    const template = new ApplicationConfig();
+    const updates = object as Partial<ApplicationConfig>;
+    const updateConfig: any = {};
+    await Promise.all(
+      Object.keys(updates).map(async (configKey) => {
+        const config = await this.read(configKey as keyof ApplicationConfig);
+        updateConfig[configKey] = {
+          ...template[configKey as keyof ApplicationConfig],
+          ...config,
+          ...updates[configKey as keyof ApplicationConfig],
+        };
+      })
+    );
+    SystemIO.writeApplicationConfig({ ...template, ...updateConfig });
+  }
+  private mergeConfig<T extends Record<string, any>>(templateConfig: T, originConfig?: any): T {
+    if (!originConfig || typeof originConfig !== 'object') return { ...templateConfig };
+    const res = { ...templateConfig };
+    for (const key of Object.keys(templateConfig)) {
+      if (originConfig[key] == null || originConfig[key] === '') continue;
+      (res as any)[key] = originConfig[key];
     }
+    return res;
   }
 }

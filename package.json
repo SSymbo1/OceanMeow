@@ -1,7 +1,7 @@
 {
   "name": "application",
   "private": true,
-  "version": "0.2.0",
+  "version": "0.2.1",
   "main": "dist-electron/main.js",
   "type": "commonjs",
   "description": "Electron Application",
@@ -10,14 +10,17 @@
     "email": "SS_ymbol@outlook.com"
   },
   "scripts": {
-    "dev:vite": "vite",
-    "build:prod": "tsx scripts/prod-build.js",
+    "dev:electron": "tsx scripts/development-server.js --electron",
+    "dev:website": "tsx scripts/development-server.js --website",
+    "build:electron": "tsx scripts/prod-build.js --electron",
+    "build:website": "tsx scripts/prod-build.js --website",
     "generate:type": "tsx scripts/type-generate.js",
     "generate:config": "tsx scripts/config-serialize.js --dev",
     "generate:database": "electron scripts/database-create.mjs --dev",
+    "preview:website": "tsx scripts/development-server.js --preview",
     "project:init": "tsx scripts/project-init.js",
-    "lint": "prettier --write \"src/**/*.{ts,vue,css}\" && eslint . --ext .ts,.vue --fix",
-    "test": "jest --watchAll=false --runInBand --detectOpenHandles --verbose --logHeapUsage"
+    "lint": "tsx scripts/project-quality.js --lint",
+    "test": "tsx scripts/project-quality.js --test"
   },
   "build": {
     "asar": true,

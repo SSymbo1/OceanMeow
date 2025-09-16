@@ -23,7 +23,7 @@ function buildDatabase(db) {
 
 if (!args.includes(target)) {
   console.error(`
-    avaliable args is:
+    available args is:
 
     --dev: generate database which is used in development
     --prod: generate database which is used in production
