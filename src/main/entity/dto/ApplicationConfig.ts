@@ -1,8 +1,8 @@
 export class ApplicationConfig {
   common = {
-    theme: '2',
+    theme: 'system',
     defaultHome: '0',
-    defaultLanguage: '2',
+    defaultLanguage: 'system',
     homeBackground: '',
     closeApplication: '1',
     closeAskIgnored: false,
@@ -25,6 +25,9 @@ export class ApplicationConfig {
   };
   share = {
     port: 56292,
+  };
+  cache = {
+    cacheFolder: 'cache',
   };
   logger = {
     fileLevel: 'info',

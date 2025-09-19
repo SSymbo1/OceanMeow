@@ -28,9 +28,7 @@
     }
     prevView.value = oldVal[0];
   });
-
   onActivated(() => {});
-
   onDeactivated(() => {
     selectedKeys.value = ['0'];
   });
@@ -39,8 +37,13 @@
 <template>
   <a-layout class="flex h-full w-full">
     <a-layout-content class="flex flex-col h-full">
-      <div class="flex items-center w-full px-2 bg-white sticky top-0 z-10">
-        <a-menu :key="route.fullPath" v-model:selected-keys="selectedKeys" mode="horizontal">
+      <div class="flex items-center w-full sticky top-0 z-10">
+        <a-menu
+          :key="route.fullPath"
+          v-model:selected-keys="selectedKeys"
+          mode="horizontal"
+          class="w-full"
+        >
           <a-menu-item key="0">
             <span class="inline-flex items-center">
               <QuestionCircleOutlined />

@@ -5,6 +5,7 @@
   import { useConfigStore } from '@/renderer/pinia/store/config';
 
   const closeModal = ref();
+  const applicationName = __PROJECT_NAME__;
 
   const minimize = () => window.electronAPI.minimize();
   const close = () => {
@@ -23,7 +24,7 @@
   >
     <div class="flex items-center space-x-2">
       <img :src="icon" alt="logo" class="w-5 h-5" />
-      <span class="text-sm">Application</span>
+      <span class="text-sm">{{ applicationName }}</span>
     </div>
     <nav class="flex" style="-webkit-app-region: no-drag">
       <button

@@ -6,6 +6,7 @@ import { protocolRegister, ipcRegisterHandler, globalExceptionListener } from '@
 import { app, BrowserWindow, Menu, ipcMain, nativeImage, Tray } from 'electron';
 import { ApplicationConfigHolder } from '@/main/service/system/config/impl/ApplicationConfigHolder';
 import { stop } from '@/main/server/app';
+import { SystemBackgroundCache } from './service/system/cahce/impl/SystemBackgroundCache';
 import path from 'path';
 
 let mainWindow: BrowserWindow | null = null;
@@ -34,7 +35,7 @@ const setTray = () => {
         : path.join(__dirname, '../public/icon.ico')
     )
   );
-  tray.setToolTip('Application');
+  tray.setToolTip('OceanMeow');
   tray.on('right-click', (e, bounds) => createTrayPopup(bounds));
   tray.on('click', () => {
     if (mainWindow) {
@@ -130,6 +131,8 @@ if (Firewall.handleCommandLineArgs()) {
   logger.info(CommonMessage.HANDLE_FIREWALL);
 }
 app.whenReady().then(async () => {
+  const backgroundCache = new SystemBackgroundCache();
+  await backgroundCache.initApplicationCacheFolder();
   await SystemDB.getInstance().initDB();
   await Firewall.ensureRule();
   protocolRegister();

@@ -15,10 +15,6 @@
     }
   };
 
-  const close = () => {
-    visiable.value = false;
-  };
-
   const locateScreen = () => {
     window.electronAPI.fileLocate(
       `${useSteamStore().steam.installPath.replace(/\\/g, '/')}${screenDetail.value?.screenFull.replace(/\\/g, '/')}`
@@ -31,7 +27,17 @@
 </script>
 
 <template>
-  <a-modal :open="visiable" centered title="详细信息" :footer="null" @cancel="close">
+  <a-modal
+    :open="visiable"
+    centered
+    title="详细信息"
+    :footer="null"
+    @cancel="
+      () => {
+        visiable = false;
+      }
+    "
+  >
     <div class="min-h-90 min-w-100 flex flex-col gap-7 items-center">
       <img
         :src="`load://${useSteamStore().steam.installPath.replace(/\\/g, '/')}${screenDetail?.screenThumb.replace(/\\/g, '/')}`"

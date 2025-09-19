@@ -6,6 +6,7 @@
   import { useRoute } from 'vue-router';
   import { useAccountStore } from '@/renderer/pinia/store/account';
   import { MenuInfo } from 'ant-design-vue/es/menu/src/interface';
+  import { useConfigStore } from '@/renderer/pinia/store/config';
   import back from '@/renderer/assets/icon/back.svg';
   import router from '@/renderer/router/main';
   import ScreenBackupOptionModal from '../component/modal/ScreenBackupOptionModal.vue';
@@ -37,6 +38,7 @@
   const topButtonShow = ref(false);
   const reviewerVisiable = ref(false);
   const reviwerImage = ref('');
+  const darkMode = ref(true);
   const route = useRoute();
 
   const appDetailSearch = async (model: string, keywords?: string) => {
@@ -59,13 +61,9 @@
     }
   };
 
-  const reviewScreenshot = () => {
-    reviewerVisiable.value = !reviewerVisiable.value;
-  };
-
   const showImageReviewer = (image: string) => {
     reviwerImage.value = image;
-    reviewScreenshot();
+    reviewerVisiable.value = !reviewerVisiable.value;
   };
 
   const goBack = () => {
@@ -129,6 +127,15 @@
     }
   };
 
+  const darkModeNonAntControl = async () => {
+    if (useConfigStore().config.theme === 'system') {
+      const env = await window.electronAPI.getSystemEnvironment();
+      darkMode.value = env.theme as boolean;
+    } else {
+      darkMode.value = useConfigStore().config.theme === 'dark';
+    }
+  };
+
   const backupScreenshot = async () => {
     if (screenCheckList.value.length === 0) {
       message.warning('导出截图前请先选择要导出的截图!');
@@ -165,6 +172,7 @@
     appID.value = route.params.appID as string;
     cover.value = JSON.parse(route.query.cover as string);
     await appDetailSearch('screenshot');
+    await darkModeNonAntControl();
     window.addEventListener('wheel', backToTobButtonShow, { passive: true });
   });
   onDeactivated(() => {
@@ -199,8 +207,13 @@
         {{ cover.name }}
       </div>
     </div>
-    <div class="flex items-center w-full px-4 bg-white sticky top-0 z-30">
-      <a-menu :key="route.fullPath" v-model:selected-keys="selectedKeys" mode="horizontal">
+    <div :class="['flex items-center w-full sticky top-0 z-30', darkMode ? 'bg-dark' : 'bg-white']">
+      <a-menu
+        :key="route.fullPath"
+        v-model:selected-keys="selectedKeys"
+        mode="horizontal"
+        class="flex-1"
+      >
         <a-menu-item key="0">
           <span class="inline-flex items-center">
             <ScissorOutlined />
@@ -214,13 +227,13 @@
           </span>
         </a-menu-item>
       </a-menu>
-      <div class="flex items-center gap-5 ml-auto">
+      <div class="flex items-center gap-5 px-4">
         <a-date-picker
           v-model:value="keyword"
           :bordered="false"
           placeholder="按日期检索"
           format="YYYY-MM-DD"
-          @change="(_: any, dateString: string) => appDetailSearch('screenshot', dateString)"
+          @change="(_, dateString) => appDetailSearch('screenshot', dateString)"
         />
         <div class="flex items-center gap-2">
           <PictureOutlined class="text-xl" />
@@ -233,7 +246,7 @@
           <FieldTimeOutlined class="text-xl" />
           <div class="flex flex-col text-xs leading-none">
             <span>游玩时间</span>
-            <span>{{ `${cover.time}h` }}</span>
+            <span>{{ cover.time }}h</span>
           </div>
         </div>
       </div>
@@ -333,7 +346,9 @@
       :style="{ display: 'none' }"
       :preview="{
         visible: reviewerVisiable,
-        onVisibleChange: reviewScreenshot,
+        onVisibleChange: () => {
+          reviewerVisiable = !reviewerVisiable;
+        },
       }"
       :src="`load://${useSteamStore().steam.installPath.replace(/\\/g, '/')}${reviwerImage.replace(/\\/g, '/')}`"
     />

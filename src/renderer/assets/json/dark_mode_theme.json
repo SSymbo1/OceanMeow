@@ -1,0 +1,19 @@
+{
+  "token": {
+    "colorBgContainer": "#141414",
+    "colorBgElevated": "#1f1f1f",
+    "colorBgLayout": "#000",
+    "colorText": "#e8e8e8",
+    "colorTextSecondary": "#a6a6a6",
+    "colorBorder": "#434343",
+    "colorPrimary": "#1677ff",
+    "colorFillSecondary": "rgba(255,255,255,0.08)",
+    "colorFillContent": "rgba(255,255,255,0.04)",
+    "colorTextDisabled": "rgba(255,255,255,0.75)",
+    "controlItemBgActive": "rgba(255,255,255,0.12)",
+    "controlItemBgActiveHover": "rgba(255,255,255,0.18)",
+    "controlItemBgHover": "rgba(255,255,255,0.08)",
+    "colorTextPlaceholder": "rgba(255,255,255,0.4)",
+    "colorTextDescription": "rgba(255,255,255,0.65)"
+  }
+}

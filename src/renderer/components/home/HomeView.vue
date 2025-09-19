@@ -38,10 +38,6 @@
   const accountName = ref('Guest');
   const accountAvatar = ref('');
 
-  const handleMenuClick = (key: any) => {
-    router.push(menu[Number(key.key)].route);
-  };
-
   const libraryAccountSelected = (account: SteamAccount) => {
     useAccountStore().setAccount({
       steam_id: account.steamId,
@@ -50,10 +46,6 @@
       avatar: account.avatar,
     });
     updateAccountInfo();
-  };
-
-  const steamInstallPathLocatedSuccess = async () => {
-    await appBaseDataInit();
   };
 
   const appBaseDataInit = async () => {
@@ -130,7 +122,11 @@
         theme="dark"
         mode="inline"
         :items="menuItems"
-        @click="handleMenuClick"
+        @click="
+          (key) => {
+            router.push(menu[Number(key.key)].route);
+          }
+        "
       >
       </a-menu>
     </a-layout-sider>
@@ -146,7 +142,14 @@
       </a-layout-content>
     </a-layout>
   </a-layout>
-  <SelectInstallPathModal ref="installPathModel" @success="steamInstallPathLocatedSuccess" />
+  <SelectInstallPathModal
+    ref="installPathModel"
+    @success="
+      async () => {
+        await appBaseDataInit();
+      }
+    "
+  />
   <SelectAccountModal ref="accountModel" @account="libraryAccountSelected" />
 </template>
 

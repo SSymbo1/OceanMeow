@@ -99,10 +99,6 @@
       (await window.electronAPI.folderSelector()) ?? formConfig.value.dumpPath;
   };
 
-  const close = () => {
-    visiable.value = false;
-  };
-
   watch(
     () => [formConfig.value.createFolder, formConfig.value.folderType],
     () => {
@@ -116,7 +112,17 @@
 </script>
 
 <template>
-  <a-modal :open="visiable" centered title="导出" :footer="null" @cancel="close">
+  <a-modal
+    :open="visiable"
+    centered
+    title="导出"
+    :footer="null"
+    @cancel="
+      () => {
+        visiable = false;
+      }
+    "
+  >
     <div class="min-h-80 flex flex-col items-center py-5">
       <a-form
         ref="form"

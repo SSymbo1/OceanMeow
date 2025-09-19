@@ -6,6 +6,7 @@ interface Config {
   defaultClose: string;
   defaultHome: string;
   defaultLanguage: string;
+  homeBackground: string;
   libraryShow: string;
   librarySort: string;
   librarySortOrder: boolean;
@@ -17,10 +18,11 @@ export const useConfigStore = defineStore(
   'config',
   () => {
     const config: Ref<Config> = ref({
-      theme: '2',
+      theme: 'system',
       defaultClose: '1',
       defaultHome: '0',
-      defaultLanguage: '2',
+      defaultLanguage: 'system',
+      homeBackground: '',
       libraryShow: '0',
       librarySort: '0',
       librarySortOrder: false,

@@ -87,7 +87,7 @@
             <a-card-meta>
               <template #description>
                 <div class="flex flex-col items-center">
-                  <div class="text-black font-bold">{{ user.personaName }}</div>
+                  <div class="font-bold">{{ user.personaName }}</div>
                   <div>账户名称:</div>
                   <div>{{ user.accountName }}</div>
                 </div>

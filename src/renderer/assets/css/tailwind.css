@@ -3,3 +3,11 @@
 @import 'ant-design-vue/dist/reset.css' layer(antd);
 
 @layer antd, base, components, utilities;
+@layer components {
+  .ant-btn-primary {
+    box-shadow: none !important;
+  }
+  .ant-menu-horizontal {
+    border-bottom: none !important;
+  }
+}

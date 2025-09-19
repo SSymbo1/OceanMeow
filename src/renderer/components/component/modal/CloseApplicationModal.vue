@@ -28,10 +28,6 @@
     window.electronAPI.close();
   };
 
-  const close = () => {
-    visiable.value = false;
-  };
-
   defineExpose({
     showCloseModal,
   });
@@ -44,7 +40,18 @@
 </script>
 
 <template>
-  <a-modal :open="visiable" centered title="退出应用" :width="350" :footer="null" @cancel="close">
+  <a-modal
+    :open="visiable"
+    centered
+    title="退出应用"
+    :width="350"
+    :footer="null"
+    @cancel="
+      () => {
+        visiable = false;
+      }
+    "
+  >
     <div class="min-h-30">
       <div class="flex flex-col gap-2">
         <div>当退出应用时：</div>
@@ -64,7 +71,14 @@
         </div>
         <div class="flex justify-end gap-1.5">
           <a-button type="primary" @click="saveCloseApplication">确定</a-button>
-          <a-button @click="close">取消</a-button>
+          <a-button
+            @click="
+              () => {
+                visiable = false;
+              }
+            "
+            >取消</a-button
+          >
         </div>
       </div>
     </div>

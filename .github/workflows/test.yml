@@ -34,7 +34,7 @@ jobs:
       - name: Run lint
         run: pnpm run lint
 
-      - name: Typescript complie check
+      - name: Run complie
         run: pnpm tsc --noEmit
 
       - name: Run tests

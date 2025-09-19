@@ -1,11 +1,10 @@
 <script lang="ts" setup>
-  import { Ref, ref } from 'vue';
+  import { ref } from 'vue';
   import { useSteamStore } from '@/renderer/pinia/store/steam';
+  import { App } from 'ant-design-vue';
 
   const visiable = ref(false);
-  const alertVisiable = ref(false);
-  const message = ref('');
-  const alertType: Ref<'success' | 'error'> = ref('success');
+  const { message } = App.useApp();
   const resolvePromise = ref<(() => void) | null>(null);
   const emit = defineEmits(['success']);
 
@@ -16,12 +15,7 @@
       const absPath = await window.electronAPI.getPathToLocalFile(file);
       const target = await window.electronAPI.steamShortcutPath(absPath);
       if (target === null) {
-        message.value = '拖进应用的文件不是快捷方式!';
-        alertType.value = 'error';
-        alertVisiable.value = true;
-        setTimeout(() => {
-          alertVisiable.value = false;
-        }, 3000);
+        message.error('拖进应用的文件不是快捷方式!');
       } else {
         const folderPath = target.split('\\').slice(0, -1).join('\\');
         const validate = await window.electronAPI.validateSteamPath(folderPath);
@@ -33,12 +27,7 @@
           visiable.value = !visiable.value;
           finish();
         } else {
-          message.value = '拖进应用的文件不是Steam的快捷方式!';
-          alertType.value = 'error';
-          alertVisiable.value = true;
-          setTimeout(() => {
-            alertVisiable.value = false;
-          }, 3000);
+          message.error('拖进应用的文件不是Steam的快捷方式!');
         }
       }
     }
@@ -56,12 +45,7 @@
         visiable.value = !visiable.value;
         finish();
       } else {
-        message.value = '所选择路径不是Steam的安装路径，请重新选择!';
-        alertType.value = 'error';
-        alertVisiable.value = true;
-        setTimeout(() => {
-          alertVisiable.value = false;
-        }, 3000);
+        message.error('所选择路径不是Steam的安装路径，请重新选择!');
       }
     }
   };
@@ -122,7 +106,6 @@
         </div>
       </div>
     </div>
-    <a-alert v-if="alertVisiable" :message="message" :type="alertType" show-icon />
   </a-modal>
 </template>
 

@@ -15,6 +15,12 @@ interface LoginUsersResult {
   [key: string]: LoginUsers;
 }
 export class AccountCollector implements SteamDataCollector<SteamAccount> {
+  /**
+   * 收集Steam账户信息并保存到数据库
+   * @param {string} steamInstallPath - Steam安装路径
+   * @returns {Promise<SteamAccount[]>} 返回收集到的Steam账户列表
+   * @throws {Error} 如果读取VDF文件或保存到数据库时出错
+   */
   async collect(steamInstallPath: string): Promise<SteamAccount[]> {
     const steamAccountRepo = SystemDB.getInstance().typeROM.getRepository(SteamAccount);
     const vdfResult: LoginUsersResult = await SystemIO.readSteamVDF(

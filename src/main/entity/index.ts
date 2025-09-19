@@ -8,3 +8,4 @@ export { SteamDumpConfig } from './po/SteamDumpConfig';
 export { ApplicationConfig } from './dto/ApplicationConfig';
 export { ScreenshotShare } from './dto/ScreenshotShare';
 export { VdfTracker } from './po/VdfTracker';
+export { BackgroundImage } from './dto/BackgroundImage';

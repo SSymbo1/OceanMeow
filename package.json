@@ -1,5 +1,5 @@
 {
-  "name": "application",
+  "name": "oceanmeow",
   "private": true,
   "version": "0.2.1",
   "main": "dist-electron/main.js",
@@ -24,8 +24,8 @@
   },
   "build": {
     "asar": true,
-    "appId": "com.github.ssymbo1.application",
-    "productName": "Application",
+    "appId": "com.github.ssymbo1.oceanmeow",
+    "productName": "OceanMeow",
     "directories": {
       "output": "release/${version}"
     },

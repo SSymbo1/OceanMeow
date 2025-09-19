@@ -1,12 +1,14 @@
 import { createApp } from 'vue';
 import router from '@/renderer/router/main';
 import pinia from '@/renderer/pinia/main';
+import i18n from '@/renderer/i18n/main';
 import App from './App.vue';
 import '@/renderer/assets/css/tailwind.css';
 
 const app = createApp(App);
 app.use(router);
 app.use(pinia);
+app.use(i18n);
 app.mount('#app');
 
 window.addEventListener(
@@ -20,7 +22,6 @@ window.addEventListener(
   },
   true
 );
-
 window.addEventListener(
   'keydown',
   (e) => {
@@ -32,7 +33,6 @@ window.addEventListener(
   },
   true
 );
-
 document.addEventListener(
   'selectstart',
   (e: Event) => {

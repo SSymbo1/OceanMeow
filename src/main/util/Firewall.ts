@@ -1,9 +1,9 @@
 import { dialog, app } from 'electron';
 import { execSync, spawn } from 'child_process';
-import { SystemIO } from './SystemIO';
 import { logger } from './Logger';
 import { ApplicationResource } from '@/type/enum/Resource';
 import { CommonMessage, ExchangeMessage, ExceptionMessage } from '@/type/enum/Message';
+import { ApplicationConfigHolder } from '@/main/service/system/config/impl/ApplicationConfigHolder';
 import path from 'path';
 
 // 这个防火墙添加端口策略只对Windows平台有效,需要后续扩展到其他平台
@@ -16,7 +16,8 @@ export class Firewall {
   public static async ensureRule(): Promise<void> {
     try {
       // 读取配置获取端口
-      const config = await SystemIO.readApplicationConfig('share');
+      const applicationConfigHolder = new ApplicationConfigHolder();
+      const config = await applicationConfigHolder.read('share');
       this.port = config.port;
       // 检查规则是否已存在
       if (this.isRuleActive()) {
@@ -154,7 +155,8 @@ export class Firewall {
       // 尝试添加规则
       try {
         // 这里需要重新读取配置，因为这是在新进程中
-        SystemIO.readApplicationConfig('share').then((config) => {
+        const applicationConfigHolder = new ApplicationConfigHolder();
+        applicationConfigHolder.read('share').then((config) => {
           this.port = config.port;
           this.addRule();
           app.quit();

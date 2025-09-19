@@ -9,17 +9,23 @@ import pLimit from 'p-limit';
 
 export class LibraryCollector implements SteamDataCollector<Library> {
   /**
-   * 采集Steam游戏库信息
-   * @param steamInstallPath Steam安装路径
-   * @returns Promise<Library[]> 返回采集到的游戏库信息数组
-   *
-   * 该方法执行以下步骤：
-   * 1. 获取所有Steam账户信息
-   * 2. 读取每个账户的localconfig.vdf文件，获取游戏库存信息
-   * 3. 从库存信息中提取游戏ID和游戏时间记录
-   * 4. 验证游戏是否存在于本地缓存中
-   * 5. 读取appinfo.vdf文件获取游戏详细信息
-   * 6. 为每个有效游戏创建Library对象并保存到数据库
+   * 收集Steam游戏库信息并保存到数据库
+   * @param {string} steamInstallPath - Steam安装路径
+   * @returns {Promise<Library[]>} 返回收集到的游戏库信息数组
+   * @throws {Error} 当读取Steam配置文件或保存数据到数据库时可能出现错误
+   * @description 该方法执行以下步骤：
+   * 1. 初始化数据库连接和仓库
+   * 2. 获取所有Steam账户ID
+   * 3. 读取每个账户的localconfig.vdf文件，获取游戏库存信息
+   * 4. 解析游戏时间信息并转换为LibraryTime对象
+   * 5. 根据本地缓存文件夹过滤有效的游戏ID
+   * 6. 批量保存LibraryTime数据到数据库
+   * 7. 读取appinfo.vdf文件获取游戏详细信息
+   * 8. 根据有效的游戏ID创建Library对象
+   * 9. 批量保存Library数据到数据库
+   * 10. 返回收集到的游戏库信息
+   * @note 使用pLimit限制并发操作数量为10
+   * @note 数据保存采用批量处理，每批500条记录
    */
   async collect(steamInstallPath: string): Promise<Library[]> {
     const limit = pLimit(10);

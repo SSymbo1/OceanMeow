@@ -28,6 +28,9 @@ contextBridge.exposeInMainWorld('electronAPI', {
   readApplicationConfig: (key?: string) => ipcRenderer.invoke('config:read-application', key),
   writeApplicationConfigCustom: (config: Partial<ApplicationConfig>) =>
     ipcRenderer.invoke('config:write-application-custom', config),
+  getSystemEnvironment: () => ipcRenderer.invoke('system:env'),
+  getBackgroundCache: () => ipcRenderer.invoke('cache:background-read'),
+  writeBackgroundCache: (cache: string) => ipcRenderer.invoke('cache:background-write', cache),
   minimize: () => ipcRenderer.send('window-min'),
   close: () => ipcRenderer.send('window-close'),
   quit: () => ipcRenderer.send('window-quit'),

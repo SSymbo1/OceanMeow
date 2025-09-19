@@ -4,7 +4,21 @@ import { SystemIO } from '@/main/util/SystemIO';
 
 export class ApplicationConfigHolder implements ConfigContext<ApplicationConfig> {
   read(): Promise<ApplicationConfig>;
-  read<K extends keyof ApplicationConfig>(key: K): Promise<ApplicationConfig[K]>;
+  /**
+   * 读取应用程序配置的方法
+   * @async
+   * @template K - ApplicationConfig 的键类型
+   * @param {keyof ApplicationConfig} [key] - 可选的配置键名，如果提供则只读取该键对应的配置
+   * @returns {Promise<ApplicationConfig | ApplicationConfig[K]>}
+   *         - 如果未提供 key，返回完整的 ApplicationConfig 对象
+   *         - 如果提供了 key，返回该键对应的配置值 ApplicationConfig[K]
+   * @example
+   * // 读取完整配置
+   * const fullConfig = await appConfig.read();
+   * // 读取特定配置项
+   * const specificConfig = await appConfig.read('database');
+   */
+  async read<K extends keyof ApplicationConfig>(key?: K): Promise<ApplicationConfig[K]>;
   async read<K extends keyof ApplicationConfig>(
     key?: K
   ): Promise<ApplicationConfig | ApplicationConfig[K]> {
@@ -20,6 +34,23 @@ export class ApplicationConfigHolder implements ConfigContext<ApplicationConfig>
     }
     return fullConfig as ApplicationConfig;
   }
+
+  /**
+   * 写入应用程序配置信息
+   * @async
+   * @param {ApplicationConfig | Partial<ApplicationConfig>} object - 要写入的应用程序配置对象，可以是完整配置或部分配置
+   * @returns {Promise<void>} - 返回一个Promise，表示异步操作的完成状态
+   * @description
+   * 此方法用于更新应用程序的配置信息。它会：
+   * 1. 创建一个默认的配置模板
+   * 2. 合并现有配置、默认配置和新的配置更新
+   * 3. 将合并后的配置写入系统
+   * @example
+   * // 写入完整配置
+   * await appConfig.write(fullConfig);
+   * // 写入部分配置
+   * await appConfig.write({ database: { host: 'localhost' } });
+   */
   write(object: ApplicationConfig): void;
   write(object: Partial<ApplicationConfig>): void;
   async write(object: ApplicationConfig | Partial<ApplicationConfig>): Promise<void> {
@@ -38,6 +69,17 @@ export class ApplicationConfigHolder implements ConfigContext<ApplicationConfig>
     );
     SystemIO.writeApplicationConfig({ ...template, ...updateConfig });
   }
+
+  /**
+   * 合并配置对象的私有方法
+   * @template T - 继承自Record<string, any>的泛型类型，表示配置对象的类型
+   * @param {T} templateConfig - 模板配置对象，作为合并的基础
+   * @param {any} [originConfig] - 可选的原始配置对象，用于覆盖模板配置
+   * @returns {T} 返回一个新的配置对象，它是模板配置和原始配置的合并结果
+   * @description 该方法会创建一个新的配置对象，首先复制模板配置的所有属性，
+   * 然后用原始配置中非空且存在的属性值覆盖对应的模板配置值。
+   * 如果原始配置不存在或不是对象，则直接返回模板配置的副本。
+   */
   private mergeConfig<T extends Record<string, any>>(templateConfig: T, originConfig?: any): T {
     if (!originConfig || typeof originConfig !== 'object') return { ...templateConfig };
     const res = { ...templateConfig };

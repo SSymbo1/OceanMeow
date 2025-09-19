@@ -8,9 +8,11 @@
   import { useConfigStore } from '@/renderer/pinia/store/config';
   import SelectAccountModal from '@/renderer/components/component/modal/SelectAccountModal.vue';
   import SelectInstallPathModal from '@/renderer/components/component/modal/SelectInstallPathModal.vue';
+  import BackgroundPreviewSet from '../component/BackgroundPreviewSet.vue';
 
   const accountModel: Ref<any> = ref(null);
   const installPathModel: Ref<any> = ref(null);
+  const backgroundPreview: Ref<any> = ref(null);
   const transitionDirection = ref('');
   const selectedKeys = ref<string[]>(['0']);
   const prevView = ref(selectedKeys.value[0]);
@@ -30,22 +32,25 @@
     });
   };
 
-  const steamInstallPathLocatedSuccess = async () => {
-    await openSelectAccountModal();
-  };
-
-  const openSelectAccountModal = async () => {
-    await accountModel.value?.openAndWait();
-  };
-
-  const openSelectInstallPathModal = async () => {
-    await installPathModel.value?.openAndWait();
-  };
-
   const selectDumpScreenPath = async () => {
     const userSelectPath = (await window.electronAPI.folderSelector()) ?? '';
     if (userSelectPath && config.value) {
       config.value.library.defaultScreenDumpPath = userSelectPath;
+    }
+  };
+
+  const setApplicationHomeBackground = async () => {
+    const background = await window.electronAPI.fileSelector('图片', [
+      'png',
+      'jpg',
+      'jpeg',
+      'bmp',
+      'webp',
+    ]);
+    if (background && config.value) {
+      config.value.common.homeBackground = background;
+      await window.electronAPI.writeBackgroundCache(background);
+      await backgroundPreview.value?.getBackgrouodPreview();
     }
   };
 
@@ -67,6 +72,7 @@
       defaultHome: config.value?.common.defaultHome,
       defaultClose: config.value?.common.closeApplication,
       defaultLanguage: config.value?.common.defaultLanguage,
+      homeBackground: config.value?.common.homeBackground,
       libraryShow: config.value?.library.libraryShow,
       librarySort: config.value?.library.librarySort,
       librarySortOrder: config.value?.library.librarySortOrder,
@@ -78,6 +84,7 @@
         theme: newVals.theme ?? '',
         defaultClose: newVals.defaultClose ?? '',
         defaultHome: newVals.defaultHome ?? '',
+        homeBackground: newVals.homeBackground ?? '',
         defaultLanguage: newVals.defaultLanguage ?? '',
         libraryShow: newVals.libraryShow ?? '',
         librarySort: newVals.librarySort ?? '',
@@ -109,8 +116,13 @@
 <template>
   <a-layout class="flex h-full w-full">
     <a-layout-content class="flex flex-col h-full">
-      <div class="flex items-center w-full px-2 bg-white sticky top-0 z-10">
-        <a-menu :key="route.fullPath" v-model:selected-keys="selectedKeys" mode="horizontal">
+      <div class="flex items-center w-full sticky top-0 z-10">
+        <a-menu
+          :key="route.fullPath"
+          v-model:selected-keys="selectedKeys"
+          mode="horizontal"
+          class="w-full"
+        >
           <a-menu-item key="0">
             <span class="inline-flex items-center">
               <AppstoreOutlined />
@@ -159,7 +171,11 @@
                       class="!inline-flex !items-center !justify-center mt-1.5"
                       type="primary"
                       shape="round"
-                      @click="openSelectAccountModal"
+                      @click="
+                        async () => {
+                          await accountModel.value?.openAndWait();
+                        }
+                      "
                     >
                       <template #icon>
                         <UserSwitchOutlined />
@@ -172,7 +188,15 @@
                   <div>Steam安装路径</div>
                   <a-input-group compact>
                     <a-input v-model:value="steamPath" readonly style="width: calc(90% - 80px)" />
-                    <a-button type="primary" @click="openSelectInstallPathModal">选择路径</a-button>
+                    <a-button
+                      type="primary"
+                      @click="
+                        async () => {
+                          await installPathModel.value?.openAndWait();
+                        }
+                      "
+                      >选择路径</a-button
+                    >
                   </a-input-group>
                 </div>
               </div>
@@ -184,12 +208,12 @@
               >
                 <a-form-item label="应用主题">
                   <a-select v-if="config" v-model:value="config.common.theme">
-                    <a-select-option value="0">亮色</a-select-option>
-                    <a-select-option value="1">暗色</a-select-option>
-                    <a-select-option value="2">跟随系统</a-select-option>
+                    <a-select-option value="light">亮色</a-select-option>
+                    <a-select-option value="dark">暗色</a-select-option>
+                    <a-select-option value="system">跟随系统</a-select-option>
                   </a-select>
                 </a-form-item>
-                <a-form-item label="首页背景" name="dumpPath">
+                <a-form-item label="首页背景">
                   <a-space>
                     <a-input
                       v-if="config"
@@ -197,10 +221,27 @@
                       readonly
                       class="flex-1"
                     />
-                    <a-button type="primary" ghost>选择图片</a-button>
+                    <a-button type="primary" ghost @click="setApplicationHomeBackground"
+                      >选择图片</a-button
+                    >
                   </a-space>
                 </a-form-item>
               </a-form>
+              <a-row class="w-full">
+                <a-col :flex="'0 0 calc(var(--spacing) * 27.5)'" />
+                <a-col :flex="'1 1 0'">
+                  <BackgroundPreviewSet
+                    v-if="config"
+                    ref="backgroundPreview"
+                    class="w-full"
+                    @checked="
+                      (path) => {
+                        config!.common!.homeBackground = path;
+                      }
+                    "
+                  />
+                </a-col>
+              </a-row>
               <a-divider orientation="left">应用</a-divider>
               <a-form
                 :label-col="{ flex: '0 0 calc(var(--spacing) * 27.5)' }"
@@ -217,9 +258,9 @@
                 </a-form-item>
                 <a-form-item label="语言">
                   <a-select v-if="config" v-model:value="config.common.defaultLanguage">
-                    <a-select-option value="0">简体中文</a-select-option>
-                    <a-select-option value="1">English</a-select-option>
-                    <a-select-option value="2">跟随系统</a-select-option>
+                    <a-select-option value="zh-CN">简体中文</a-select-option>
+                    <a-select-option value="en-US">English</a-select-option>
+                    <a-select-option value="system">跟随系统</a-select-option>
                   </a-select>
                 </a-form-item>
                 <a-form-item label="点击关闭按钮">
@@ -279,7 +320,7 @@
                 :wrapper-col="{ flex: '0 0 calc(var(--spacing) * 66)' }"
                 label-align="right"
               >
-                <a-form-item label="导出路径" name="dumpPath">
+                <a-form-item label="导出路径">
                   <a-space>
                     <a-input
                       v-if="config"
@@ -339,7 +380,14 @@
         </div>
       </transition>
     </a-layout-content>
-    <SelectInstallPathModal ref="installPathModel" @success="steamInstallPathLocatedSuccess" />
+    <SelectInstallPathModal
+      ref="installPathModel"
+      @success="
+        async () => {
+          await accountModel.value?.openAndWait();
+        }
+      "
+    />
     <SelectAccountModal ref="accountModel" @account="libraryAccountSelected" />
   </a-layout>
 </template>

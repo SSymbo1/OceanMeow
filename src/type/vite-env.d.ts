@@ -17,6 +17,7 @@ declare interface Window {
     validateSteamPath: (steamPath: string) => Promise<boolean>;
     steamShortcutPath: (shortcut: string) => Promise<string | null>;
     folderSelector: () => Promise<string | null>;
+    fileSelector: (type: string, filter: string[]) => Promise<string | null>;
     collectAccountData: (steamPath: string) => Promise<SteamAccount[]>;
     collectLibraryData: (steamPath: string) => Promise<Library[]>;
     collectScreenshotData: (steamPath: string) => Promise<Screenshot[]>;
@@ -29,6 +30,9 @@ declare interface Window {
     shareSteamScreenshot: (screenshot: ScreenshotShare) => Promise<string>;
     closeAppModalListener: (callback: () => void) => void;
     removeCloseAppModalListener: (callback: () => void) => void;
+    getSystemEnvironment: () => Promise<Record<string, any>>;
+    getBackgroundCache: () => Promise<BackgroundImage[]>;
+    writeBackgroundCache: (fileName:string) => Promise<void>;
     startServer(): () => Promise<void>;
     stopServer(): () => Promise<void>;
     quit(): () => void;

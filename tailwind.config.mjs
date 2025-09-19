@@ -3,4 +3,11 @@ export default {
   corePlugins: {
     preflight: false,
   },
+  theme: {
+    extend: {
+      colors: {
+        dark: '#141414',
+      },
+    },
+  },
 };

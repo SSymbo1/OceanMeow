@@ -11,6 +11,22 @@ interface VdfData {
 }
 
 export class ScreenshotCollector implements SteamDataCollector<Screenshots> {
+  /**
+   * 收集所有Steam账户的截图并保存到数据库
+   * @param {string} steamInstallPath - Steam安装路径
+   * @returns {Promise<Screenshots[]>} 返回所有收集到的截图对象数组
+   * @throws {Error} 当数据库操作失败时可能抛出错误
+   * @example
+   * const screenshots = await collector.collect('C:\\Program Files (x86)\\Steam');
+   * console.log(`共收集了 ${screenshots.length} 张截图`);
+   * @remarks
+   * 该方法会执行以下操作：
+   * 1. 从数据库获取所有Steam账户的ID
+   * 2. 使用pLimit限制并发数(10)读取每个账户的截图
+   * 3. 将所有截图数据扁平化处理
+   * 4. 分批(每批500条)保存截图数据到数据库
+   * 5. 返回所有收集到的截图对象
+   */
   async collect(steamInstallPath: string): Promise<Screenshots[]> {
     const limit = pLimit(10);
     const account = await SystemDB.getInstance()
@@ -33,19 +49,18 @@ export class ScreenshotCollector implements SteamDataCollector<Screenshots> {
   }
 
   /**
-   * 读取指定Steam账户的截图数据
-   *
-   * @description 从Steam的VDF文件中读取指定用户的截图信息，并将其转换为Screenshots实体对象数组。
-   * 该方法会解析Steam截图VDF文件，过滤出有效的应用ID和imported为1的截图，然后创建对应的数据库实体。
-   *
-   * @param accountID - Steam用户账户ID，用于定位特定用户的截图文件
-   * @param steamInstallPath - Steam安装路径，用于构建完整的VDF文件路径
-   *
-   * @returns Promise<Screenshots[]> 返回一个Promise，解析为Screenshots实体对象数组
-   *
-   * @throws 可能抛出文件读取异常或VDF解析异常
-   *
-   * @private
+   * 读取指定账户的Steam截图信息
+   * @private 私有方法，仅限类内部使用
+   * @async 异步方法，返回Promise
+   * @param {string} accountID - Steam账户ID
+   * @param {string} steamInstallPath - Steam安装路径
+   * @returns {Promise<Screenshots[]>} 返回截图信息数组
+   * @description 该方法执行以下步骤：
+   * 1. 从数据库获取截图仓库实例
+   * 2. 读取Steam VDF文件中的截图数据
+   * 3. 过滤并处理截图信息，创建截图实体
+   * 4. 返回处理后的截图信息数组
+   * @throws {Error} 当读取VDF文件或处理数据时可能出现错误
    */
   private async readAccountScreenshots(
     accountID: string,
