@@ -1,5 +1,8 @@
 export enum ApplicationResource {
   FILE_ROOT = 'public',
+  CACHE = 'cache',
+  THUMB = 'thumb',
+  IMAGE = 'image',
   DB_FILE = 'sud.db',
   CONFIG_FILE = 'application.json',
   FIREWALL_RULE = 'Application_Share_Port{port}',

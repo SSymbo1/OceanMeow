@@ -47,6 +47,7 @@ const setTray = () => {
 
 // 设置主窗口
 const createWindow = () => {
+  let quitFlag = false;
   mainWindow = new BrowserWindow({
     width: 800,
     height: 530,
@@ -75,21 +76,24 @@ const createWindow = () => {
     mainWindow.loadURL('http://localhost:5173/src/renderer/index.html');
     mainWindow.webContents.openDevTools({ mode: 'detach' });
   }
-  ipcMain.on('window-min', () => mainWindow?.minimize());
-  ipcMain.on('window-quit', () => app.quit());
+  ipcMain.on('window-min', () => {
+    mainWindow?.minimize();
+  });
   ipcMain.on('window-close', async () => {
-    const appConfig = new ApplicationConfigHolder();
-    const { closeApplication } = await appConfig.read('common');
+    mainWindow?.close();
+  });
+  mainWindow.on('close', async (event) => {
+    if (quitFlag) return;
+    event.preventDefault();
+    const cfgHolder = new ApplicationConfigHolder();
+    const { closeApplication } = await cfgHolder.read('common');
     if (closeApplication === '0') {
+      quitFlag = true;
       app.quit();
     } else {
-      mainWindow?.webContents.send('before-hide');
-      setTimeout(() => {
-        mainWindow?.hide();
-      }, 200);
+      mainWindow?.hide();
     }
   });
-  mainWindow.on('close', async () => {});
 };
 
 // 设置托盘菜单
@@ -118,12 +122,19 @@ const createTrayPopup = (bounds: Electron.Rectangle) => {
   const y = Math.round(bounds.y - height);
   trayMenuPopup.setBounds({ x, y, width, height });
   if (app.isPackaged) {
-    trayMenuPopup.loadFile(path.join(__dirname, '../dist/src/renderer/popup.html'));
+    trayMenuPopup.loadFile(
+      path.join(__dirname, '../dist/src/renderer/components/component/popup/popup.html')
+    );
   } else {
-    trayMenuPopup.loadURL('http://localhost:5173/src/renderer/popup.html');
+    trayMenuPopup.loadURL(
+      'http://localhost:5173/src/renderer/components/component/popup/popup.html'
+    );
   }
   trayMenuPopup.once('blur', () => trayMenuPopup?.close());
   trayMenuPopup.once('closed', () => (trayMenuPopup = null));
+  ipcMain.on('tray-close', () => {
+    app.quit();
+  });
 };
 
 // 启动应用相关hook

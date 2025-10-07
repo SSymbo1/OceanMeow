@@ -1,11 +1,29 @@
 <script lang="ts" setup>
+  import { ref, computed, watch } from 'vue';
+  import { configStore } from '@/renderer/pinia/store/config';
+  import { themeCalculate } from '@/renderer/hook/appearance';
+  import { theme } from 'ant-design-vue';
+
+  const currentTheme = ref<'light' | 'dark'>('light');
+  const themeToken = computed(() =>
+    currentTheme.value === 'dark' ? theme.darkAlgorithm : theme.defaultAlgorithm
+  );
+
   const appExit = () => {
-    window.electronAPI.quit();
+    window.electronAPI.trayClose();
   };
+
+  watch(
+    () => configStore().theme,
+    async (newVal) => {
+      currentTheme.value = await themeCalculate(newVal);
+    },
+    { immediate: true }
+  );
 </script>
 
 <template>
-  <div class="h-full flxe-1 flex-col items-center justify-center">
+  <a-config-provider :theme="{ algorithm: themeToken }">
     <a-menu theme="light" mode="vertical">
       <a-menu-item key="1">
         <div class="flex items-center">
@@ -38,7 +56,7 @@
         </div>
       </a-menu-item>
     </a-menu>
-  </div>
+  </a-config-provider>
 </template>
 
 <style scoped></style>

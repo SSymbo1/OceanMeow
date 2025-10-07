@@ -33,13 +33,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
   writeBackgroundCache: (cache: string) => ipcRenderer.invoke('cache:background-write', cache),
   minimize: () => ipcRenderer.send('window-min'),
   close: () => ipcRenderer.send('window-close'),
-  quit: () => ipcRenderer.send('window-quit'),
-  closeAppModalListener: (callback: () => void) => {
-    ipcRenderer.on('before-hide', callback);
-  },
-  removeCloseAppModalListener: (callback: () => void) => {
-    ipcRenderer.removeListener('before-hide', callback);
-  },
+  trayClose: () => ipcRenderer.send('tray-close'),
   info: (message: string) => ipcRenderer.invoke('log:info', message),
   warn: (message: string) => ipcRenderer.invoke('log:warn', message),
   error: (message: string) => ipcRenderer.invoke('log:error', message),

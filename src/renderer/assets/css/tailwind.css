@@ -4,10 +4,14 @@
 
 @layer antd, base, components, utilities;
 @layer components {
-  .ant-btn-primary {
-    box-shadow: none !important;
+  .ant-menu-light.ant-menu-root.ant-menu-inline,
+  .ant-menu-light.ant-menu-root.ant-menu-vertical {
+    border-inline-end: none !important;
   }
-  .ant-menu-horizontal {
-    border-bottom: none !important;
+  :where(.css-dev-only-do-not-override-13gz7x).ant-btn {
+    line-height: 0 !important;
+  }
+  :where(.css-dev-only-do-not-override-1p3hq3p).ant-btn {
+    line-height: 0 !important;
   }
 }

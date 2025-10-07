@@ -1,0 +1,16 @@
+{
+  "menu": [
+    {
+      "key": "About",
+      "name": "关于",
+      "label": "关于",
+      "icon": "QuestionCircleOutlined"
+    },
+    {
+      "key": "Depend",
+      "name": "依赖",
+      "label": "依赖",
+      "icon": "BranchesOutlined"
+    }
+  ]
+}

@@ -2,29 +2,29 @@ import { createRouter, createWebHashHistory } from 'vue-router';
 
 const routes = [
   {
-    path: '/',
+    path: '/welcome',
     name: 'Welcome',
-    component: () => import('@/renderer/components/home/WelcomeView.vue'),
+    component: () => import('@/renderer/components/view/home/WelcomeView.vue'),
   },
   {
     path: '/about',
     name: 'About',
-    component: () => import('@/renderer/components/about/AboutView.vue'),
+    component: () => import('@/renderer/components/view/about/AboutView.vue'),
   },
   {
-    path: '/library',
+    path: '/library/:scroll?',
     name: 'Library',
-    component: () => import('@/renderer/components/library/LibraryView.vue'),
+    component: () => import('@/renderer/components/view/library/LibraryView.vue'),
   },
   {
-    path: '/setting',
+    path: '/setting/:subSetting?',
     name: 'Setting',
-    component: () => import('@/renderer/components/setting/SettingView.vue'),
+    component: () => import('@/renderer/components/view/setting/SettingView.vue'),
   },
   {
     path: '/game/:appID',
     name: 'Game',
-    component: () => import('@/renderer/components/library/GameDetail.vue'),
+    component: () => import('@/renderer/components/view/library/GameView.vue'),
   },
 ];
 

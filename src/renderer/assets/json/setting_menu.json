@@ -1,0 +1,16 @@
+{
+  "menu": [
+    {
+      "key": "Common",
+      "name": "基础",
+      "label": "基础",
+      "icon": "AppstoreOutlined"
+    },
+    {
+      "key": "Library",
+      "name": "库",
+      "label": "库",
+      "icon": "InboxOutlined"
+    }
+  ]
+}

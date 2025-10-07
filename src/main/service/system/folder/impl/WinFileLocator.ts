@@ -28,14 +28,14 @@ export class WinFileLocator implements FileLocator {
    * 打开文件夹选择对话框，允许用户选择一个目录
    * @returns {Promise<Electron.OpenDialogReturnValue>} 返回一个Promise，解析为Electron的打开对话框返回值
    * @example
-   * const result = await folderSelectror();
+   * const result = await folderSelector();
    * console.log(result.filePaths); // 输出用户选择的文件夹路径
    *
    * 该方法使用Electron的dialog.showOpenDialog API
    * 配置了只允许选择目录（'openDirectory'属性）
    * 使用了ExchangeMessage中的SELECT_LOCATION作为对话框标题
    */
-  async folderSelectror(): Promise<Electron.OpenDialogReturnValue> {
+  async folderSelector(): Promise<Electron.OpenDialogReturnValue> {
     return await dialog.showOpenDialog({
       properties: ['openDirectory'],
       title: ExchangeMessage.SELECT_LOCATION,

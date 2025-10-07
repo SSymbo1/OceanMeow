@@ -1,5 +1,6 @@
 export class BackgroundImage {
   filePath: string = '';
   fileName: string = '';
-  isBackground: boolean = false;
+  thumbPath: string = '';
+  thumbName: string = '';
 }

@@ -1,0 +1,22 @@
+{
+  "menu": [
+    {
+      "key": "Screenshot",
+      "name": "截图",
+      "label": "截图",
+      "icon": "ScissorOutlined"
+    },
+    {
+      "key": "Save",
+      "name": "存档",
+      "label": "存档",
+      "icon": "SaveOutlined"
+    },
+    {
+      "key": "Achieve",
+      "name": "成就",
+      "label": "成就",
+      "icon": "CrownOutlined"
+    }
+  ]
+}

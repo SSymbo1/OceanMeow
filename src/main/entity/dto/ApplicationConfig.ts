@@ -1,7 +1,7 @@
 export class ApplicationConfig {
   common = {
     theme: 'system',
-    defaultHome: '0',
+    defaultHome: 'Welcome',
     defaultLanguage: 'system',
     homeBackground: '',
     closeApplication: '1',

@@ -1,0 +1,28 @@
+{
+  "menu": [
+    {
+      "key": "select",
+      "name": "全选",
+      "label": "全选",
+      "icon": "PlusSquareOutlined"
+    },
+    {
+      "key": "backup",
+      "name": "导出此截图",
+      "label": "导出此截图",
+      "icon": "UploadOutlined"
+    },
+    {
+      "key": "share",
+      "name": "分享此截图",
+      "label": "分享此截图",
+      "icon": "ShareAltOutlined"
+    },
+    {
+      "key": "detail",
+      "name": "详细信息",
+      "label": "详细信息",
+      "icon": "FileImageOutlined"
+    }
+  ]
+}

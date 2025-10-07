@@ -13,6 +13,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 const projectInfo = JSON.parse(readFileSync(resolve(__dirname, './package.json'), 'utf-8'));
+const licenseText = readFileSync(resolve(__dirname, './LICENSE.txt'), 'utf-8');
 
 export default defineConfig(async () => {
   const { default: tailwindcss } = await import('@tailwindcss/vite');
@@ -25,7 +26,7 @@ export default defineConfig(async () => {
       rollupOptions: {
         input: {
           index: resolve(__dirname, 'src/renderer/index.html'),
-          popup: resolve(__dirname, 'src/renderer/popup.html'),
+          popup: resolve(__dirname, 'src/renderer/components/component/popup/popup.html'),
         },
       },
       minify: 'terser',
@@ -36,6 +37,7 @@ export default defineConfig(async () => {
       __PROJECT_NAME__: JSON.stringify(projectInfo.build.productName),
       __PROJECT_VERSION__: JSON.stringify(projectInfo.version),
       __DEPENDENCIES__: JSON.stringify(projectInfo.dependencies),
+      __LICENSE_TEXT__: JSON.stringify(licenseText),
     },
     plugins: [
       vue(),
@@ -53,7 +55,7 @@ export default defineConfig(async () => {
             build: {
               minify: 'terser',
               terserOptions: { compress: true, mangle: true },
-              rollupOptions: { external: ['better-sqlite3', 'typeorm'] },
+              rollupOptions: { external: ['better-sqlite3', 'typeorm', 'sharp'] },
             },
           },
         },

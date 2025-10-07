@@ -11,7 +11,7 @@ const systemBackgroundCache = new SystemBackgroundCache();
 
 export function systemIPC() {
   ipcMain.handle('selector:folder', async () => {
-    const res = await folderLocator.folderSelectror();
+    const res = await folderLocator.folderSelector();
     return res.canceled ? null : res.filePaths[0];
   });
   ipcMain.handle('selector:file', async (_, type, filter) => {

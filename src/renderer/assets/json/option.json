@@ -1,0 +1,124 @@
+{
+  "themeColor": [
+    {
+      "name": "亮色",
+      "value": "light"
+    },
+    {
+      "name": "暗色",
+      "value": "dark"
+    },
+    {
+      "name": "跟随系统",
+      "value": "system"
+    }
+  ],
+  "language": [
+    {
+      "name": "简体中文",
+      "value": "zh-CN"
+    },
+    {
+      "name": "English",
+      "value": "en-US"
+    },
+    {
+      "name": "跟随系统",
+      "value": "system"
+    }
+  ],
+  "home": [
+    {
+      "name": "首页",
+      "value": "Welcome"
+    },
+    {
+      "name": "库",
+      "value": "Library"
+    },
+    {
+      "name": "设置",
+      "value": "Setting"
+    },
+    {
+      "name": "关于",
+      "value": "About"
+    }
+  ],
+  "close": [
+    {
+      "name": "退出应用",
+      "value": "0"
+    },
+    {
+      "name": "最小化至托盘",
+      "value": "1"
+    }
+  ],
+  "libraryStyle": [
+    {
+      "name": "宫格式",
+      "value": "0"
+    },
+    {
+      "name": "列表式",
+      "value": "1"
+    }
+  ],
+  "librarySortBy": [
+    {
+      "name": "截图数量",
+      "value": "0"
+    },
+    {
+      "name": "游戏时间",
+      "value": "1"
+    },
+    {
+      "name": "最近运行日期",
+      "value": "2"
+    }
+  ],
+  "sortOrder": [
+    {
+      "name": "正序",
+      "value": true
+    },
+    {
+      "name": "降序",
+      "value": false
+    }
+  ],
+  "isEnable": [
+    {
+      "name": "启用",
+      "value": true
+    },
+    {
+      "name": "禁用",
+      "value": false
+    }
+  ],
+  "screenDumpFolderType": [
+    {
+      "name": "与Steam截图默认文件夹名保持一致",
+      "value": "0",
+      "title": "文件夹名为游戏的appID，例如命运2的的appID为1085660，则导出文件夹名为1085660"
+    },
+    {
+      "name": "与Steam游戏原名保持一致",
+      "value": "1",
+      "title": "文件夹名为游戏的原名，例如命运2的原名为Destiny 2，则导出文件夹名为Destiny 2"
+    },
+    {
+      "name": "与Steam本地化游戏名保持一致",
+      "value": "2",
+      "title": "文件夹名为游戏的本地化名，例如命运2的本地化名为命运2，则导出文件夹名为命运2"
+    },
+    {
+      "name": "自定义",
+      "value": "3",
+      "title": "自定义导出文件夹的名称"
+    }
+  ]
+}

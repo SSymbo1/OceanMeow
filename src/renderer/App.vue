@@ -1,49 +1,47 @@
 <script setup lang="ts">
-  import Home from '@/renderer/components/home/HomeView.vue';
-  import ApplicationInitHolder from '@/renderer/components/component/application/ApplicationInitHolder.vue';
-  import WindowTitleBar from '@/renderer/components/component/application/WindowTitleBar.vue';
-  import { ref, watch } from 'vue';
-  import { token } from '@/renderer/assets/json/dark_mode_theme.json';
-  import { useConfigStore } from '@/renderer/pinia/store/config';
+  import { ref, computed, watch } from 'vue';
+  import { themeCalculate } from '@/renderer/hook/appearance';
+  import { configStore } from './pinia/store/config';
+  import { theme } from 'ant-design-vue';
+  import WindowTitleBar from './components/component/application/WindowTitleBar.vue';
+  import LoadingHolder from './components/component/application/LoadingHolder.vue';
+  import HomeView from './components/view/home/HomeView.vue';
 
-  const ready = ref(false);
-  const darkMode = ref(false);
+  const loading = ref(true);
+  const loadSuccess = ref(false);
+  const currentTheme = ref<'light' | 'dark'>('light');
+  const themeToken = computed(() =>
+    currentTheme.value === 'dark' ? theme.darkAlgorithm : theme.defaultAlgorithm
+  );
 
   watch(
-    () => [useConfigStore().config.theme, useConfigStore().config.defaultLanguage],
-    async ([newValTheme, newValLang]) => {
-      if (newValTheme === 'system') {
-        const env = await window.electronAPI.getSystemEnvironment();
-        darkMode.value = env.theme;
-      } else {
-        darkMode.value = newValTheme === 'dark';
-      }
-      if (newValLang === 'system') {
-        const env = await window.electronAPI.getSystemEnvironment();
-        console.log(env.local);
-      }
-    }
+    () => configStore().theme,
+    async (newVal) => {
+      currentTheme.value = await themeCalculate(newVal);
+    },
+    { immediate: true }
   );
 </script>
 
 <template>
-  <div id="app" class="h-screen flex flex-col overflow-hidden">
-    <WindowTitleBar class="flex-none" />
-    <div class="flex-1 relative">
-      <a-config-provider
-        :theme="{
-          token: darkMode ? token : {},
-        }"
-      >
-        <a-app class="absolute inset-0" :class="ready ? 'z-10' : 'z-0 opacity-0'">
-          <Home />
-        </a-app>
-      </a-config-provider>
-      <ApplicationInitHolder
-        class="absolute inset-0"
-        :class="ready ? 'z-0 opacity-0' : 'z-20'"
-        @ready="ready = true"
+  <div class="h-screen w-screen flex flex-col">
+    <!-- 应用标题栏 -->
+    <WindowTitleBar />
+    <div class="flex-1 w-full overflow-hidden">
+      <!-- 应用加载等待界面 -->
+      <LoadingHolder
+        v-if="loading"
+        @done="
+          (state) => {
+            loading = false;
+            loadSuccess = state;
+          }
+        "
       />
+      <!-- 应用主界面 -->
+      <a-config-provider v-else :theme="{ algorithm: themeToken }">
+        <HomeView :state="loadSuccess" :force-theme="currentTheme" />
+      </a-config-provider>
     </div>
   </div>
 </template>

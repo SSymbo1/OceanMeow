@@ -1,6 +1,7 @@
 /// <reference types="vite/client" />
 declare const __PROJECT_NAME__: string;
 declare const __PROJECT_VERSION__: string;
+declare const __LICENSE_TEXT__: string;
 declare const __DEPENDENCIES__:object;
 
 declare module '*.vue' {
@@ -28,16 +29,14 @@ declare interface Window {
     readApplicationConfig: (key?: string) => Promise<ApplicationConfig>;
     writeApplicationConfigCustom: (config: Partial<ApplicationConfig>)=> Promise<void>;
     shareSteamScreenshot: (screenshot: ScreenshotShare) => Promise<string>;
-    closeAppModalListener: (callback: () => void) => void;
-    removeCloseAppModalListener: (callback: () => void) => void;
     getSystemEnvironment: () => Promise<Record<string, any>>;
     getBackgroundCache: () => Promise<BackgroundImage[]>;
-    writeBackgroundCache: (fileName:string) => Promise<void>;
+    writeBackgroundCache: (fileName:string) => Promise<string>;
     startServer(): () => Promise<void>;
     stopServer(): () => Promise<void>;
-    quit(): () => void;
     minimize: () => void;
-    close: () => void;
+    close: () => Promise<void>;
+    trayClose:()=>void,
     info: (message: string) => void;
     error: (message: string) => void;
     warn: (message: string) => void;

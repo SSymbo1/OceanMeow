@@ -15,6 +15,7 @@ export default tseslint.config(
         __PROJECT_NAME__: 'readonly',
         __PROJECT_VERSION__: 'readonly',
         __DEPENDENCIES__: 'readonly',
+        __LICENSE_TEXT__: 'readonly',
       },
     },
   },

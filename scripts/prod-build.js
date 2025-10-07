@@ -64,7 +64,7 @@ function cleanResource() {
       await applicationReleaseBuild(packageManager, ['lint']);
       console.log('[7/11] run unit test...');
       await applicationReleaseBuild(packageManager, ['test']);
-      console.log('[8/11] complie typescript...');
+      console.log('[8/11] compile typescript...');
       await applicationReleaseBuild(packageManager, ['vue-tsc']);
       console.log('[9/11] transform render and main thread code...');
       await applicationReleaseBuild(packageManager, ['vite build']);

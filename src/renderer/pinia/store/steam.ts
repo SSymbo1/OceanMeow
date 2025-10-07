@@ -1,22 +1,13 @@
-import { Ref, ref } from 'vue';
 import { defineStore } from 'pinia';
 
-interface Steam {
-  installPath: string;
-}
-
-export const useSteamStore = defineStore(
-  'steam',
-  () => {
-    const steam: Ref<Steam> = ref({
-      installPath: '',
-    });
-    const setSteam = (setValue: Steam) => {
-      steam.value = setValue;
-    };
-    return { steam, setSteam };
-  },
-  {
-    persist: true,
-  }
-);
+// 渲染进程中涉及Steam信息的store
+export const steamStore = defineStore('steam', {
+  state: () => ({
+    installPath: '',
+    accountId: '',
+    avatar: '',
+    account: '',
+    name: '',
+  }),
+  persist: true,
+});

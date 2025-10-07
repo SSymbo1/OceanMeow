@@ -1,46 +1,49 @@
-<script lang="ts" setup>
-  import { ScreenDetail } from '@/type/electron/entity/';
-  import { useSteamStore } from '@/renderer/pinia/store/steam';
+<script setup lang="ts">
+  import type { ScreenDetail } from '@/type/electron/entity/po/ScreenDetail';
   import { ref } from 'vue';
+  import { steamStore } from '@/renderer/pinia/store/steam';
+  import { buildLoadProtocolUrl } from '@/renderer/util/url';
 
-  const visiable = ref(false);
+  const visible = ref(false);
+  let resolveVisible: ((val: boolean) => void) | null = null;
   const screenDetail = ref<ScreenDetail | null>(null);
 
-  const detailShowCase = (detail?: ScreenDetail) => {
-    if (visiable.value === false && detail) {
-      screenDetail.value = detail;
-      visiable.value = true;
-    } else if (visiable.value === true) {
-      visiable.value = false;
-    }
+  const openModal = async (detail: ScreenDetail): Promise<boolean> => {
+    visible.value = true;
+    screenDetail.value = detail;
+    return new Promise<boolean>((resolve) => {
+      resolveVisible = resolve;
+    });
+  };
+
+  const closeModal = () => {
+    visible.value = false;
+    resolveVisible?.(false);
   };
 
   const locateScreen = () => {
     window.electronAPI.fileLocate(
-      `${useSteamStore().steam.installPath.replace(/\\/g, '/')}${screenDetail.value?.screenFull.replace(/\\/g, '/')}`
+      `${steamStore().installPath.replace(/\\/g, '/')}${screenDetail.value?.screenFull.replace(/\\/g, '/')}`
     );
   };
 
   defineExpose({
-    detailShowCase,
+    openModal,
   });
 </script>
 
 <template>
   <a-modal
-    :open="visiable"
-    centered
-    title="详细信息"
+    v-model:open="visible"
+    title="截图详情"
     :footer="null"
-    @cancel="
-      () => {
-        visiable = false;
-      }
-    "
+    :closable="true"
+    centered
+    @cancel="closeModal"
   >
     <div class="min-h-90 min-w-100 flex flex-col gap-7 items-center">
       <img
-        :src="`load://${useSteamStore().steam.installPath.replace(/\\/g, '/')}${screenDetail?.screenThumb.replace(/\\/g, '/')}`"
+        :src="`${buildLoadProtocolUrl(steamStore().installPath, screenDetail?.screenThumb as string)}`"
       />
       <div>{{ screenDetail?.screenFull.replace(/^.*[/\\]/, '') }}</div>
       <div class="flex flex-col gap-2 items-start">

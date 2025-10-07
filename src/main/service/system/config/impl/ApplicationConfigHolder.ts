@@ -36,38 +36,33 @@ export class ApplicationConfigHolder implements ConfigContext<ApplicationConfig>
   }
 
   /**
-   * 写入应用程序配置信息
+   * 写入应用程序配置信息，合并现有配置与新配置
    * @async
    * @param {ApplicationConfig | Partial<ApplicationConfig>} object - 要写入的应用程序配置对象，可以是完整配置或部分配置
-   * @returns {Promise<void>} - 返回一个Promise，表示异步操作的完成状态
+   * @returns {Promise<void>} - 返回一个Promise，在写入操作完成时解析
+   * @throws {Error} - 如果读取现有配置或写入配置过程中发生错误
    * @description
-   * 此方法用于更新应用程序的配置信息。它会：
-   * 1. 创建一个默认的配置模板
-   * 2. 合并现有配置、默认配置和新的配置更新
-   * 3. 将合并后的配置写入系统
+   * 此方法会执行以下操作：
+   * 1. 异步读取当前配置
+   * 2. 创建当前配置的深拷贝作为基础
+   * 3. 遍历输入对象的所有键，将新配置合并到当前配置中
+   * 4. 将合并后的配置写入系统
+   * 注意：合并时会保留现有配置中未在新配置中指定的字段
    * @example
    * // 写入完整配置
    * await appConfig.write(fullConfig);
    * // 写入部分配置
-   * await appConfig.write({ database: { host: 'localhost' } });
+   * await appConfig.write({ database: { host: 'localhost', port: 3306 } });
    */
   write(object: ApplicationConfig): void;
   write(object: Partial<ApplicationConfig>): void;
   async write(object: ApplicationConfig | Partial<ApplicationConfig>): Promise<void> {
-    const template = new ApplicationConfig();
-    const updates = object as Partial<ApplicationConfig>;
-    const updateConfig: any = {};
-    await Promise.all(
-      Object.keys(updates).map(async (configKey) => {
-        const config = await this.read(configKey as keyof ApplicationConfig);
-        updateConfig[configKey] = {
-          ...template[configKey as keyof ApplicationConfig],
-          ...config,
-          ...updates[configKey as keyof ApplicationConfig],
-        };
-      })
-    );
-    SystemIO.writeApplicationConfig({ ...template, ...updateConfig });
+    const current = await this.read();
+    const next: any = { ...current };
+    for (const k of Object.keys(object) as Array<keyof ApplicationConfig>) {
+      next[k] = { ...current[k], ...object[k] };
+    }
+    SystemIO.writeApplicationConfig(next);
   }
 
   /**

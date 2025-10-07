@@ -44,9 +44,7 @@ share.get('/:shareLink', async (c) => {
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </head>
       <body>
-        <div
-          style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}
-        >
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
           {shareData.screenIndex.map((screen) => {
             return (
               <img

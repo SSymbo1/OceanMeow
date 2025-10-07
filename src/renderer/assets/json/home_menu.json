@@ -1,28 +1,28 @@
 {
   "menu": [
     {
-      "key": "0",
+      "key": "Welcome",
       "name": "首页",
       "label": "首页",
       "icon": "HomeOutlined",
-      "route": "/"
+      "route": "/welcome"
     },
     {
-      "key": "1",
+      "key": "Library",
       "name": "库",
       "label": "库",
       "icon": "InboxOutlined",
       "route": "/library"
     },
     {
-      "key": "2",
+      "key": "Setting",
       "name": "设置",
       "label": "设置",
       "icon": "SettingOutlined",
       "route": "/setting"
     },
     {
-      "key": "3",
+      "key": "About",
       "name": "关于",
       "label": "关于",
       "icon": "LinkOutlined",

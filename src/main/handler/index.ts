@@ -4,6 +4,7 @@ import { systemIPC } from '@/main/handler/ipc/systemIPC';
 import { loggerIPC } from '@/main/handler/ipc/loggerIPC';
 import { serverIPC } from '@/main/handler/ipc/serverIPC';
 import { rendererLoadFileProtocol } from '@/main/handler/protocol/rendererLoadFileProtocol';
+import { rendererBackgroundProtocol } from '@/main/handler/protocol/rendererBackgroundProtocol';
 import {
   uncaughtExceptionListener,
   unhandledRejectionListener,
@@ -19,6 +20,7 @@ export function ipcRegisterHandler() {
 
 export function protocolRegister() {
   rendererLoadFileProtocol();
+  rendererBackgroundProtocol();
 }
 
 export function globalExceptionListener() {
