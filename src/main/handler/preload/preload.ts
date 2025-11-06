@@ -12,6 +12,8 @@ contextBridge.exposeInMainWorld('electronAPI', {
   fileSelector: (type: string, filter: string[]) =>
     ipcRenderer.invoke('selector:file', type, filter),
   validateSteamPath: (steamPath: string) => ipcRenderer.invoke('steam:validate', steamPath),
+  homeStatisticsData: (accountID: string) => ipcRenderer.invoke('steam:statistics', accountID),
+  openURLWithBrowser: (url: string) => ipcRenderer.invoke('browser:open', url),
   shareSteamScreenshot: (shareData: ScreenshotShare) =>
     ipcRenderer.invoke('share:steam-screenshot', shareData),
   collectAccountData: (steamPath: string) => ipcRenderer.invoke('collect:account', steamPath),
@@ -31,6 +33,10 @@ contextBridge.exposeInMainWorld('electronAPI', {
   getSystemEnvironment: () => ipcRenderer.invoke('system:env'),
   getBackgroundCache: () => ipcRenderer.invoke('cache:background-read'),
   writeBackgroundCache: (cache: string) => ipcRenderer.invoke('cache:background-write', cache),
+  mainWindowRouteTo: (path: string) => ipcRenderer.invoke('window:route', path),
+  onWindowRoute: (callback: (path: string) => void) => {
+    ipcRenderer.on('window:route-listener', (_event, path) => callback(path));
+  },
   minimize: () => ipcRenderer.send('window-min'),
   close: () => ipcRenderer.send('window-close'),
   trayClose: () => ipcRenderer.send('tray-close'),

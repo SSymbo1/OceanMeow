@@ -8,3 +8,6 @@ import '@/renderer/assets/css/tailwind.css';
 
 createApp(App).use(router).use(pinia).use(i18n).mount('#app');
 preventBrowserBackEvent();
+window.electronAPI.onWindowRoute((path) => {
+  router.push(path);
+});

@@ -1,4 +1,4 @@
-name: PR Lint & Test
+name: Appplication Test
 
 on:
   pull_request:
@@ -34,7 +34,7 @@ jobs:
       - name: Run lint
         run: pnpm run lint
 
-      - name: Run complie
+      - name: Run compile
         run: pnpm tsc --noEmit
 
       - name: Run tests

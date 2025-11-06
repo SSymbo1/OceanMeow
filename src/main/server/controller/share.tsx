@@ -5,8 +5,8 @@ import { ScreenDetail } from '@/main/entity';
 import { ScreenshotShare } from '@/main/entity';
 import { Readable } from 'stream';
 import store from '@/main/server/handler/store';
-import fs from 'fs';
-import path from 'path';
+import fs from 'node:fs';
+import path from 'node:path';
 
 export const share = new Hono();
 

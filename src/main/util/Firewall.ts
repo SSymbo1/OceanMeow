@@ -4,7 +4,7 @@ import { logger } from './Logger';
 import { ApplicationResource } from '@/type/enum/Resource';
 import { CommonMessage, ExchangeMessage, ExceptionMessage } from '@/type/enum/Message';
 import { ApplicationConfigHolder } from '@/main/service/system/config/impl/ApplicationConfigHolder';
-import path from 'path';
+import path from 'node:path';
 
 // 这个防火墙添加端口策略只对Windows平台有效,需要后续扩展到其他平台
 export class Firewall {

@@ -1,8 +1,8 @@
 /* global process */
-import { rmSync } from 'fs';
+import { rmSync } from 'node:fs';
 import { spawn } from 'child_process';
-import { fileURLToPath } from 'url';
-import path from 'path';
+import { fileURLToPath } from 'node:url';
+import path from 'node:path';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const target = path.join(root, 'src', 'type', 'electron');

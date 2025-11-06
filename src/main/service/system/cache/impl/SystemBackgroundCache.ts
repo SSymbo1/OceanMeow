@@ -1,8 +1,8 @@
 import { BackgroundImage } from '@/main/entity';
 import { SystemCache } from '../SystemCache';
 import { app } from 'electron';
-import { join, parse } from 'path';
-import { mkdirSync, readdirSync } from 'fs';
+import { join, parse } from 'node:path';
+import { mkdirSync, readdirSync } from 'node:fs';
 import { ApplicationConfigHolder } from '../../config/impl/ApplicationConfigHolder';
 import { ApplicationResource } from '@/type/enum/Resource';
 import { SystemImage } from '@/main/util/SystemImage';

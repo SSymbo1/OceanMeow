@@ -3,6 +3,10 @@ declare const __PROJECT_NAME__: string;
 declare const __PROJECT_VERSION__: string;
 declare const __LICENSE_TEXT__: string;
 declare const __DEPENDENCIES__:object;
+declare const __HOME_PAGE__: string;
+declare const __RELEASE_PAGE__: string;
+declare const __DISCLAIMER_TEXT__: string;
+declare module 'vue3-count-to'
 
 declare module '*.vue' {
   import { DefineComponent } from 'vue'
@@ -15,6 +19,8 @@ declare interface Window {
     getPathToLocalFile: (file: File) => Promise<string>;
     fileLocate: (path: string) => void;
     steamRegInstallPath: () => Promise<string | null>;
+    homeStatisticsData: (accountID: string) => Promise<SteamStatistics>
+    openURLWithBrowser: (url: string) => void;
     validateSteamPath: (steamPath: string) => Promise<boolean>;
     steamShortcutPath: (shortcut: string) => Promise<string | null>;
     folderSelector: () => Promise<string | null>;
@@ -32,6 +38,8 @@ declare interface Window {
     getSystemEnvironment: () => Promise<Record<string, any>>;
     getBackgroundCache: () => Promise<BackgroundImage[]>;
     writeBackgroundCache: (fileName:string) => Promise<string>;
+    mainWindowRouteTo: (path: string) => void;
+    onWindowRoute: (callback: (path: string) => void) => void;
     startServer(): () => Promise<void>;
     stopServer(): () => Promise<void>;
     minimize: () => void;

@@ -1,7 +1,7 @@
 /* global console */
-import { fileURLToPath } from 'url';
+import { fileURLToPath } from 'node:url';
 import { spawn } from 'child_process';
-import path from 'path';
+import path from 'node:path';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const packageManager = 'pnpm';

@@ -13,7 +13,6 @@ interface AccountData {
   MostRecent: string;
   Timestamp: string;
 }
-
 const accountRepoCreate = jest.fn();
 const accountRepoSave = jest.fn();
 jest.mock('@/main/util/SystemDB', () => ({

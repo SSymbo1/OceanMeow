@@ -76,7 +76,7 @@
     resolveVisible?.(false);
   };
 
-  const dumpScrenshot = async () => {
+  const dumpScreenshot = async () => {
     try {
       await form.value?.validateFields();
       const result = await window.electronAPI.dumpGameScreen(
@@ -103,7 +103,7 @@
     }
   };
 
-  const selectDumplocation = async () => {
+  const selectDumpLocation = async () => {
     formConfig.value.dumpPath =
       (await window.electronAPI.folderSelector()) ?? formConfig.value.dumpPath;
   };
@@ -141,7 +141,7 @@
         <a-form-item label="导出路径" name="dumpPath">
           <a-space>
             <a-input v-model:value="formConfig.dumpPath" disabled class="flex-1" />
-            <a-button type="primary" ghost @click="selectDumplocation"> {{ `选择位置` }} </a-button>
+            <a-button type="primary" ghost @click="selectDumpLocation"> {{ `选择位置` }} </a-button>
           </a-space>
         </a-form-item>
         <a-form-item label="独立文件夹">
@@ -182,7 +182,7 @@
               type="primary"
               shape="round"
               html-type="submit"
-              @click="dumpScrenshot"
+              @click="dumpScreenshot"
             >
               <template #icon>
                 <UploadOutlined />

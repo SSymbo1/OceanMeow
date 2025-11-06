@@ -1,9 +1,9 @@
 /* global console */
 /* global process */
-import { fileURLToPath } from 'url';
+import { fileURLToPath } from 'node:url';
 import { spawn } from 'child_process';
-import { rmSync } from 'fs';
-import path from 'path';
+import { rmSync } from 'node:fs';
+import path from 'node:path';
 
 const [, , target] = process.argv;
 const args = ['--electron', '--website'];

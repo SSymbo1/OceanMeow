@@ -17,12 +17,10 @@ export function ipcRegisterHandler() {
   systemIPC();
   serverIPC();
 }
-
 export function protocolRegister() {
   rendererLoadFileProtocol();
   rendererBackgroundProtocol();
 }
-
 export function globalExceptionListener() {
   uncaughtExceptionListener();
   unhandledRejectionListener();

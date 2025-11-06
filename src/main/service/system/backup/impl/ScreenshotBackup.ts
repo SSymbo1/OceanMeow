@@ -6,8 +6,8 @@ import { DumpFolderType, CreateFolder, OrderByDate } from '@/type/enum/Option';
 import { logger } from '@/main/util/Logger';
 import { Brackets } from 'typeorm';
 import { ExceptionMessage } from '@/type/enum/Message';
-import fs from 'fs';
-import path from 'path';
+import fs from 'node:fs';
+import path from 'node:path';
 import { ApplicationConfigHolder } from '@/main/service/system/config/impl/ApplicationConfigHolder';
 
 type ScreenDumpResult = {

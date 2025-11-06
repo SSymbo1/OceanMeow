@@ -1,10 +1,10 @@
 /* global process */
 /* global console */
-import { fileURLToPath } from 'url';
-import { mkdirSync, writeFileSync } from 'fs';
+import { fileURLToPath } from 'node:url';
+import { mkdirSync, writeFileSync } from 'node:fs';
 import { ApplicationConfig } from '../src/main/entity/dto/ApplicationConfig.ts';
 import stringify from 'json-stable-stringify';
-import path from 'path';
+import path from 'node:path';
 
 const [, , target = '--all'] = process.argv;
 const args = ['--dev', '--prod', '--all'];

@@ -2,7 +2,7 @@ import { FileLocator } from '@/main/service/system/folder/FileLocator';
 import { logger } from '@/main/util/Logger';
 import { ExceptionMessage, ExchangeMessage } from '@/type/enum/Message';
 import { dialog, shell } from 'electron';
-import fs from 'fs';
+import fs from 'node:fs';
 
 export class WinFileLocator implements FileLocator {
   /**

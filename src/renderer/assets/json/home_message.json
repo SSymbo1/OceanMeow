@@ -1,0 +1,14 @@
+{
+  "early_morning": "清晨好 {user} ，新的一天开始了",
+  "morning": "早上好, {user} ",
+  "noon": "中午好 {user} ，记得吃午饭哦",
+  "afternoon": "下午好 {user} ，工作辛苦了",
+  "night": "晚上好 {user} ，今天过得怎么样",
+  "late_night": "夜深了 {user} ，注意休息哦",
+  "statisticTemplate": [
+    "游玩时间最长：《{name}》",
+    "截图数量最多：《{name}》",
+    "最近截图游戏：《{name}》",
+    "最近游玩游戏：《{name}》"
+  ]
+}

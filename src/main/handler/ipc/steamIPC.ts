@@ -6,6 +6,7 @@ import { AccountCollector } from '@/main/service/steam/collector/impl/AccountCol
 import { LibraryCollector } from '@/main/service/steam/collector/impl/LibraryCollector';
 import { ScreenshotCollector } from '@/main/service/steam/collector/impl/ScreenshotCollector';
 import { ScreenshotShareLink } from '@/main/service/steam/share/impl/ScreenshotShareLink';
+import { SteamDataStatistics } from '@/main/service/steam/statistics/impl/SteamDataStatistics';
 
 const localContext = new LocalContext();
 const librarySelector = new LibrarySelector();
@@ -14,10 +15,14 @@ const accountCollector = new AccountCollector();
 const libraryCollector = new LibraryCollector();
 const screenshotCollector = new ScreenshotCollector();
 const screenshotShareLink = new ScreenshotShareLink();
+const steamDataStatistics = new SteamDataStatistics();
 
 export function steamIPC() {
   ipcMain.handle('steam:validate', (_, steamPath) => {
     return localContext.validateSteamInstallPath(steamPath);
+  });
+  ipcMain.handle('steam:statistics', async (_, accountID) => {
+    return await steamDataStatistics.accountDataStatistics(accountID);
   });
   ipcMain.handle('share:steam-screenshot', (_, shareData) => {
     return screenshotShareLink.shareLinkGenerator(shareData);

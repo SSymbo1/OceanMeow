@@ -1,6 +1,6 @@
 import 'reflect-metadata';
 import { app } from 'electron';
-import { join } from 'path';
+import { join } from 'node:path';
 import { DataSource } from 'typeorm';
 import { logger } from '@/main/util/Logger';
 import { AlertMessage, ExceptionMessage } from '@/type/enum/Message';

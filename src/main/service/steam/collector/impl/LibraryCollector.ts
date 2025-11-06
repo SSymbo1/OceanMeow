@@ -3,8 +3,8 @@ import { Library, LibraryTime, SteamAccount } from '@/main/entity';
 import { SteamResource } from '@/type/enum/Resource';
 import { SystemDB } from '@/main/util/SystemDB';
 import { SystemIO } from '@/main/util/SystemIO';
-import { join } from 'path';
-import fs from 'fs';
+import { join } from 'node:path';
+import fs from 'node:fs';
 import pLimit from 'p-limit';
 
 export class LibraryCollector implements SteamDataCollector<Library> {

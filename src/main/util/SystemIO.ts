@@ -1,5 +1,5 @@
-import fs from 'fs';
-import path from 'path';
+import fs from 'node:fs';
+import path from 'node:path';
 import VKVB from 'valve-key-values-binary';
 import * as VDF from '@node-steam/vdf';
 import { app } from 'electron';
@@ -45,29 +45,28 @@ export class SystemIO {
   }
   public static async readSteamVDF(vdfPath: string, objectKey?: string) {
     const vdfFile = await this.readFile(vdfPath);
-    if (vdfFile !== null) {
-      try {
-        const vdfParsed = VDF.parse(vdfFile);
-        return objectKey === undefined ? vdfParsed : (vdfParsed[objectKey] ?? null);
-      } catch (error) {
-        logger.error(ExceptionMessage.VDF_EXCEPTION, error);
-        return null;
-      }
-    } else {
+    if (!vdfFile) return null;
+    try {
+      const vdfParsed = VDF.parse(vdfFile);
+      return objectKey === undefined ? vdfParsed : (vdfParsed[objectKey] ?? null);
+    } catch (error) {
+      logger.error(ExceptionMessage.VDF_EXCEPTION, error);
       return null;
     }
   }
   public static async readSteamAppinfoVDF(vdfPath: string): Promise<object | null> {
-    const bufferFile = fs.readFileSync(vdfPath);
-    if (bufferFile !== null) {
-      try {
-        const parseVDF = VKVB.parse<ShortcutsRoot>(bufferFile);
-        return parseVDF.toJSON();
-      } catch (error) {
-        logger.error(ExceptionMessage.VDF_EXCEPTION, error);
-        return null;
-      }
-    } else {
+    let bufferFile: Buffer;
+    try {
+      bufferFile = fs.readFileSync(vdfPath);
+    } catch (error) {
+      logger.error(ExceptionMessage.VDF_EXCEPTION, error);
+      return null;
+    }
+    try {
+      const parseVDF = VKVB.parse<ShortcutsRoot>(bufferFile);
+      return parseVDF.toJSON();
+    } catch (error) {
+      logger.error(ExceptionMessage.VDF_EXCEPTION, error);
       return null;
     }
   }

@@ -2,18 +2,19 @@ import { defineConfig } from 'vite';
 import { AntDesignVueResolver } from 'unplugin-vue-components/resolvers';
 import { fileURLToPath } from 'node:url';
 import { dirname, resolve } from 'node:path';
-import { readFileSync } from 'fs';
+import { readFileSync } from 'node:fs';
 import vue from '@vitejs/plugin-vue';
 import electron from 'vite-plugin-electron';
 import native from 'vite-plugin-native';
 import Components from 'unplugin-vue-components/vite';
-import path from 'path';
+import path from 'node:path';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 const projectInfo = JSON.parse(readFileSync(resolve(__dirname, './package.json'), 'utf-8'));
 const licenseText = readFileSync(resolve(__dirname, './LICENSE.txt'), 'utf-8');
+const disclaimerText = readFileSync(resolve(__dirname, './DISCLAIMER.txt'), 'utf-8');
 
 export default defineConfig(async () => {
   const { default: tailwindcss } = await import('@tailwindcss/vite');
@@ -37,7 +38,10 @@ export default defineConfig(async () => {
       __PROJECT_NAME__: JSON.stringify(projectInfo.build.productName),
       __PROJECT_VERSION__: JSON.stringify(projectInfo.version),
       __DEPENDENCIES__: JSON.stringify(projectInfo.dependencies),
+      __HOME_PAGE__: JSON.stringify(projectInfo.homepage),
+      __RELEASE_PAGE__: JSON.stringify(projectInfo.lastest),
       __LICENSE_TEXT__: JSON.stringify(licenseText),
+      __DISCLAIMER_TEXT__: JSON.stringify(disclaimerText),
     },
     plugins: [
       vue(),

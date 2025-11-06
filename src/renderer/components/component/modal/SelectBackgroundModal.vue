@@ -63,6 +63,8 @@
         :before-upload="() => false"
         :custom-request="() => {}"
         :open-file-dialog-on-click="false"
+        :disabled="true"
+        title="暂未实现"
         class="pl-1.5 pr-1.5"
       >
         <p class="ant-upload-drag-icon">

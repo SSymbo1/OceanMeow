@@ -1,8 +1,8 @@
 import { app } from 'electron';
 import { ApplicationResource } from '@/type/enum/Resource';
 import log from 'electron-log';
-import path from 'path';
-import fs from 'fs';
+import path from 'node:path';
+import fs from 'node:fs';
 
 interface LogConfig {
   fileLevel: 'silly' | 'debug' | 'verbose' | 'info' | 'warn' | 'error' | false;

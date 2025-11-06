@@ -26,7 +26,7 @@ dist-ssr
 *.sln
 *.sw?
 
-# 副产物
+# subproducts
 coverage
 /src/type/*
 !/src/type/enum

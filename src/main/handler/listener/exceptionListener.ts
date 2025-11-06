@@ -5,7 +5,6 @@ export function uncaughtExceptionListener() {
     logger.error('', error);
   });
 }
-
 export function unhandledRejectionListener() {
   process.on('unhandledRejection', (error) => {
     logger.error('', error);

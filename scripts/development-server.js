@@ -1,9 +1,9 @@
 /* global process */
 /* global console */
-import { fileURLToPath } from 'url';
+import { fileURLToPath } from 'node:url';
 import { spawn } from 'child_process';
-import { existsSync } from 'fs';
-import path from 'path';
+import { existsSync } from 'node:fs';
+import path from 'node:path';
 
 const [, , target] = process.argv;
 const args = ['--electron', '--website', '--preview'];

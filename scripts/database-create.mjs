@@ -1,9 +1,9 @@
 /* global process */
 /* global console */
-import { fileURLToPath } from 'url';
-import { readFileSync, mkdirSync } from 'fs';
+import { fileURLToPath } from 'node:url';
+import { readFileSync, mkdirSync } from 'node:fs';
 import Database from 'better-sqlite3';
-import path from 'path';
+import path from 'node:path';
 
 const [, , target = '--all'] = process.argv;
 const args = ['--dev', '--prod', '--all'];

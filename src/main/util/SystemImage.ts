@@ -1,6 +1,6 @@
 import sharp from 'sharp';
-import { parse, join } from 'path';
-import { readdirSync, promises as fs } from 'fs';
+import { parse, join } from 'node:path';
+import { readdirSync, promises as fs } from 'node:fs';
 
 export class SystemImage {
   public static async imageCompress(

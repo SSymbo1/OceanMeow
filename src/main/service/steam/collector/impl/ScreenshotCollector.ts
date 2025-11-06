@@ -3,7 +3,7 @@ import { Screenshots, SteamAccount } from '@/main/entity';
 import { SteamResource } from '@/type/enum/Resource';
 import { SystemDB } from '@/main/util/SystemDB';
 import { SystemIO } from '@/main/util/SystemIO';
-import { join } from 'path';
+import { join } from 'node:path';
 import pLimit from 'p-limit';
 
 interface VdfData {

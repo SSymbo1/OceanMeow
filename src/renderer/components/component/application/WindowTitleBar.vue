@@ -13,7 +13,7 @@
     if (closeAskModal.value && !configStore().closeAskIgnored) {
       await closeAskModal.value.openModal();
     } else {
-      window.electronAPI.close();
+      await window.electronAPI.close();
     }
   };
 </script>

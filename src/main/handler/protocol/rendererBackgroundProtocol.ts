@@ -1,7 +1,7 @@
 import { protocol, net, app } from 'electron';
-import { pathToFileURL } from 'url';
+import { pathToFileURL } from 'node:url';
 import { ApplicationResource } from '@/type/enum/Resource';
-import { join } from 'path';
+import { join } from 'node:path';
 
 export function rendererBackgroundProtocol() {
   protocol.handle('background', (request) => {

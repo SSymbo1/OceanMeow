@@ -1,5 +1,5 @@
 import { protocol, net } from 'electron';
-import { pathToFileURL } from 'url';
+import { pathToFileURL } from 'node:url';
 
 export function rendererLoadFileProtocol() {
   protocol.handle('load', (request) => {

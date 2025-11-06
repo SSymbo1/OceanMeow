@@ -75,7 +75,7 @@
   });
 
   // 处理卡片选中
-  const handleScreenshotCardChecck = (index: number, checked: boolean) => {
+  const handleScreenshotCardCheck = (index: number, checked: boolean) => {
     if (checked) {
       checkList.value.push(index);
     } else {
@@ -177,7 +177,7 @@
                 ref="screenshotCards"
                 :card="item"
                 :checked="checkList.includes(item.screenIndex)"
-                @update:checked="handleScreenshotCardChecck"
+                @update:checked="handleScreenshotCardCheck"
               />
               <template #overlay>
                 <a-menu :items="menuItems" @click="handleScreenshotRightClick" />

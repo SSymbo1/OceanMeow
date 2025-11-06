@@ -2,8 +2,8 @@ import { SteamContext } from '@/main/service/steam/context/SteamContext';
 import { SystemRegedit } from '@/main/util/SystemRegedit';
 import { HKLM } from 'winreg';
 import { execSync } from 'child_process';
-import path from 'path';
-import fs from 'fs';
+import path from 'node:path';
+import fs from 'node:fs';
 
 // 这个也只支持windows平台后续需要扩展跨平台
 export class LocalContext implements SteamContext {

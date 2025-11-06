@@ -1,8 +1,9 @@
-import { ipcMain, app, nativeTheme } from 'electron';
+import { ipcMain, app, nativeTheme, shell } from 'electron';
 import { ScreenshotBackup } from '@/main/service/system/backup/impl/ScreenshotBackup';
 import { ApplicationConfigHolder } from '@/main/service/system/config/impl/ApplicationConfigHolder';
 import { WinFileLocator } from '@/main/service/system/folder/impl/WinFileLocator';
-import { SystemBackgroundCache } from '@/main/service/system/cahce/impl/SystemBackgroundCache';
+import { SystemBackgroundCache } from '@/main/service/system/cache/impl/SystemBackgroundCache';
+import { mainWindow } from '@/main/modal/mainWindow';
 
 const folderLocator = new WinFileLocator();
 const screenshotBackup = new ScreenshotBackup();
@@ -41,5 +42,13 @@ export function systemIPC() {
   });
   ipcMain.handle('cache:background-write', async (_, cache) => {
     return await systemBackgroundCache.writeApplicationCacheFiles(cache);
+  });
+  ipcMain.handle('browser:open', (_, url) => {
+    shell.openExternal(url);
+  });
+  ipcMain.handle('window:route', (_, path) => {
+    mainWindow?.show();
+    mainWindow?.focus();
+    mainWindow?.webContents.send('window:route-listener', path);
   });
 }
