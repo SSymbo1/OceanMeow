@@ -42,8 +42,8 @@
       :wrapper-col="{ flex: '0 0 calc(var(--spacing) * 66)' }"
       label-align="right"
     >
-      <a-form-item label="语言">
-        <a-select v-model:value="defaultLanguage">
+      <a-form-item label="语言" title="only Chinese is supported temporarily">
+        <a-select v-model:value="defaultLanguage" disabled>
           <a-select-option v-for="(item, index) in language" :key="index" :value="item.value">{{
             item.name
           }}</a-select-option>

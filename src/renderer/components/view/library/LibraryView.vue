@@ -1,9 +1,10 @@
 <script setup lang="ts">
   import type { LibraryDetail } from '@/type/electron/entity';
-  import { ref, computed, Ref, onMounted, defineAsyncComponent } from 'vue';
+  import { ref, computed, Ref, onMounted, defineAsyncComponent, h } from 'vue';
   import { useRouter } from 'vue-router';
   import { steamStore } from '@/renderer/pinia/store/steam';
   import { libraryStore } from '@/renderer/pinia/store/library';
+  import { SettingOutlined } from '@ant-design/icons-vue';
 
   const scrollArea = ref();
   const router = useRouter();
@@ -62,12 +63,9 @@
           type="primary"
           shape="round"
           title="设置"
+          :icon="h(SettingOutlined)"
           @click="router.push({ name: 'Setting', params: { subSetting: 'Library' } })"
-        >
-          <template #icon>
-            <SettingOutlined />
-          </template>
-        </a-button>
+        />
       </div>
       <!-- 库页面下部分根据库设置决定是宫格式还是列表式的卡片虚拟滚动区域 -->
       <div ref="scrollArea" class="flex-1 overflow-y-auto overflow-x-hidden scrollbar-hidden">
@@ -86,5 +84,12 @@
 <style scoped>
   .scrollbar-hidden::-webkit-scrollbar {
     display: none;
+  }
+  /* 不知道为什么在生产环境下button里的icon会发生向下偏移 */
+  :deep(.ant-btn > .anticon) {
+    vertical-align: middle !important;
+    line-height: 1 !important;
+    display: inline-flex !important;
+    align-items: center !important;
   }
 </style>

@@ -171,7 +171,7 @@
               v-for="(item, index) in items"
               :key="index"
               :trigger="['contextmenu']"
-              @open-change="(visible) => visible && (rightClickItem = item)"
+              @open-change="(visible: boolean) => visible && (rightClickItem = item)"
             >
               <ScreenshotCard
                 ref="screenshotCards"

@@ -26,6 +26,9 @@
   },
   "build": {
     "asar": true,
+    "asarUnpack": [
+      "LICENSE.txt"
+    ],
     "appId": "com.github.ssymbo1.oceanmeow",
     "productName": "OceanMeow",
     "directories": {
@@ -34,6 +37,12 @@
     "files": [
       "dist-electron",
       "dist"
+    ],
+    "extraFiles": [
+      {
+        "from": "./LICENSE.txt",
+        "to": "./LICENSE.txt"
+      }
     ],
     "extraResources": [
       {

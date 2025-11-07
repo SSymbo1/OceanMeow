@@ -1,4 +1,8 @@
-name: Application Release
+name: Application Build & Release
+
+permissions:
+  contents: write
+  pull-requests: read
 
 on:
   push:
@@ -6,26 +10,19 @@ on:
     paths:
       - 'src/main/**'
       - 'src/renderer/**'
+      - 'package.json'
   workflow_dispatch:
 
 concurrency:
-  group: ${{ github.repository }}-release
+  group: release-${{ github.ref }}
   cancel-in-progress: false
 
 jobs:
-  check:
+  release:
     runs-on: windows-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
-      - name: Add MSVC build tools
-        uses: microsoft/setup-msbuild@v2
-
-      - name: Setup python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.8'
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
@@ -38,39 +35,53 @@ jobs:
           node-version: 22
           cache: 'pnpm'
 
+      - name: Configure Python and Win10 SDK for node-gyp
+        run: |
+          npm config set python python3
+          npm config set msvs_version 2022
+          npm config set sdk_version 10.0.19041.0
+
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
       - name: Build application
         run: pnpm run build:electron
 
-      - name: Generate tag
-        id: tag
+      - name: List build output
+        run: Get-ChildItem -Recurse release/
+        shell: pwsh
+
+      - name: Check if tag exists
+        id: check_tag
         shell: bash
         run: |
-          TAG="v$(node -p require('./package.json').version)"
+          TAG="v$(node -p "require('./package.json').version")"
           if git rev-parse "$TAG" >/dev/null 2>&1; then
-            echo "Tag $TAG already exists, aborting release."
-            exit 1
+            echo "exists=true" >> $GITHUB_OUTPUT
+          else
+            echo "exists=false" >> $GITHUB_OUTPUT
+            echo "TAG=$TAG" >> $GITHUB_OUTPUT
           fi
-          echo "TAG=$TAG" >> $GITHUB_OUTPUT
 
       - name: Generate checksums
+        if: steps.check_tag.outputs.exists == 'false'
         shell: pwsh
         run: |
-          Get-ChildItem release/${{ steps.tag.outputs.TAG }} -File | Get-FileHash -Algorithm SHA256 | Out-File -Encoding utf8 release/SHA256SUMS.txt
+          Get-ChildItem release/${{ steps.check_tag.outputs.TAG }} -File | Get-FileHash -Algorithm SHA256 | Out-File -Encoding utf8 release/SHA256SUMS.txt
 
       - name: Release
+        if: steps.check_tag.outputs.exists == 'false'
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: ${{ steps.tag.outputs.TAG }}
-          name: Release ${{ steps.tag.outputs.TAG }}
+          tag_name: ${{ steps.check_tag.outputs.TAG }}
+          name: Release ${{ steps.check_tag.outputs.TAG }}
           body: 'Auto-generated release from CI'
           draft: false
           prerelease: false
           files: |
-            release/${{ steps.tag.outputs.TAG }}/*.exe
-            release/${{ steps.tag.outputs.TAG }}/*.zip
+            release/${{ steps.check_tag.outputs.TAG }}/*.exe
+            release/${{ steps.check_tag.outputs.TAG }}/*.zip
+            release/${{ steps.check_tag.outputs.TAG }}/*.exe.blockmap
             release/SHA256SUMS.txt
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
