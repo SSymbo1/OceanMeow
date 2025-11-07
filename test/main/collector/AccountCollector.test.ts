@@ -25,7 +25,7 @@ jest.mock('@/main/util/SystemDB', () => ({
 jest.mock('@/main/util/SystemIO', () => ({
   SystemIO: { readSteamVDF: jest.fn() },
 }));
-jest.mock('@/type/enum/resource', () => ({
+jest.mock('@/type/enum/Resource', () => ({
   SteamResource: {
     LOGIN_USER_VDF: '/config/loginusers.vdf',
     ID_CONVERT: '76561197960265728',

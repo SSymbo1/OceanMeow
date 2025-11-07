@@ -35,14 +35,15 @@ jobs:
           node-version: 22
           cache: 'pnpm'
 
-      - name: Configure Python and Win10 SDK for node-gyp
-        run: |
-          npm config set python python3
-          npm config set msvs_version 2022
-          npm config set sdk_version 10.0.19041.0
-
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
+        env:
+          npm_config_python: "C:\\Python39\\python.exe"
+          npm_config_msvs_version: '2022'
+          GYP_DEFINES: "windows_sdk_version='10.0.19041.0'"
+          WindowsSDKVersion: '10.0.19041.0'
+          npm_config_target_arch: 'x64'
+          npm_config_build_from_source: 'true'
 
       - name: Build application
         run: pnpm run build:electron

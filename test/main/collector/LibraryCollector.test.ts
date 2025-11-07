@@ -38,7 +38,7 @@ jest.mock('path', () => ({
   ...jest.requireActual('path'),
   join: (...args: string[]) => args.join('/'),
 }));
-jest.mock('@/type/enum/resource', () => ({
+jest.mock('@/type/enum/Resource', () => ({
   SteamResource: {
     LOCAL_CONFIG_VDF: '/userdata/{user_id}/config/localconfig.vdf',
     LIBRARY_COVER_CAP: '/appcache/librarycache',

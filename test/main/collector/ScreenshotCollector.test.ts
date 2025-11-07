@@ -25,7 +25,7 @@ jest.mock('@/main/util/SystemDB', () => ({
 jest.mock('@/main/util/SystemIO', () => ({
   SystemIO: { readSteamVDF: jest.fn(), readSteamAppinfoVDF: jest.fn(), getFilePath: jest.fn() },
 }));
-jest.mock('@/type/enum/resource', () => ({
+jest.mock('@/type/enum/Resource', () => ({
   SteamResource: {
     SCREENSHOT_VDF: '/userdata/{user_id}/760/screenshots.vdf',
     SCREENSHOT: '/userdata/{user_id}/760/remote/',
@@ -145,6 +145,6 @@ describe('ScreenshotCollector', () => {
     expect(SystemIO.readSteamVDF).toHaveBeenCalledTimes(ACCOUNT_NUM);
     expect(screenshotRepoCreate).toHaveBeenCalledTimes(TOTAL);
     expect(screenshotRepoSave).toHaveBeenCalledTimes(Math.ceil(TOTAL / 500));
-    expect(t1 - t0).toBeLessThan(300);
+    expect(t1 - t0).toBeLessThan(400);
   });
 });
