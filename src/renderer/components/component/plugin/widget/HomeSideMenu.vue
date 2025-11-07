@@ -69,7 +69,7 @@
       mode="inline"
       :items="menuItems"
       @click="
-        ({ item }) => {
+        ({ item }: any) => {
           router.push(item.route);
         }
       "

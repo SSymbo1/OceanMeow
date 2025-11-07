@@ -39,8 +39,11 @@ jobs:
       - name: Run lint
         run: pnpm run lint
 
-      - name: Run compile
+      - name: Run TypeScript compile
         run: pnpm tsc --noEmit
+
+      - name: Run Vue-TypeScript compile
+        run: pnpm vue-tsc --noEmit
 
       - name: Run tests
         run: pnpm run test
