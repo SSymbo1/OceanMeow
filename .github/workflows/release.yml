@@ -56,19 +56,21 @@ jobs:
         id: check_tag
         shell: bash
         run: |
-          TAG="v$(node -p "require('./package.json').version")"
+          VERSION=$(node -p "require('./package.json').version")
+          TAG="v$VERSION"
           if git rev-parse "$TAG" >/dev/null 2>&1; then
             echo "exists=true" >> $GITHUB_OUTPUT
           else
             echo "exists=false" >> $GITHUB_OUTPUT
             echo "TAG=$TAG" >> $GITHUB_OUTPUT
+            echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
           fi
 
       - name: Generate checksums
         if: steps.check_tag.outputs.exists == 'false'
         shell: pwsh
         run: |
-          Get-ChildItem release/${{ steps.check_tag.outputs.TAG }} -File | Get-FileHash -Algorithm SHA256 | Out-File -Encoding utf8 release/SHA256SUMS.txt
+          Get-ChildItem release/${{ steps.check_tag.outputs.VERSION }} -File | Get-FileHash -Algorithm SHA256 | Out-File -Encoding utf8 release/SHA256SUMS.txt
 
       - name: Release
         if: steps.check_tag.outputs.exists == 'false'
@@ -80,9 +82,9 @@ jobs:
           draft: false
           prerelease: false
           files: |
-            release/${{ steps.check_tag.outputs.TAG }}/*.exe
-            release/${{ steps.check_tag.outputs.TAG }}/*.zip
-            release/${{ steps.check_tag.outputs.TAG }}/*.exe.blockmap
+            release/${{ steps.check_tag.outputs.VERSION }}/*.exe
+            release/${{ steps.check_tag.outputs.VERSION }}/*.zip
+            release/${{ steps.check_tag.outputs.VERSION }}/*.exe.blockmap
             release/SHA256SUMS.txt
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
